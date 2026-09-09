@@ -6,6 +6,7 @@ from .common import rng
 from .corpus import similarity
 
 
+# 汇总干预期的产出、新颖性、文本差异、跨领域合作和压力等指标。
 def measure(w, start_cycle=0):
     ideas = [x for x in w.ideas.values() if x['status']=='evaluated' and x['cycle']>=start_cycle]
     texts = [' '.join(x['versions'][-1][k] for k in ('title', 'hypothesis', 'method')) for x in ideas]
@@ -21,6 +22,7 @@ def measure(w, start_cycle=0):
             'mean_pressure': statistics.mean(a.pressure for a in w.agents.values())}
 
 
+# 将一组同字段字典以带 UTF-8 BOM 的格式写入 CSV。
 def write_csv(path, rows):
     with open(path, 'w', newline='', encoding='utf-8-sig') as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0]))
@@ -28,6 +30,7 @@ def write_csv(path, rows):
         writer.writerows(rows)
 
 
+# 在世界 seed 层面对处理组和 balanced 对照组计算配对效应与区间。
 def paired_effects(rows):
     """Paired by world seed; percentile bootstrap across worlds, not agents."""
     out = []

@@ -11,12 +11,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 
+# 将命令行中的相对路径统一解析为相对于项目根目录的绝对路径。
 def project_path(value):
     """Resolve CLI paths consistently when run.py is launched outside the repo."""
     path = Path(value).expanduser()
     return path if path.is_absolute() else ROOT / path
 
 
+# 解析命令行参数并分发环境配置、测试、实验、诊断和重放命令。
 def main():
     parser = argparse.ArgumentParser(description='SciMirror execution entry')
     parser.add_argument('command', choices=['setup','test','run','estimate','doctor','replay'])

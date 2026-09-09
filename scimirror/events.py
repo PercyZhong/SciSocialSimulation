@@ -10,6 +10,7 @@ class Journal:
     Replay uses recorded snapshots, never regenerates model outputs. Domain events
     support audit; this MVP does not claim a per-field reducer for every event type.
     """
+    # 创建指定分支的只追加事件日志并拒绝覆盖已有日志。
     def __init__(self, path, branch):
         self.path = Path(path)
         self.branch = branch
@@ -19,6 +20,7 @@ class Journal:
             raise FileExistsError('Refuse to overwrite event log')
         self.path.parent.mkdir(parents=True, exist_ok=True)
 
+    # 将领域事件和世界快照作为一个 tick 事务写入哈希链并更新检查点。
     def commit(self, world, pending):
         validate_world(world)
         records = list(pending) + [{'type': 'world.snapshot', 'actor': 'system',
@@ -36,6 +38,7 @@ class Journal:
         dump(self.path.parent / 'checkpoint.json', {'state': world.export(), 'journal_hash': self.prev})
 
 
+# 校验事件日志哈希链并从最后一个已提交快照恢复世界状态。
 def replay(path):
     previous = '0' * 64
     last = None

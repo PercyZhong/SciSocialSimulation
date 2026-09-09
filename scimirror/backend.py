@@ -9,6 +9,7 @@ from .common import digest, dump, rng
 
 
 class Backend:
+    # 根据配置初始化 mock 或远程 Chat Completions 后端及用量计数器。
     def __init__(self, cfg, root):
         self.cfg = cfg
         self.root = Path(root)
@@ -21,6 +22,7 @@ class Backend:
         if self.mode == 'chat' and not self.base.startswith(('https://', 'http://localhost', 'http://127.0.0.1')):
             raise ValueError('Use HTTPS, or localhost for a local model server')
 
+    # 生成提案或修订响应，并负责缓存、重试、预算和响应校验。
     def generate(self, stage, context, key):
         if self.mode == 'mock':
             return self.mock(stage, context, key)
@@ -74,6 +76,7 @@ class Backend:
             time.sleep(2 ** attempt)
         raise RuntimeError('Unreachable')
 
+    # 使用确定性随机流生成可离线复现的 mock 提案或修订。
     @staticmethod
     def mock(stage, context, key):
         r = rng(0, *key)
@@ -96,6 +99,7 @@ class Backend:
         return {'candidates': choices}
 
 
+# 验证模型响应结构、文本长度、数值范围及引用可见性。
 def validate_response(stage, value, context):
     if stage == 'propose':
         cs = value['candidates']

@@ -16,6 +16,7 @@ from .state import initialize
 ROOT = Path(__file__).resolve().parents[1]
 
 
+# 校验 Agent 数量、周期边界、seed、实验条件和后端等配置约束。
 def validate_config(c):
     if type(c['agents']) is not int or not 2 <= c['agents'] <= 100:
         raise ValueError('agents must be integer 2..100')
@@ -31,12 +32,14 @@ def validate_config(c):
         raise ValueError('Invalid backend or decision temperature')
 
 
+# 从 UTF-8 JSON 文件加载实验配置并执行完整配置校验。
 def load_config(path):
     c = json.loads(Path(path).read_text(encoding='utf-8'))
     validate_config(c)
     return c
 
 
+# 估算给定配置的逻辑调用数、最大生成 token 数和请求上限。
 def estimate(c):
     calls_per_cycle = c['agents']+(c['agents']+1)//2
     n = len(c['seeds'])*calls_per_cycle*(c['branch_tick']//6 + len(c['policies'])*len(c['networks'])*((c['ticks']-c['branch_tick'])//6))
@@ -44,6 +47,7 @@ def estimate(c):
             'request_attempt_cap': c['max_calls'], 'backend': c['backend']}
 
 
+# 执行共同前缀和全部反事实分支，并生成日志、指标及报告文件。
 def run(c, output):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -115,6 +119,7 @@ def run(c, output):
     return output
 
 
+# 导出不含实验条件的盲评卡，以及仅供实验者使用的私有映射表。
 def export_review(output, c):
     """Blind cards: no policy, reward, agent identity or network in rater CSV."""
     cards, mapping = [], []
@@ -134,6 +139,7 @@ def export_review(output, c):
         write_csv(output/'review_key_private.csv', mapping)
 
 
+# 提供直接运行 experiment 模块时的参数解析和实验入口。
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--config', default=str(ROOT/'configs/mock.json'))

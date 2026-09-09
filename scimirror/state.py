@@ -30,9 +30,11 @@ class World:
     network: str = 'open'
     history: list = field(default_factory=list)
 
+    # 将世界状态及其嵌套数据类导出为普通字典。
     def export(self):
         return asdict(self)
 
+    # 从已序列化的字典恢复完整的世界和 Agent 对象。
     @classmethod
     def restore(cls, raw):
         data = dict(raw)
@@ -40,6 +42,7 @@ class World:
         return cls(**data)
 
 
+# 使用给定 seed 初始化指定数量且画像可复现的 Agent。
 def initialize(n, seed):
     agents = {}
     for i in range(n):
@@ -50,6 +53,7 @@ def initialize(n, seed):
     return World(seed, 0, agents)
 
 
+# 检查团队容量、成员归属、状态范围和提案所有者等世界不变量。
 def validate_world(w):
     seen = set()
     for tid, team in w.teams.items():

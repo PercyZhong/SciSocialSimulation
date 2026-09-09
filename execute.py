@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 
+# 创建项目虚拟环境，运行测试并执行完整的离线 mock 实验。
 def main():
     if sys.version_info < (3,11):
         raise SystemExit('Install Python 3.11+ then rerun execute.py')

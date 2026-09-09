@@ -20,11 +20,13 @@ from scimirror.metrics import paired_effects
 
 
 class CoreTests(unittest.TestCase):
+    # 为每个测试准备默认 mock 配置、合成语料和后端实例。
     def setUp(self):
         self.cfg = load_config(ROOT/'configs/mock.json')
         self.corpus = Corpus(ROOT/self.cfg['corpus'],2025,True)
         self.backend = Backend(self.cfg,ROOT)
 
+    # 验证二十个 Agent 的确定性、团队容量和提案修订行为。
     def test_twenty_agents_deterministic_and_capacity(self):
         a, b = initialize(20,42), initialize(20,42)
         for _ in range(30):
@@ -36,6 +38,7 @@ class CoreTests(unittest.TestCase):
         self.assertTrue(any(len(t['members'])==2 for t in a.teams.values()))
         self.assertTrue(any(len(x['versions'])==2 for x in a.ideas.values()))
 
+    # 验证观察上下文不会泄露其他 Agent 的私有值和记忆。
     def test_observation_no_other_private_state(self):
         w = initialize(20,42)
         w.agents['s01'].memories=[{'secret':'PRIVATE_SENTINEL'}]
@@ -45,6 +48,7 @@ class CoreTests(unittest.TestCase):
         self.assertNotIn('0.123456789',json.dumps(ctx))
         self.assertTrue(all('values' not in p for p in ctx['peers']))
 
+    # 验证未来文献过滤及禁止合成语料的配置约束。
     def test_time_boundary_and_synthetic_guard(self):
         with tempfile.TemporaryDirectory() as d:
             records=list(self.corpus.papers.values())[:3]
@@ -55,6 +59,7 @@ class CoreTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 Corpus(path,2025,False)
 
+    # 验证模型生成不可见或虚构引用时会被响应校验拒绝。
     def test_unknown_reference_rejected(self):
         ctx=observation(initialize(20,42),'s00',self.corpus)
         response=self.backend.generate('propose',ctx,[42,0,'s00'])
@@ -62,6 +67,7 @@ class CoreTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_response('propose',response,ctx)
 
+    # 验证生成失败不会部分修改输入世界状态。
     def test_failed_step_no_state_mutation(self):
         w=initialize(20,42)
         initial=digest(w.export())
@@ -70,6 +76,7 @@ class CoreTests(unittest.TestCase):
                 step(w,self.corpus,self.backend,self.cfg)
         self.assertEqual(initial,digest(w.export()))
 
+    # 验证日志可恢复原状态且篡改事件会触发完整性错误。
     def test_replay_and_tamper_detection(self):
         with tempfile.TemporaryDirectory() as d:
             path=Path(d)/'events.jsonl'
@@ -87,6 +94,7 @@ class CoreTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 replay(path)
 
+    # 验证 closed 合作网络中的团队成员始终来自同一领域。
     def test_closed_network_never_crosses_fields(self):
         w=initialize(20,42);w.network='closed'
         for _ in range(12):
@@ -94,6 +102,7 @@ class CoreTests(unittest.TestCase):
             for team in w.teams.values():
                 self.assertEqual(len({w.agents[x].field for x in team['members']}),1)
 
+    # 验证六个分支共享前缀状态且盲评导出不泄露条件标签。
     def test_branch_run_same_prefix_and_blind_export(self):
         cfg={**self.cfg,'ticks':12,'seeds':[42]}
         with tempfile.TemporaryDirectory() as d:
@@ -111,6 +120,7 @@ class CoreTests(unittest.TestCase):
             self.assertNotIn('reward',header)
             self.assertEqual(estimate(cfg)['logical_calls_without_cache_or_retries'],210)
 
+    # 验证处理组与对照组完全相同时配对效应及区间均为零。
     def test_paired_bootstrap_zero_effect(self):
         rows=[]
         for s in range(3):
@@ -122,10 +132,12 @@ class CoreTests(unittest.TestCase):
             self.assertEqual(row['ci95_low'],0)
             self.assertEqual(row['ci95_high'],0)
 
+    # 验证兼容 HTTP 后端、用量统计、缓存命中及密钥不落盘。
     def test_chat_http_and_cache(self):
         ctx=observation(initialize(20,42),'s00',self.corpus)
         response=self.backend.generate('propose',ctx,[42,0,'s00'])
         class Handler(BaseHTTPRequestHandler):
+            # 接收本地测试请求并返回符合 Chat Completions 结构的响应。
             def do_POST(self):
                 self.server.count+=1
                 req=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
@@ -133,6 +145,7 @@ class CoreTests(unittest.TestCase):
                 body=json.dumps({'choices':[{'message':{'content':json.dumps(response)}}],
                                  'usage':{'prompt_tokens':10,'completion_tokens':20}}).encode()
                 self.send_response(200);self.end_headers();self.wfile.write(body)
+            # 禁用本地测试 HTTP 服务器的默认访问日志输出。
             def log_message(self,*args):pass
         server=HTTPServer(('127.0.0.1',0),Handler);server.count=0
         thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
@@ -150,6 +163,7 @@ class CoreTests(unittest.TestCase):
         finally:
             server.shutdown();server.server_close();thread.join()
 
+    # 验证从项目目录之外调用 CLI 时仍能正确解析项目相对路径。
     def test_cli_paths_work_outside_project_directory(self):
         with tempfile.TemporaryDirectory() as d:
             result = subprocess.run(
@@ -160,12 +174,14 @@ class CoreTests(unittest.TestCase):
         self.assertIn('Corpus papers after validation/filtering: 90', result.stdout)
         self.assertIn(str(Path(sys.executable).resolve()), result.stdout)
 
+    # 验证原子 JSON 写入会重试瞬时目标文件锁并最终成功。
     def test_atomic_dump_retries_transient_destination_lock(self):
         with tempfile.TemporaryDirectory() as d:
             target = Path(d)/'checkpoint.json'
             real_replace = os.replace
             attempts = []
 
+            # 在首次替换时模拟扫描器锁定目标文件，随后执行真实替换。
             def transient_lock(source, destination):
                 attempts.append(destination)
                 if len(attempts) == 1:

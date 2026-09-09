@@ -9,10 +9,12 @@ from .backend import validate_response
 POLICIES = {'balanced': (.5, .5), 'novelty': (1., 0.), 'recognition': (0., 1.)}
 
 
+# 构造一条包含类型、执行者、可见范围和载荷的领域事件。
 def event(kind, actor, payload, audience=None):
     return {'type': kind, 'actor': actor, 'audience': audience or [], 'payload': payload}
 
 
+# 为指定 Agent 构建仅包含其私有状态和其他 Agent 公开投影的观察上下文。
 def observation(world, aid, corpus):
     a = world.agents[aid]
     visible = [asdict(a)]  # Only the focal agent's private fields may enter context.
@@ -22,6 +24,7 @@ def observation(world, aid, corpus):
             'policy': world.policy, 'tick': world.tick}
 
 
+# 按 Agent 偏好和制度奖励权重计算候选提案的主观效用。
 def utility(a, candidate, policy):
     n, f, r = (candidate[k] for k in ['expected_novelty', 'expected_feasibility', 'expected_recognition'])
     wn, wr = POLICIES[policy]
@@ -29,12 +32,14 @@ def utility(a, candidate, policy):
             - a.values['risk']*(1-f) + .5*(wn*n+wr*r))
 
 
+# 使用温度化 softmax 权重随机选择候选提案并返回全部效用分数。
 def select(a, candidates, policy, random_source, temperature):
     scores = [utility(a, c, policy) for c in candidates]
     weights = [math.exp((s-max(scores))/temperature) for s in scores]
     return random_source.choices(range(len(candidates)), weights=weights)[0], scores
 
 
+# 在状态副本上执行当前 tick 对应的六阶段动作并返回新世界和事件。
 def step(w, corpus, backend, cfg):
     """Work on a copy; failed LLM/schema calls cannot commit partial world state."""
     old = w

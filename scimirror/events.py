@@ -1,0 +1,56 @@
+import json
+from pathlib import Path
+from .common import canonical, digest, dump
+from .state import World, validate_world
+
+
+class Journal:
+    """Append-only tick transactions; final world.snapshot is the commit record.
+
+    Replay uses recorded snapshots, never regenerates model outputs. Domain events
+    support audit; this MVP does not claim a per-field reducer for every event type.
+    """
+    def __init__(self, path, branch):
+        self.path = Path(path)
+        self.branch = branch
+        self.seq = 0
+        self.prev = '0' * 64
+        if self.path.exists():
+            raise FileExistsError('Refuse to overwrite event log')
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+    def commit(self, world, pending):
+        validate_world(world)
+        records = list(pending) + [{'type': 'world.snapshot', 'actor': 'system',
+                                    'audience': [], 'payload': world.export()}]
+        with self.path.open('a', encoding='utf-8', newline='\n') as stream:
+            for r in records:
+                self.seq += 1
+                e = {'schema_version': 1, 'event_id': f'{self.branch}:{self.seq}',
+                     'branch': self.branch, 'tick': world.tick, 'seq': self.seq,
+                     'previous_hash': self.prev, **r}
+                e['hash'] = digest(e)
+                stream.write(canonical(e)+'\n')
+                self.prev = e['hash']
+            stream.flush()
+        dump(self.path.parent / 'checkpoint.json', {'state': world.export(), 'journal_hash': self.prev})
+
+
+def replay(path):
+    previous = '0' * 64
+    last = None
+    seq = 0
+    for line in Path(path).read_text(encoding='utf-8').splitlines():
+        event = json.loads(line)
+        stored = event.pop('hash')
+        seq += 1
+        if digest(event) != stored or event['previous_hash'] != previous or event['seq'] != seq:
+            raise ValueError('Journal integrity check failed')
+        previous = stored
+        if event['type'] == 'world.snapshot':
+            last = event['payload']
+    if last is None:
+        raise ValueError('No committed snapshot')
+    world = World.restore(last)
+    validate_world(world)
+    return world

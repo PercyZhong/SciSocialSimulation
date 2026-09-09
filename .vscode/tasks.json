@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SciMirror: tests",
+      "type": "process",
+      "command": "${command:python.interpreterPath}",
+      "args": [
+        "${workspaceFolder}/run.py",
+        "test"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "SciMirror: offline experiment",
+      "type": "process",
+      "command": "${command:python.interpreterPath}",
+      "args": [
+        "${workspaceFolder}/run.py",
+        "run"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

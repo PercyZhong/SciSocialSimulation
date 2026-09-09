@@ -1,0 +1,184 @@
+# SciMirror v0.1：20个Agent科研社会模拟实验
+
+完整可运行原型，Python 3.11+，Windows / Linux / VS Code Remote可用。运行与测试只依赖Python标准库，不需要GPU、CUDA、PyTorch、数据库服务或pip安装。20个Agent是20份独立状态和决策上下文，可共享一个模型服务，并不需要加载20个模型。
+
+**离线mock模式用于软件验证。真实LLM通过兼容Chat Completions的HTTP服务接入。内置语料全部为合成夹具；本项目尚不是经过真实科研生态校准的平台。**
+
+## 交给VS Code Codex执行
+
+解压到独立目录，用VS Code打开包含execute.py的scimirror文件夹。把CODEX_TASK.md交给Codex，或者输入：
+
+> 请阅读当前项目CODEX_TASK.md和docs/EXPERIMENT.md，执行python execute.py；运行失败请修复并重跑测试。完成后报告20个Agent、18个条件运行的结果路径和重放验证情况。先完成mock实验；不要把mock结果描述为真实科研发现。真实API配置和后续步骤请遵守CODEX_TASK.md。
+
+无需逐段复制代码。execute.py会建立.venv、运行测试、完成默认实验。运行入口run.py提供其他命令。
+
+## 目录
+
+```text
+scimirror/
+  execute.py                 # 给Codex的一键执行文件
+  CODEX_TASK.md               # 给Codex的完整执行任务
+  run.py                     # setup/test/run/estimate/doctor/replay
+  requirements.txt           # 明确零第三方运行依赖
+  .env.example               # 环境变量模板，不自动加载
+  .vscode/                   # 调试配置与任务
+  configs/
+    mock.json                # 20Agent,30tick,3seed,6条件
+    llm_pilot.json           # 20Agent,12tick,1seed,6条件
+    llm_research.json        # 真实语料,20seed;手动启动
+  scimirror/
+    state.py                 # Agent/World数据类、状态不变量
+    common.py                # 散列、独立随机流、原子JSON写入
+    corpus.py                # 语料验证、年份过滤、词汇检索
+    backend.py               # mock/HTTP、响应校验、重试、缓存
+    engine.py                # 六阶段社会模拟、资源/容量冲突
+    events.py                # 日志、检查点和完整性重放
+    metrics.py               # 行为代理指标、配对bootstrap
+    experiment.py            # 前缀分叉、6条件实验、报告
+  data/demo_papers.jsonl     # 90条合成英文夹具
+  tests/test_core.py          # 自动测试
+  docs/EXPERIMENT.md          # 完整研究与实现边界
+  outputs/                   # 执行时生成，不覆盖旧目录
+  cache/                     # LLM输入/输出缓存，不提交git
+```
+
+## Windows：安装和运行
+
+安装Python 3.11或更新版本，在终端检查：
+
+```powershell
+py -3.11 --version
+py -3.11 execute.py
+```
+
+如果只安装了其他满足版本要求的Python，使用`python execute.py`。不需要激活PowerShell脚本，也不需要改执行策略。一键完成后可直接使用环境解释器：
+
+```powershell
+.\.venv\Scripts\python.exe run.py test
+.\.venv\Scripts\python.exe run.py run --config configs/mock.json
+```
+
+VS Code执行“Python: Select Interpreter”，选择`.venv\Scripts\python.exe`。Python扩展用于调试支持；Codex执行终端命令不依赖调试扩展。
+
+## Linux / VS Code Remote
+
+所有命令都在远程终端执行，使用远程Python，不能把本地Windows的.venv复制到服务器。
+
+```bash
+python3 --version
+python3 execute.py
+.venv/bin/python run.py test
+.venv/bin/python run.py run --config configs/mock.json
+```
+
+建议通过Git同步源码；如果使用`rsync`或SFTP，排除`.venv/`、`cache/`和`outputs/`，在Linux上重新创建虚拟环境。项目提供`.gitattributes`将脚本和配置固定为LF行尾，避免Windows检出设置影响Linux脚本。
+
+首次部署或服务器环境变化后先做不联网预检：
+
+```bash
+python3 execute.py
+.venv/bin/python run.py doctor --config configs/mock.json
+.venv/bin/python run.py doctor --config configs/llm_pilot.json
+```
+
+`doctor`可以从项目外的任意工作目录调用。它会报告实际解释器路径、平台、项目根目录、配置、后端、过滤后的语料数量、写权限、调用估算和LLM环境变量是否设置；不会显示环境变量内容。只有显式加入`--probe`才会访问远程模型。
+
+若系统未提供venv模块，由有权限的用户安装对应Python venv系统包。若已有Conda：
+
+```bash
+conda create -n scimirror python=3.11 -y
+conda activate scimirror
+python run.py test
+python run.py run --config configs/mock.json
+```
+
+Conda路线无需再运行execute.py创建嵌套环境。不要修改其他研究项目使用的环境。
+
+## 首次真实LLM连接
+
+使用你已有的、支持`POST /v1/chat/completions`的服务。BASE_URL填写到`/v1`，不能重复填写`/chat/completions`。模型名称必须是服务实际接受的名称。Python客户端不承诺所有兼容服务都接受相同参数；当前发送model/messages/temperature/max_tokens，send_seed默认关闭。非兼容接口需要在backend.py增加适配。
+
+Windows当前PowerShell终端设置：
+
+```powershell
+$env:SCIMIRROR_BASE_URL = "https://YOUR_PROVIDER/v1"
+$env:SCIMIRROR_MODEL = "YOUR_SERVED_MODEL"
+# 如需鉴权，用隐藏输入，避免把真实密钥写进终端命令历史
+$secure = Read-Host "API key" -AsSecureString
+$env:SCIMIRROR_API_KEY = [System.Net.NetworkCredential]::new("", $secure).Password
+.\.venv\Scripts\python.exe run.py doctor --config configs/llm_pilot.json --probe
+.\.venv\Scripts\python.exe run.py estimate --config configs/llm_pilot.json
+.\.venv\Scripts\python.exe run.py run --config configs/llm_pilot.json
+```
+
+Linux当前Bash终端设置：
+
+```bash
+export SCIMIRROR_BASE_URL="https://YOUR_PROVIDER/v1"
+export SCIMIRROR_MODEL="YOUR_SERVED_MODEL"
+read -rsp 'API key: ' SCIMIRROR_API_KEY
+export SCIMIRROR_API_KEY
+.venv/bin/python run.py doctor --config configs/llm_pilot.json --probe
+.venv/bin/python run.py estimate --config configs/llm_pilot.json
+.venv/bin/python run.py run --config configs/llm_pilot.json
+```
+
+本地服务可设`http://localhost:8000/v1`；无鉴权可不设API_KEY。环境变量必须在运行Python的同一终端或其父进程中设置，其他终端不会自动同步。`.env.example`只是模板，本项目不自动读.env。
+
+doctor默认仅显示变量是否设置，不显示内容；--probe才会实际请求模型。真实端点从未在交付环境验证，因为没有你的端点和凭据。HTTP适配器通过本地测试服务验证了请求解析、缓存与token计数。未配置API时不会静默降级为mock。
+
+## 真实文献配置
+
+将你有权使用并已核验的英文文献导出为`data/papers.jsonl`。一行一篇，格式：
+
+```json
+{"id":"your_verified_id","title":"真实英文标题","abstract":"真实英文摘要","year":2024,"field":"agents","synthetic":false}
+```
+
+这里的标题/摘要是字段说明，不能作为研究语料。至少3篇；推荐第一轮使用数量可管理且领域覆盖合理的真实语料，之后再扩展。要求唯一ID，整数year，boolean synthetic，非空英文title/abstract。加入source_url/doi可用于追溯，解析器会保留。年份必须小于cutoff_year。
+
+`configs/llm_research.json`强制拒绝synthetic=true；它不会联网下载文献，缺文件会明确失败。模型预训练中的未来知识不受本地时间过滤约束，需要在研究中承认和测量。
+
+正式运行前：
+
+```bash
+python run.py estimate --config configs/llm_research.json
+python run.py run --config configs/llm_research.json
+```
+
+默认15000次未缓存逻辑调用，不要在首次连接时直接执行。按你的实际预算修改seeds/ticks/max_calls。ticks和branch_tick必须是6的倍数，后者小于前者。
+
+## 结果读取
+
+每次运行输出到新的`outputs/日期时间/`。打开REPORT.md、summary.csv、paired_effects.csv。18条汇总=3世界seed×6条件，不是18个Agent。反事实重复单位是世界seed。
+
+CSV可在VS Code或Excel中打开；blind_review.csv给评审者，review_key_private.csv留给实验者。不要把制度标签/奖励值给盲评人员。真实文献引用有效性仍需人类核验。
+
+重放某分支（替换时间目录）：
+
+```bash
+python run.py replay --events outputs/YOUR_RUN/seed_42/novelty_open/events.jsonl
+```
+
+重放检查哈希链并恢复最后一个已提交快照，不产生模型调用。完整实验已自动对每个分支执行重放并比较最终状态散列。
+
+## 常见失败
+
+- `python`找不到：Windows用`py -3.11`；Linux先确认远程解释器已安装。
+- Python版本过低：使用独立Python 3.11+环境。
+- BASE_URL/MODEL缺失：在当前执行终端配置；别把密钥写入代码。
+- HTTP 401/403：检查服务鉴权；404：检查base URL和model。
+- JSON/schema错误：确认模型支持按提示生成纯JSON；调整max_tokens或模型，不能以mock结果替代。
+- 调用预算耗尽：usage.json查看消耗；提高预算是显式实验配置决定。
+- 输出目录存在：指定新目录，本程序不覆盖日志。
+- 某tick失败：失败状态和已有checkpoint保留；修正问题后相同配置新建输出目录重跑，可命中已有缓存。
+
+## 验证边界与下一步
+
+本版优先证明系统实现正确：状态隔离、资源/团队约束、共同前缀、模拟复现、日志重放和模式明确。实验设计、指标定义与后续研究要求见docs/EXPERIMENT.md。mock和合成语料不得支持真实社会机制结论；LLM+真实语料也需要独立评审和校准。
+
+参考接口文档：
+- https://docs.python.org/3.11/library/venv.html
+- https://docs.vllm.ai/en/latest/serving/online_serving/openai_compatible_server/
+
+交付验收记录：VALIDATION.json。sample_results/包含本次完整mock运行的报告、数据及日志；你自己的新运行写入outputs/。交付环境实际为Linux/Python 3.12.14，Windows脚本尚未在Windows实机执行。

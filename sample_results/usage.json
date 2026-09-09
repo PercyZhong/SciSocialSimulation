@@ -1,0 +1,7 @@
+{
+  "http_attempts": 0,
+  "cache_hits": 0,
+  "prompt_tokens_reported": 0,
+  "completion_tokens_reported": 0,
+  "note": "Token totals depend on provider usage reporting; no price assumptions."
+}

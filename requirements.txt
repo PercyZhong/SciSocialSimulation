@@ -1,0 +1,2 @@
+# Runtime and tests use Python 3.11+ standard library only.
+# No pip installation, GPU, CUDA, torch, or framework dependency is required.

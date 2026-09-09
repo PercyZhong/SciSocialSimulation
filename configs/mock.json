@@ -1,0 +1,31 @@
+{
+  "agents": 20,
+  "ticks": 30,
+  "branch_tick": 6,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "policies": [
+    "balanced",
+    "novelty",
+    "recognition"
+  ],
+  "networks": [
+    "closed",
+    "open"
+  ],
+  "backend": "mock",
+  "corpus": "data/demo_papers.jsonl",
+  "cutoff_year": 2025,
+  "allow_synthetic": true,
+  "dynamic_values": false,
+  "decision_temperature": 0.2,
+  "temperature": 0.2,
+  "max_tokens": 1000,
+  "timeout_seconds": 60,
+  "max_calls": 2600,
+  "send_seed": false,
+  "cache_only": false
+}

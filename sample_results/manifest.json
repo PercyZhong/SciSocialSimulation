@@ -1,0 +1,17 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "config_hash": "190c613ad3023bfdc6cd3855cad44a33b411a422f55f7d213e3510b16c2d5d9c",
+  "source_hash": "84dcc20b774a52fbaa9b4c8ce9f46ead110df1d6d20bc23abec10cf514d1e021",
+  "corpus_hash": "58d8c33588092d3fc69e60319adc0b4b5cc9a093d14bd68db21dcd12620ee947",
+  "backend": "mock",
+  "model": "",
+  "synthetic_corpus": true,
+  "estimate": {
+    "logical_calls_without_cache_or_retries": 2250,
+    "max_completion_tokens_without_retries": 2250000,
+    "request_attempt_cap": 2600,
+    "backend": "mock"
+  },
+  "scientific_status": "prototype; lexical proxies; no real-world causal claim"
+}

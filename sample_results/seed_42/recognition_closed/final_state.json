@@ -1,0 +1,4279 @@
+{
+  "seed": 42,
+  "tick": 30,
+  "agents": {
+    "s00": {
+      "id": "s00",
+      "field": "agents",
+      "values": {
+        "novelty": 0.29051862943067985,
+        "reputation": 0.3329193582883492,
+        "risk": 0.30347763650865683,
+        "cooperation": 0.5487245614949678
+      },
+      "reputation": 0.4370919869004684,
+      "pressure": 0.23774480785971897,
+      "energy": 98,
+      "team": "team_4_s00",
+      "trust": {
+        "s09": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s00",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s09",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s00",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s00",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s00",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s01": {
+      "id": "s01",
+      "field": "learning",
+      "values": {
+        "novelty": 0.22154116340342736,
+        "reputation": 0.43259495711712603,
+        "risk": 0.37880263732847264,
+        "cooperation": 0.20010407526293997
+      },
+      "reputation": 0.4359714795008912,
+      "pressure": 0.23841711229946527,
+      "energy": 95,
+      "team": "team_4_s10",
+      "trust": {
+        "s06": 0.5,
+        "s16": 0.49392156862745096,
+        "s10": 0.4865454545454545
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s06",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s01",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s10",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s01",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s10",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s02": {
+      "id": "s02",
+      "field": "science",
+      "values": {
+        "novelty": 0.27454808994989377,
+        "reputation": 0.4084524003026784,
+        "risk": 0.3483199115172582,
+        "cooperation": 0.4127223596782327
+      },
+      "reputation": 0.4408054553745388,
+      "pressure": 0.23551672677527669,
+      "energy": 98,
+      "team": "team_4_s02",
+      "trust": {
+        "s05": 0.49363636363636365
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s02",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s02",
+          "reward": 0.2093023255813954
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s02",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s02",
+          "reward": 0.2093023255813954
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s02",
+          "reward": 0.21568627450980393
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s03": {
+      "id": "s03",
+      "field": "agents",
+      "values": {
+        "novelty": 0.7677997167724155,
+        "reputation": 0.34956949050928376,
+        "risk": 0.7451213221932662,
+        "cooperation": 0.5374559796182424
+      },
+      "reputation": 0.43651886437082416,
+      "pressure": 0.23808868137750552,
+      "energy": 100,
+      "team": null,
+      "trust": {
+        "s12": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s03",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s03",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s03",
+          "reward": 0.15217391304347827
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s03",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s03",
+          "reward": 0.18604651162790697
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s04": {
+      "id": "s04",
+      "field": "learning",
+      "values": {
+        "novelty": 0.6573848316820633,
+        "reputation": 0.6101008863920591,
+        "risk": 0.38599061938024115,
+        "cooperation": 0.6256747062909196
+      },
+      "reputation": 0.43327465759720557,
+      "pressure": 0.24003520544167664,
+      "energy": 98,
+      "team": "team_4_s04",
+      "trust": {
+        "s07": 0.49327272727272725,
+        "s13": 0.49327272727272725
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s04",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s04",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s04",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s04",
+          "reward": 0.15217391304347827
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s04",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s05": {
+      "id": "s05",
+      "field": "science",
+      "values": {
+        "novelty": 0.3011840167945543,
+        "reputation": 0.48524467386526476,
+        "risk": 0.5250453614676591,
+        "cooperation": 0.4275186912875707
+      },
+      "reputation": 0.437737843551797,
+      "pressure": 0.2373572938689218,
+      "energy": 100,
+      "team": null,
+      "trust": {
+        "s12": 0.5,
+        "s08": 0.4872727272727273,
+        "s02": 0.49363636363636365
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s12",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s05",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s02",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s05",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s05",
+          "reward": 0.2093023255813954
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s06": {
+      "id": "s06",
+      "field": "agents",
+      "values": {
+        "novelty": 0.7017668018312728,
+        "reputation": 0.4401560675986905,
+        "risk": 0.7381732990825867,
+        "cooperation": 0.32702452559534356
+      },
+      "reputation": 0.4382124943000456,
+      "pressure": 0.23707250341997266,
+      "energy": 98,
+      "team": "team_4_s06",
+      "trust": {
+        "s01": 0.5
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s06",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s06",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s06",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s06",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s06",
+          "reward": 0.196078431372549
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s07": {
+      "id": "s07",
+      "field": "learning",
+      "values": {
+        "novelty": 0.6870655665404419,
+        "reputation": 0.6225573798710988,
+        "risk": 0.5579680206344337,
+        "cooperation": 0.546399167160888
+      },
+      "reputation": 0.4354698835136591,
+      "pressure": 0.23871806989180452,
+      "energy": 100,
+      "team": null,
+      "trust": {
+        "s10": 0.49327272727272725,
+        "s04": 0.49327272727272725,
+        "s16": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s07",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s07",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s04",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s07",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s07",
+          "reward": 0.18604651162790697
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s08": {
+      "id": "s08",
+      "field": "science",
+      "values": {
+        "novelty": 0.42452049068963754,
+        "reputation": 0.7774710324301657,
+        "risk": 0.44410148944577776,
+        "cooperation": 0.736214979069425
+      },
+      "reputation": 0.4380570409982174,
+      "pressure": 0.23716577540106953,
+      "energy": 98,
+      "team": "team_4_s08",
+      "trust": {
+        "s05": 0.4872727272727273
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s08",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s05",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s08",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s05",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s08",
+          "reward": 0.21568627450980393
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s09": {
+      "id": "s09",
+      "field": "agents",
+      "values": {
+        "novelty": 0.3256160300400151,
+        "reputation": 0.5919212095176062,
+        "risk": 0.5199304842330748,
+        "cooperation": 0.5690428982411712
+      },
+      "reputation": 0.4375935828877005,
+      "pressure": 0.2374438502673797,
+      "energy": 95,
+      "team": "team_4_s12",
+      "trust": {
+        "s00": 0.49392156862745096,
+        "s18": 0.4871942959001782,
+        "s12": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s09",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s09",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s18",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s09",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s12",
+          "reward": 0.196078431372549
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s10": {
+      "id": "s10",
+      "field": "learning",
+      "values": {
+        "novelty": 0.6937732648880502,
+        "reputation": 0.7757634157199402,
+        "risk": 0.21440675760755895,
+        "cooperation": 0.5863196448111867
+      },
+      "reputation": 0.4343493761140819,
+      "pressure": 0.23939037433155083,
+      "energy": 98,
+      "team": "team_4_s10",
+      "trust": {
+        "s19": 0.49392156862745096,
+        "s07": 0.49327272727272725,
+        "s01": 0.4865454545454545
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s10",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s07",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s10",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s19",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s10",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s11": {
+      "id": "s11",
+      "field": "science",
+      "values": {
+        "novelty": 0.2282776563224149,
+        "reputation": 0.640810349371467,
+        "risk": 0.35690326935832184,
+        "cooperation": 0.23838065386922588
+      },
+      "reputation": 0.4407293959039632,
+      "pressure": 0.23556236245762205,
+      "energy": 100,
+      "team": null,
+      "trust": {},
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s11",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s11",
+          "reward": 0.21568627450980393
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s11",
+          "reward": 0.17391304347826086
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s11",
+          "reward": 0.21568627450980393
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s11",
+          "reward": 0.2093023255813954
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s12": {
+      "id": "s12",
+      "field": "agents",
+      "values": {
+        "novelty": 0.6411882819225219,
+        "reputation": 0.21477709711255483,
+        "risk": 0.5330073626552296,
+        "cooperation": 0.5416444661331936
+      },
+      "reputation": 0.43539835697124696,
+      "pressure": 0.23876098581725183,
+      "energy": 98,
+      "team": "team_4_s12",
+      "trust": {
+        "s05": 0.5,
+        "s03": 0.49392156862745096,
+        "s09": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s12",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s12",
+          "reward": 0.15217391304347827
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s12",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s03",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s12",
+          "reward": 0.196078431372549
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s13": {
+      "id": "s13",
+      "field": "learning",
+      "values": {
+        "novelty": 0.7647555376230011,
+        "reputation": 0.5516345598384673,
+        "risk": 0.7251657695032041,
+        "cooperation": 0.7869126576173286
+      },
+      "reputation": 0.4338477801268498,
+      "pressure": 0.23969133192389008,
+      "energy": 95,
+      "team": "team_4_s04",
+      "trust": {
+        "s18": 0.5,
+        "s04": 0.49327272727272725
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s18",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s13",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s13",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s13",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s04",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s14": {
+      "id": "s14",
+      "field": "science",
+      "values": {
+        "novelty": 0.3340132110031824,
+        "reputation": 0.3609289787237161,
+        "risk": 0.6576507684048276,
+        "cooperation": 0.6059625493612449
+      },
+      "reputation": 0.4394312481863781,
+      "pressure": 0.2363412510881731,
+      "energy": 98,
+      "team": "team_4_s14",
+      "trust": {
+        "s15": 0.5,
+        "s17": 0.48795008912655974
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s14",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s14",
+          "reward": 0.2093023255813954
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s14",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s17",
+          "reward": 0.21568627450980393
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s14",
+          "reward": 0.18181818181818188
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s15": {
+      "id": "s15",
+      "field": "agents",
+      "values": {
+        "novelty": 0.4844050151232708,
+        "reputation": 0.43657242738191915,
+        "risk": 0.3071565284500597,
+        "cooperation": 0.7380339776838614
+      },
+      "reputation": 0.43539835697124696,
+      "pressure": 0.23876098581725183,
+      "energy": 95,
+      "team": "team_4_s18",
+      "trust": {
+        "s14": 0.5,
+        "s18": 0.49327272727272725
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s14",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s15",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s15",
+          "reward": 0.15217391304347827
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s15",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s18",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s16": {
+      "id": "s16",
+      "field": "learning",
+      "values": {
+        "novelty": 0.458986595011839,
+        "reputation": 0.7864029400595287,
+        "risk": 0.4680235008903146,
+        "cooperation": 0.5581957605374072
+      },
+      "reputation": 0.4359714795008912,
+      "pressure": 0.23841711229946527,
+      "energy": 98,
+      "team": "team_4_s16",
+      "trust": {
+        "s01": 0.49392156862745096,
+        "s07": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s16",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s01",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s16",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s07",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s16",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    },
+    "s17": {
+      "id": "s17",
+      "field": "science",
+      "values": {
+        "novelty": 0.546493548532071,
+        "reputation": 0.7424872059481382,
+        "risk": 0.3628160611969449,
+        "cooperation": 0.38009710936988783
+      },
+      "reputation": 0.4393551887158025,
+      "pressure": 0.23638688677051847,
+      "energy": 100,
+      "team": null,
+      "trust": {
+        "s14": 0.48795008912655974
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s17",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s17",
+          "reward": 0.21568627450980393
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s14",
+          "reward": 0.18181818181818188
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s17",
+          "reward": 0.21568627450980393
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s17",
+          "reward": 0.17391304347826086
+        }
+      ],
+      "read_ids": [
+        "demo_science_00",
+        "demo_science_01",
+        "demo_science_02"
+      ]
+    },
+    "s18": {
+      "id": "s18",
+      "field": "agents",
+      "values": {
+        "novelty": 0.36792989130558085,
+        "reputation": 0.5228603096544688,
+        "risk": 0.5930858182584481,
+        "cooperation": 0.32098678652548973
+      },
+      "reputation": 0.43377625358443767,
+      "pressure": 0.2397342478493374,
+      "energy": 98,
+      "team": "team_4_s18",
+      "trust": {
+        "s13": 0.5,
+        "s09": 0.4871942959001782,
+        "s15": 0.49327272727272725
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s18",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s18",
+          "reward": 0.15217391304347827
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s18",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s09",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s18",
+          "reward": 0.16363636363636358
+        }
+      ],
+      "read_ids": [
+        "demo_agents_03",
+        "demo_agents_07",
+        "demo_agents_11"
+      ]
+    },
+    "s19": {
+      "id": "s19",
+      "field": "learning",
+      "values": {
+        "novelty": 0.6737710226686824,
+        "reputation": 0.6214305636092754,
+        "risk": 0.3245493545829955,
+        "cooperation": 0.5641733670477957
+      },
+      "reputation": 0.4365903909132363,
+      "pressure": 0.23804576545205822,
+      "energy": 100,
+      "team": null,
+      "trust": {
+        "s10": 0.49392156862745096
+      },
+      "memories": [
+        {
+          "tick": 5,
+          "idea_id": "idea_0_s10",
+          "reward": 0.5
+        },
+        {
+          "tick": 11,
+          "idea_id": "idea_1_s19",
+          "reward": 0.16363636363636358
+        },
+        {
+          "tick": 17,
+          "idea_id": "idea_2_s19",
+          "reward": 0.18604651162790697
+        },
+        {
+          "tick": 23,
+          "idea_id": "idea_3_s19",
+          "reward": 0.196078431372549
+        },
+        {
+          "tick": 29,
+          "idea_id": "idea_4_s19",
+          "reward": 0.18604651162790697
+        }
+      ],
+      "read_ids": [
+        "demo_learning_03",
+        "demo_learning_07",
+        "demo_learning_11"
+      ]
+    }
+  },
+  "ideas": {
+    "idea_0_s00": {
+      "id": "idea_0_s00",
+      "owner": "s00",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s00 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.3816630386041559,
+          "expected_feasibility": 0.8945069930457539,
+          "expected_recognition": 0.2752624171022923
+        },
+        {
+          "title": "agents study s00 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.3816630386041559,
+          "expected_feasibility": 0.8945069930457539,
+          "expected_recognition": 0.2752624171022923
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s00"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.5
+    },
+    "idea_0_s01": {
+      "id": "idea_0_s01",
+      "owner": "s01",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.5927281516248059,
+          "expected_feasibility": 0.4796408249669151,
+          "expected_recognition": 0.3846372524311905
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s01"
+      ]
+    },
+    "idea_0_s02": {
+      "id": "idea_0_s02",
+      "owner": "s02",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s02 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.772776016886433,
+          "expected_feasibility": 0.6498229968346086,
+          "expected_recognition": 0.7734775924219084
+        },
+        {
+          "title": "science study s02 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.772776016886433,
+          "expected_feasibility": 0.6498229968346086,
+          "expected_recognition": 0.7734775924219084
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s02"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.5
+    },
+    "idea_0_s03": {
+      "id": "idea_0_s03",
+      "owner": "s03",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.7671357966805696,
+          "expected_feasibility": 0.7537879772878782,
+          "expected_recognition": 0.4139733684424256
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s03"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.5
+    },
+    "idea_0_s04": {
+      "id": "idea_0_s04",
+      "owner": "s04",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s04 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.38184109419474843,
+          "expected_feasibility": 0.8672545988954092,
+          "expected_recognition": 0.6516953952810889
+        },
+        {
+          "title": "learning study s04 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.38184109419474843,
+          "expected_feasibility": 0.8672545988954092,
+          "expected_recognition": 0.6516953952810889
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s04"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.5
+    },
+    "idea_0_s05": {
+      "id": "idea_0_s05",
+      "owner": "s05",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s05 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.3468259700242228,
+          "expected_feasibility": 0.7707338794585066,
+          "expected_recognition": 0.5287677447780064
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s05"
+      ]
+    },
+    "idea_0_s06": {
+      "id": "idea_0_s06",
+      "owner": "s06",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.4038655696089095,
+          "expected_feasibility": 0.43115368063164655,
+          "expected_recognition": 0.7072130860626764
+        },
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.4038655696089095,
+          "expected_feasibility": 0.43115368063164655,
+          "expected_recognition": 0.7072130860626764
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s06",
+        "s01"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.5
+    },
+    "idea_0_s07": {
+      "id": "idea_0_s07",
+      "owner": "s07",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s07 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7634105211342888,
+          "expected_feasibility": 0.504360038400941,
+          "expected_recognition": 0.8127920333491854
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s07"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.5
+    },
+    "idea_0_s08": {
+      "id": "idea_0_s08",
+      "owner": "s08",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s08 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.7571761153116758,
+          "expected_feasibility": 0.3162416910010367,
+          "expected_recognition": 0.5477221686232149
+        },
+        {
+          "title": "science study s08 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.7571761153116758,
+          "expected_feasibility": 0.3162416910010367,
+          "expected_recognition": 0.5477221686232149
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s08"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.5
+    },
+    "idea_0_s09": {
+      "id": "idea_0_s09",
+      "owner": "s09",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s09 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6441467234441922,
+          "expected_feasibility": 0.7567394686789787,
+          "expected_recognition": 0.36018375030174343
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s09"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.5
+    },
+    "idea_0_s10": {
+      "id": "idea_0_s10",
+      "owner": "s10",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s10 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.233508901985128,
+          "expected_feasibility": 0.7669082626850874,
+          "expected_recognition": 0.8666404283828917
+        },
+        {
+          "title": "learning study s10 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.233508901985128,
+          "expected_feasibility": 0.7669082626850874,
+          "expected_recognition": 0.8666404283828917
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s10",
+        "s19"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.5
+    },
+    "idea_0_s11": {
+      "id": "idea_0_s11",
+      "owner": "s11",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s11 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8865125100171816,
+          "expected_feasibility": 0.8200797244865876,
+          "expected_recognition": 0.8069324326375427
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s11"
+      ],
+      "novelty_proxy": 0.8260869565217391,
+      "recognition_proxy": 0.17391304347826086,
+      "reward": 0.5
+    },
+    "idea_0_s12": {
+      "id": "idea_0_s12",
+      "owner": "s12",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s12 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6362324444661043,
+          "expected_feasibility": 0.439712609293175,
+          "expected_recognition": 0.3789516308189692
+        },
+        {
+          "title": "agents study s12 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6362324444661043,
+          "expected_feasibility": 0.439712609293175,
+          "expected_recognition": 0.3789516308189692
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s12",
+        "s05"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.5
+    },
+    "idea_0_s13": {
+      "id": "idea_0_s13",
+      "owner": "s13",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.38892259048837585,
+          "expected_feasibility": 0.6538384998566531,
+          "expected_recognition": 0.5053648236947426
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s13"
+      ]
+    },
+    "idea_0_s14": {
+      "id": "idea_0_s14",
+      "owner": "s14",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.4587041070535117,
+          "expected_feasibility": 0.5671636694784465,
+          "expected_recognition": 0.44868376743095983
+        },
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.4587041070535117,
+          "expected_feasibility": 0.5671636694784465,
+          "expected_recognition": 0.44868376743095983
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s14",
+        "s15"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.5
+    },
+    "idea_0_s15": {
+      "id": "idea_0_s15",
+      "owner": "s15",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s15 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8670054304382113,
+          "expected_feasibility": 0.527625334420037,
+          "expected_recognition": 0.5748883219924585
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s15"
+      ]
+    },
+    "idea_0_s16": {
+      "id": "idea_0_s16",
+      "owner": "s16",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s16 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.7049018276779608,
+          "expected_feasibility": 0.7288064004846451,
+          "expected_recognition": 0.21813880056931706
+        },
+        {
+          "title": "learning study s16 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.7049018276779608,
+          "expected_feasibility": 0.7288064004846451,
+          "expected_recognition": 0.21813880056931706
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s16"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.5
+    },
+    "idea_0_s17": {
+      "id": "idea_0_s17",
+      "owner": "s17",
+      "cycle": 0,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.6381183558130477,
+          "expected_feasibility": 0.5958769055235134,
+          "expected_recognition": 0.7522550773314287
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s17"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.5
+    },
+    "idea_0_s18": {
+      "id": "idea_0_s18",
+      "owner": "s18",
+      "cycle": 0,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s18 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6274751205428282,
+          "expected_feasibility": 0.43379406354055594,
+          "expected_recognition": 0.889612315458634
+        },
+        {
+          "title": "agents study s18 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6274751205428282,
+          "expected_feasibility": 0.43379406354055594,
+          "expected_recognition": 0.889612315458634
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s18",
+        "s13"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.5
+    },
+    "idea_0_s19": {
+      "id": "idea_0_s19",
+      "owner": "s19",
+      "cycle": 0,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s19 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.4533670236178725,
+          "expected_feasibility": 0.6402456958098184,
+          "expected_recognition": 0.5384194169289072
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s19"
+      ]
+    },
+    "idea_1_s00": {
+      "id": "idea_1_s00",
+      "owner": "s00",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s00 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.8683174158753233,
+          "expected_feasibility": 0.49840832948235353,
+          "expected_recognition": 0.39883949617241865
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s00"
+      ]
+    },
+    "idea_1_s01": {
+      "id": "idea_1_s01",
+      "owner": "s01",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.8101390645870681,
+          "expected_feasibility": 0.3383433930860757,
+          "expected_recognition": 0.41836977501084277
+        },
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.8101390645870681,
+          "expected_feasibility": 0.3383433930860757,
+          "expected_recognition": 0.41836977501084277
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s01",
+        "s16"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_1_s02": {
+      "id": "idea_1_s02",
+      "owner": "s02",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s02 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.32566250483252074,
+          "expected_feasibility": 0.48674615935525967,
+          "expected_recognition": 0.43444340050232316
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s02"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.2093023255813954
+    },
+    "idea_1_s03": {
+      "id": "idea_1_s03",
+      "owner": "s03",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6685464776196045,
+          "expected_feasibility": 0.5152389774462078,
+          "expected_recognition": 0.723447708537565
+        },
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6685464776196045,
+          "expected_feasibility": 0.5152389774462078,
+          "expected_recognition": 0.723447708537565
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s03"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_1_s04": {
+      "id": "idea_1_s04",
+      "owner": "s04",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s04 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.8441366233349106,
+          "expected_feasibility": 0.6684664230961455,
+          "expected_recognition": 0.7772076623249622
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s04"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_1_s05": {
+      "id": "idea_1_s05",
+      "owner": "s05",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s05 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8445187637161684,
+          "expected_feasibility": 0.8022704079836225,
+          "expected_recognition": 0.825888848475298
+        },
+        {
+          "title": "science study s05 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8445187637161684,
+          "expected_feasibility": 0.8022704079836225,
+          "expected_recognition": 0.825888848475298
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s05",
+        "s08"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_1_s06": {
+      "id": "idea_1_s06",
+      "owner": "s06",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.7134863265795535,
+          "expected_feasibility": 0.6639671655638739,
+          "expected_recognition": 0.8432008292542366
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s06"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_1_s07": {
+      "id": "idea_1_s07",
+      "owner": "s07",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s07 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.6033455642887107,
+          "expected_feasibility": 0.8441211090821978,
+          "expected_recognition": 0.27996368660093407
+        },
+        {
+          "title": "learning study s07 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.6033455642887107,
+          "expected_feasibility": 0.8441211090821978,
+          "expected_recognition": 0.27996368660093407
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s07",
+        "s10"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_1_s08": {
+      "id": "idea_1_s08",
+      "owner": "s08",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s08 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.6425815543869715,
+          "expected_feasibility": 0.33668274840192014,
+          "expected_recognition": 0.45525414068811043
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s08"
+      ]
+    },
+    "idea_1_s09": {
+      "id": "idea_1_s09",
+      "owner": "s09",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s09 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.4190580674592649,
+          "expected_feasibility": 0.7300797815290204,
+          "expected_recognition": 0.8977606524608015
+        },
+        {
+          "title": "agents study s09 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.4190580674592649,
+          "expected_feasibility": 0.7300797815290204,
+          "expected_recognition": 0.8977606524608015
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s09",
+        "s00"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_1_s10": {
+      "id": "idea_1_s10",
+      "owner": "s10",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s10 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.45796366138008937,
+          "expected_feasibility": 0.7128460994043013,
+          "expected_recognition": 0.8897093327863261
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s10"
+      ]
+    },
+    "idea_1_s11": {
+      "id": "idea_1_s11",
+      "owner": "s11",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s11 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.492226241714311,
+          "expected_feasibility": 0.6844150012083554,
+          "expected_recognition": 0.8521648585106762
+        },
+        {
+          "title": "science study s11 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.492226241714311,
+          "expected_feasibility": 0.6844150012083554,
+          "expected_recognition": 0.8521648585106762
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s11"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_1_s12": {
+      "id": "idea_1_s12",
+      "owner": "s12",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s12 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.4211148442643131,
+          "expected_feasibility": 0.7832404752870663,
+          "expected_recognition": 0.28792343659688724
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s12"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.15217391304347827
+    },
+    "idea_1_s13": {
+      "id": "idea_1_s13",
+      "owner": "s13",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7697486511646774,
+          "expected_feasibility": 0.7409293661494972,
+          "expected_recognition": 0.5959937301500216
+        },
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7697486511646774,
+          "expected_feasibility": 0.7409293661494972,
+          "expected_recognition": 0.5959937301500216
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s13"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_1_s14": {
+      "id": "idea_1_s14",
+      "owner": "s14",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s14 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.6911940556356208,
+          "expected_feasibility": 0.48340813225239476,
+          "expected_recognition": 0.7563845184065869
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s14"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.2093023255813954
+    },
+    "idea_1_s15": {
+      "id": "idea_1_s15",
+      "owner": "s15",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s15 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.2977502733579624,
+          "expected_feasibility": 0.731517087498027,
+          "expected_recognition": 0.8181900926041359
+        },
+        {
+          "title": "agents study s15 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.2977502733579624,
+          "expected_feasibility": 0.731517087498027,
+          "expected_recognition": 0.8181900926041359
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s15"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_1_s16": {
+      "id": "idea_1_s16",
+      "owner": "s16",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s16 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.4376768041546487,
+          "expected_feasibility": 0.630801675602761,
+          "expected_recognition": 0.6717625091087348
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s16"
+      ]
+    },
+    "idea_1_s17": {
+      "id": "idea_1_s17",
+      "owner": "s17",
+      "cycle": 1,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.28347484289850367,
+          "expected_feasibility": 0.5700562782139587,
+          "expected_recognition": 0.7113941693729262
+        },
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.28347484289850367,
+          "expected_feasibility": 0.5700562782139587,
+          "expected_recognition": 0.7113941693729262
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s17"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_1_s18": {
+      "id": "idea_1_s18",
+      "owner": "s18",
+      "cycle": 1,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s18 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.5864372500074394,
+          "expected_feasibility": 0.694756417346759,
+          "expected_recognition": 0.7551764465042132
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s18"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.15217391304347827
+    },
+    "idea_1_s19": {
+      "id": "idea_1_s19",
+      "owner": "s19",
+      "cycle": 1,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s19 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8911469704288599,
+          "expected_feasibility": 0.7386647472860726,
+          "expected_recognition": 0.5488118982235057
+        },
+        {
+          "title": "learning study s19 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8911469704288599,
+          "expected_feasibility": 0.7386647472860726,
+          "expected_recognition": 0.5488118982235057
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s19"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_2_s00": {
+      "id": "idea_2_s00",
+      "owner": "s00",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s00 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.24667304337364931,
+          "expected_feasibility": 0.5355197668723233,
+          "expected_recognition": 0.7947140053582828
+        },
+        {
+          "title": "agents study s00 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.24667304337364931,
+          "expected_feasibility": 0.5355197668723233,
+          "expected_recognition": 0.7947140053582828
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s00"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_2_s01": {
+      "id": "idea_2_s01",
+      "owner": "s01",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.663719490383923,
+          "expected_feasibility": 0.8251492112801557,
+          "expected_recognition": 0.3961447518532517
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s01"
+      ]
+    },
+    "idea_2_s02": {
+      "id": "idea_2_s02",
+      "owner": "s02",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s02 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8875185526114249,
+          "expected_feasibility": 0.46085833946506366,
+          "expected_recognition": 0.5217675989687456
+        },
+        {
+          "title": "science study s02 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8875185526114249,
+          "expected_feasibility": 0.46085833946506366,
+          "expected_recognition": 0.5217675989687456
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s02",
+        "s05"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_2_s03": {
+      "id": "idea_2_s03",
+      "owner": "s03",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s03 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6215018809182581,
+          "expected_feasibility": 0.8885260009741036,
+          "expected_recognition": 0.6615535236702266
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s03"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.15217391304347827
+    },
+    "idea_2_s04": {
+      "id": "idea_2_s04",
+      "owner": "s04",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s04 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8495727627250742,
+          "expected_feasibility": 0.7406340192182859,
+          "expected_recognition": 0.7362420992657095
+        },
+        {
+          "title": "learning study s04 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8495727627250742,
+          "expected_feasibility": 0.7406340192182859,
+          "expected_recognition": 0.7362420992657095
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s04",
+        "s07"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_2_s05": {
+      "id": "idea_2_s05",
+      "owner": "s05",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s05 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.4648848807353213,
+          "expected_feasibility": 0.5861555984802318,
+          "expected_recognition": 0.21436528647931036
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s05"
+      ]
+    },
+    "idea_2_s06": {
+      "id": "idea_2_s06",
+      "owner": "s06",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6471479381694916,
+          "expected_feasibility": 0.6704143691878474,
+          "expected_recognition": 0.7637909594244612
+        },
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.6471479381694916,
+          "expected_feasibility": 0.6704143691878474,
+          "expected_recognition": 0.7637909594244612
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s06"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_2_s07": {
+      "id": "idea_2_s07",
+      "owner": "s07",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s07 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.5165499078208162,
+          "expected_feasibility": 0.442931662619254,
+          "expected_recognition": 0.7768692009742297
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s07"
+      ]
+    },
+    "idea_2_s08": {
+      "id": "idea_2_s08",
+      "owner": "s08",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s08 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8141941177449417,
+          "expected_feasibility": 0.783766895324679,
+          "expected_recognition": 0.4494785003389168
+        },
+        {
+          "title": "science study s08 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8141941177449417,
+          "expected_feasibility": 0.783766895324679,
+          "expected_recognition": 0.4494785003389168
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s08"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_2_s09": {
+      "id": "idea_2_s09",
+      "owner": "s09",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s09 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6659567016947221,
+          "expected_feasibility": 0.597606548218834,
+          "expected_recognition": 0.7131065514733463
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s09"
+      ]
+    },
+    "idea_2_s10": {
+      "id": "idea_2_s10",
+      "owner": "s10",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s10 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.27580345969937137,
+          "expected_feasibility": 0.6396844187402716,
+          "expected_recognition": 0.6581116132884497
+        },
+        {
+          "title": "learning study s10 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.27580345969937137,
+          "expected_feasibility": 0.6396844187402716,
+          "expected_recognition": 0.6581116132884497
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s10",
+        "s01"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_2_s11": {
+      "id": "idea_2_s11",
+      "owner": "s11",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s11 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.3201256704461986,
+          "expected_feasibility": 0.6191168503275217,
+          "expected_recognition": 0.4421353959215759
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s11"
+      ],
+      "novelty_proxy": 0.8260869565217391,
+      "recognition_proxy": 0.17391304347826086,
+      "reward": 0.17391304347826086
+    },
+    "idea_2_s12": {
+      "id": "idea_2_s12",
+      "owner": "s12",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s12 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.2771114783776202,
+          "expected_feasibility": 0.519142325332625,
+          "expected_recognition": 0.5526013968558281
+        },
+        {
+          "title": "agents study s12 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.2771114783776202,
+          "expected_feasibility": 0.519142325332625,
+          "expected_recognition": 0.5526013968558281
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s12"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_2_s13": {
+      "id": "idea_2_s13",
+      "owner": "s13",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s13 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.2654906752462471,
+          "expected_feasibility": 0.8167132795791545,
+          "expected_recognition": 0.6519673866237277
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s13"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_2_s14": {
+      "id": "idea_2_s14",
+      "owner": "s14",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.7317396425463623,
+          "expected_feasibility": 0.557610635766145,
+          "expected_recognition": 0.48315511027512975
+        },
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.7317396425463623,
+          "expected_feasibility": 0.557610635766145,
+          "expected_recognition": 0.48315511027512975
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s14",
+        "s17"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_2_s15": {
+      "id": "idea_2_s15",
+      "owner": "s15",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s15 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.3788626782021499,
+          "expected_feasibility": 0.6781618632270925,
+          "expected_recognition": 0.7448155660659408
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s15"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.15217391304347827
+    },
+    "idea_2_s16": {
+      "id": "idea_2_s16",
+      "owner": "s16",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s16 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8176328330670388,
+          "expected_feasibility": 0.6083341942426448,
+          "expected_recognition": 0.22769272475446678
+        },
+        {
+          "title": "learning study s16 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8176328330670388,
+          "expected_feasibility": 0.6083341942426448,
+          "expected_recognition": 0.22769272475446678
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s16"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_2_s17": {
+      "id": "idea_2_s17",
+      "owner": "s17",
+      "cycle": 2,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.8328150538797319,
+          "expected_feasibility": 0.32864645792599656,
+          "expected_recognition": 0.7966518579580495
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s17"
+      ]
+    },
+    "idea_2_s18": {
+      "id": "idea_2_s18",
+      "owner": "s18",
+      "cycle": 2,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s18 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8784232954063476,
+          "expected_feasibility": 0.6315242893476956,
+          "expected_recognition": 0.6844765237288837
+        },
+        {
+          "title": "agents study s18 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8784232954063476,
+          "expected_feasibility": 0.6315242893476956,
+          "expected_recognition": 0.6844765237288837
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s18",
+        "s09"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_2_s19": {
+      "id": "idea_2_s19",
+      "owner": "s19",
+      "cycle": 2,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s19 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.8344864531649792,
+          "expected_feasibility": 0.5554572036946083,
+          "expected_recognition": 0.43695504976924926
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s19"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_3_s00": {
+      "id": "idea_3_s00",
+      "owner": "s00",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s00 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.5992912150553371,
+          "expected_feasibility": 0.6630591379868358,
+          "expected_recognition": 0.34875830238443406
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s00"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_3_s01": {
+      "id": "idea_3_s01",
+      "owner": "s01",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.6582574539744706,
+          "expected_feasibility": 0.8118369759115329,
+          "expected_recognition": 0.6949462264549708
+        },
+        {
+          "title": "learning study s01 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.6582574539744706,
+          "expected_feasibility": 0.8118369759115329,
+          "expected_recognition": 0.6949462264549708
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s01"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_3_s02": {
+      "id": "idea_3_s02",
+      "owner": "s02",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s02 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.45856759054514273,
+          "expected_feasibility": 0.8005788407135035,
+          "expected_recognition": 0.2775101014312151
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s02"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.2093023255813954
+    },
+    "idea_3_s03": {
+      "id": "idea_3_s03",
+      "owner": "s03",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8767497979866878,
+          "expected_feasibility": 0.7878592403564149,
+          "expected_recognition": 0.7932946044941531
+        },
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8767497979866878,
+          "expected_feasibility": 0.7878592403564149,
+          "expected_recognition": 0.7932946044941531
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s03",
+        "s12"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_3_s04": {
+      "id": "idea_3_s04",
+      "owner": "s04",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s04 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.796700306116547,
+          "expected_feasibility": 0.6599683668973002,
+          "expected_recognition": 0.5017780738227949
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s04"
+      ],
+      "novelty_proxy": 0.8478260869565217,
+      "recognition_proxy": 0.15217391304347827,
+      "reward": 0.15217391304347827
+    },
+    "idea_3_s05": {
+      "id": "idea_3_s05",
+      "owner": "s05",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s05 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.4841117724748932,
+          "expected_feasibility": 0.6824063454130789,
+          "expected_recognition": 0.4383559494263368
+        },
+        {
+          "title": "science study s05 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.4841117724748932,
+          "expected_feasibility": 0.6824063454130789,
+          "expected_recognition": 0.4383559494263368
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s05",
+        "s08"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_3_s06": {
+      "id": "idea_3_s06",
+      "owner": "s06",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.49747369624899795,
+          "expected_feasibility": 0.8391267920843897,
+          "expected_recognition": 0.6025352072318528
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s06"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_3_s07": {
+      "id": "idea_3_s07",
+      "owner": "s07",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s07 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.7302693475373292,
+          "expected_feasibility": 0.3726526785193408,
+          "expected_recognition": 0.5374992700463854
+        },
+        {
+          "title": "learning study s07 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.7302693475373292,
+          "expected_feasibility": 0.3726526785193408,
+          "expected_recognition": 0.5374992700463854
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s07",
+        "s16"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_3_s08": {
+      "id": "idea_3_s08",
+      "owner": "s08",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s08 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.389240361068626,
+          "expected_feasibility": 0.74921966084771,
+          "expected_recognition": 0.7785879593123024
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s08"
+      ]
+    },
+    "idea_3_s09": {
+      "id": "idea_3_s09",
+      "owner": "s09",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s09 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6097599480341739,
+          "expected_feasibility": 0.8627390621689892,
+          "expected_recognition": 0.7838558734372372
+        },
+        {
+          "title": "agents study s09 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.6097599480341739,
+          "expected_feasibility": 0.8627390621689892,
+          "expected_recognition": 0.7838558734372372
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s09",
+        "s18"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_3_s10": {
+      "id": "idea_3_s10",
+      "owner": "s10",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s10 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.41087448338189536,
+          "expected_feasibility": 0.6036047987716184,
+          "expected_recognition": 0.7070703796956634
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s10"
+      ]
+    },
+    "idea_3_s11": {
+      "id": "idea_3_s11",
+      "owner": "s11",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s11 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.2663233309161862,
+          "expected_feasibility": 0.34448163806750826,
+          "expected_recognition": 0.7535922979248038
+        },
+        {
+          "title": "science study s11 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.2663233309161862,
+          "expected_feasibility": 0.34448163806750826,
+          "expected_recognition": 0.7535922979248038
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s11"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_3_s12": {
+      "id": "idea_3_s12",
+      "owner": "s12",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s12 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.898722507515392,
+          "expected_feasibility": 0.5688940586645309,
+          "expected_recognition": 0.3070079897792851
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s12"
+      ]
+    },
+    "idea_3_s13": {
+      "id": "idea_3_s13",
+      "owner": "s13",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7484338892526945,
+          "expected_feasibility": 0.5802506337090875,
+          "expected_recognition": 0.3038703830614828
+        },
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7484338892526945,
+          "expected_feasibility": 0.5802506337090875,
+          "expected_recognition": 0.3038703830614828
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s13"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_3_s14": {
+      "id": "idea_3_s14",
+      "owner": "s14",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s14 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.8572467894195601,
+          "expected_feasibility": 0.41611739268143966,
+          "expected_recognition": 0.8095692947157707
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s14"
+      ]
+    },
+    "idea_3_s15": {
+      "id": "idea_3_s15",
+      "owner": "s15",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s15 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.881626424158457,
+          "expected_feasibility": 0.8167525988992044,
+          "expected_recognition": 0.4633495317456831
+        },
+        {
+          "title": "agents study s15 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.881626424158457,
+          "expected_feasibility": 0.8167525988992044,
+          "expected_recognition": 0.4633495317456831
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s15"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_3_s16": {
+      "id": "idea_3_s16",
+      "owner": "s16",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s16 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.7982183360052115,
+          "expected_feasibility": 0.6702209109267661,
+          "expected_recognition": 0.30988136551626766
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s16"
+      ]
+    },
+    "idea_3_s17": {
+      "id": "idea_3_s17",
+      "owner": "s17",
+      "cycle": 3,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.4709318129434672,
+          "expected_feasibility": 0.7846305597671978,
+          "expected_recognition": 0.6712927966703578
+        },
+        {
+          "title": "science study s17 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.4709318129434672,
+          "expected_feasibility": 0.7846305597671978,
+          "expected_recognition": 0.6712927966703578
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s17",
+        "s14"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_3_s18": {
+      "id": "idea_3_s18",
+      "owner": "s18",
+      "cycle": 3,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s18 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.751659429019311,
+          "expected_feasibility": 0.7349481499381005,
+          "expected_recognition": 0.8905055977304261
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s18"
+      ]
+    },
+    "idea_3_s19": {
+      "id": "idea_3_s19",
+      "owner": "s19",
+      "cycle": 3,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s19 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.29056099293064086,
+          "expected_feasibility": 0.6050782125382933,
+          "expected_recognition": 0.6438960241253344
+        },
+        {
+          "title": "learning study s19 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.29056099293064086,
+          "expected_feasibility": 0.6050782125382933,
+          "expected_recognition": 0.6438960241253344
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s19",
+        "s10"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_4_s00": {
+      "id": "idea_4_s00",
+      "owner": "s00",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s00 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.3283503417584892,
+          "expected_feasibility": 0.5120578377257695,
+          "expected_recognition": 0.7610698319745
+        },
+        {
+          "title": "agents study s00 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.3283503417584892,
+          "expected_feasibility": 0.5120578377257695,
+          "expected_recognition": 0.7610698319745
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s00"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_4_s01": {
+      "id": "idea_4_s01",
+      "owner": "s01",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s01 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8428682118603124,
+          "expected_feasibility": 0.7738732672736954,
+          "expected_recognition": 0.20367951822025385
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s01"
+      ]
+    },
+    "idea_4_s02": {
+      "id": "idea_4_s02",
+      "owner": "s02",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s02 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.7391332245504361,
+          "expected_feasibility": 0.8581418696697332,
+          "expected_recognition": 0.8181682581708645
+        },
+        {
+          "title": "science study s02 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.7391332245504361,
+          "expected_feasibility": 0.8581418696697332,
+          "expected_recognition": 0.8181682581708645
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s02"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_4_s03": {
+      "id": "idea_4_s03",
+      "owner": "s03",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s03 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.35927464897887923,
+          "expected_feasibility": 0.4432830037421741,
+          "expected_recognition": 0.5582319720376323
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s03"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_4_s04": {
+      "id": "idea_4_s04",
+      "owner": "s04",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s04 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7262154241566015,
+          "expected_feasibility": 0.6204622858920625,
+          "expected_recognition": 0.5192648157226899
+        },
+        {
+          "title": "learning study s04 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7262154241566015,
+          "expected_feasibility": 0.6204622858920625,
+          "expected_recognition": 0.5192648157226899
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s04",
+        "s13"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_4_s05": {
+      "id": "idea_4_s05",
+      "owner": "s05",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s05 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.5976539651658839,
+          "expected_feasibility": 0.8303512278425147,
+          "expected_recognition": 0.801665265455938
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s05"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.2093023255813954
+    },
+    "idea_4_s06": {
+      "id": "idea_4_s06",
+      "owner": "s06",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.2198033960876014,
+          "expected_feasibility": 0.7840312193118424,
+          "expected_recognition": 0.8192725698565833
+        },
+        {
+          "title": "agents study s06 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.2198033960876014,
+          "expected_feasibility": 0.7840312193118424,
+          "expected_recognition": 0.8192725698565833
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s06"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_4_s07": {
+      "id": "idea_4_s07",
+      "owner": "s07",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s07 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.751962353020593,
+          "expected_feasibility": 0.7011181278837215,
+          "expected_recognition": 0.6062397470049878
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s07"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    },
+    "idea_4_s08": {
+      "id": "idea_4_s08",
+      "owner": "s08",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s08 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.7257096841339228,
+          "expected_feasibility": 0.6284339606081399,
+          "expected_recognition": 0.6664808190899073
+        },
+        {
+          "title": "science study s08 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.7257096841339228,
+          "expected_feasibility": 0.6284339606081399,
+          "expected_recognition": 0.6664808190899073
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s08"
+      ],
+      "novelty_proxy": 0.7843137254901961,
+      "recognition_proxy": 0.21568627450980393,
+      "reward": 0.21568627450980393
+    },
+    "idea_4_s09": {
+      "id": "idea_4_s09",
+      "owner": "s09",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s09 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.5257568991319869,
+          "expected_feasibility": 0.4033112712383082,
+          "expected_recognition": 0.7692808237358499
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s09"
+      ]
+    },
+    "idea_4_s10": {
+      "id": "idea_4_s10",
+      "owner": "s10",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s10 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7423029875591529,
+          "expected_feasibility": 0.37576920542700254,
+          "expected_recognition": 0.6519287307060602
+        },
+        {
+          "title": "learning study s10 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.7423029875591529,
+          "expected_feasibility": 0.37576920542700254,
+          "expected_recognition": 0.6519287307060602
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s10",
+        "s01"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_4_s11": {
+      "id": "idea_4_s11",
+      "owner": "s11",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s11 approach 0",
+          "hypothesis": "Combining Synthetic science hypothesis generation scenario 0 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_science_00"
+          ],
+          "expected_novelty": 0.49099722177300686,
+          "expected_feasibility": 0.5117846583249108,
+          "expected_recognition": 0.4868823795528039
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s11"
+      ],
+      "novelty_proxy": 0.7906976744186046,
+      "recognition_proxy": 0.2093023255813954,
+      "reward": 0.2093023255813954
+    },
+    "idea_4_s12": {
+      "id": "idea_4_s12",
+      "owner": "s12",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s12 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8868720677518365,
+          "expected_feasibility": 0.7635629887198436,
+          "expected_recognition": 0.7941282298602594
+        },
+        {
+          "title": "agents study s12 approach 0",
+          "hypothesis": "Combining Synthetic agents planning scenario 3 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Controlled graph benchmark and matched trials. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_03"
+          ],
+          "expected_novelty": 0.8868720677518365,
+          "expected_feasibility": 0.7635629887198436,
+          "expected_recognition": 0.7941282298602594
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s12",
+        "s09"
+      ],
+      "novelty_proxy": 0.803921568627451,
+      "recognition_proxy": 0.196078431372549,
+      "reward": 0.196078431372549
+    },
+    "idea_4_s13": {
+      "id": "idea_4_s13",
+      "owner": "s13",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s13 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.41209736801111596,
+          "expected_feasibility": 0.8473279699092418,
+          "expected_recognition": 0.7206611701305901
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s13"
+      ]
+    },
+    "idea_4_s14": {
+      "id": "idea_4_s14",
+      "owner": "s14",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8647813697979174,
+          "expected_feasibility": 0.852173778446013,
+          "expected_recognition": 0.4192736395605122
+        },
+        {
+          "title": "science study s14 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8647813697979174,
+          "expected_feasibility": 0.852173778446013,
+          "expected_recognition": 0.4192736395605122
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s14"
+      ],
+      "novelty_proxy": 0.8181818181818181,
+      "recognition_proxy": 0.18181818181818188,
+      "reward": 0.18181818181818188
+    },
+    "idea_4_s15": {
+      "id": "idea_4_s15",
+      "owner": "s15",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s15 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.28079755298186265,
+          "expected_feasibility": 0.8923528764764128,
+          "expected_recognition": 0.37767973231175156
+        }
+      ],
+      "status": "contributed",
+      "contributors": [
+        "s15"
+      ]
+    },
+    "idea_4_s16": {
+      "id": "idea_4_s16",
+      "owner": "s16",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s16 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8526446841842157,
+          "expected_feasibility": 0.4489879475097783,
+          "expected_recognition": 0.8966021809419573
+        },
+        {
+          "title": "learning study s16 approach 1",
+          "hypothesis": "Combining Synthetic learning exploration scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_learning_07"
+          ],
+          "expected_novelty": 0.8526446841842157,
+          "expected_feasibility": 0.4489879475097783,
+          "expected_recognition": 0.8966021809419573
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s16"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_4_s17": {
+      "id": "idea_4_s17",
+      "owner": "s17",
+      "cycle": 4,
+      "field": "science",
+      "versions": [
+        {
+          "title": "science study s17 approach 1",
+          "hypothesis": "Combining Synthetic science paper retrieval scenario 1 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_science_01"
+          ],
+          "expected_novelty": 0.8993759471343028,
+          "expected_feasibility": 0.6339572151602655,
+          "expected_recognition": 0.7914098397431852
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s17"
+      ],
+      "novelty_proxy": 0.8260869565217391,
+      "recognition_proxy": 0.17391304347826086,
+      "reward": 0.17391304347826086
+    },
+    "idea_4_s18": {
+      "id": "idea_4_s18",
+      "owner": "s18",
+      "cycle": 4,
+      "field": "agents",
+      "versions": [
+        {
+          "title": "agents study s18 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance.",
+          "method": "Cross-domain transfer with randomized team composition and ablations.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.818855234401298,
+          "expected_feasibility": 0.7224999005561261,
+          "expected_recognition": 0.38469718154572674
+        },
+        {
+          "title": "agents study s18 approach 1",
+          "hypothesis": "Combining Synthetic agents planning scenario 7 with resource-limited collaboration changes performance. Test with matched initial states.",
+          "method": "Cross-domain transfer with randomized team composition and ablations. Add independent runs and a no-sharing control.",
+          "references": [
+            "demo_agents_07"
+          ],
+          "expected_novelty": 0.818855234401298,
+          "expected_feasibility": 0.7224999005561261,
+          "expected_recognition": 0.38469718154572674
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s18",
+        "s15"
+      ],
+      "novelty_proxy": 0.8363636363636364,
+      "recognition_proxy": 0.16363636363636358,
+      "reward": 0.16363636363636358
+    },
+    "idea_4_s19": {
+      "id": "idea_4_s19",
+      "owner": "s19",
+      "cycle": 4,
+      "field": "learning",
+      "versions": [
+        {
+          "title": "learning study s19 approach 0",
+          "hypothesis": "Combining Synthetic learning exploration scenario 3 with resource-limited collaboration changes performance.",
+          "method": "Controlled graph benchmark and matched trials.",
+          "references": [
+            "demo_learning_03"
+          ],
+          "expected_novelty": 0.31388634217434974,
+          "expected_feasibility": 0.5912262522661098,
+          "expected_recognition": 0.8971991568602073
+        }
+      ],
+      "status": "evaluated",
+      "contributors": [
+        "s19"
+      ],
+      "novelty_proxy": 0.813953488372093,
+      "recognition_proxy": 0.18604651162790697,
+      "reward": 0.18604651162790697
+    }
+  },
+  "teams": {
+    "team_4_s00": {
+      "leader": "s00",
+      "members": [
+        "s00"
+      ],
+      "idea": "idea_4_s00"
+    },
+    "team_4_s02": {
+      "leader": "s02",
+      "members": [
+        "s02"
+      ],
+      "idea": "idea_4_s02"
+    },
+    "team_4_s04": {
+      "leader": "s04",
+      "members": [
+        "s04",
+        "s13"
+      ],
+      "idea": "idea_4_s04"
+    },
+    "team_4_s06": {
+      "leader": "s06",
+      "members": [
+        "s06"
+      ],
+      "idea": "idea_4_s06"
+    },
+    "team_4_s08": {
+      "leader": "s08",
+      "members": [
+        "s08"
+      ],
+      "idea": "idea_4_s08"
+    },
+    "team_4_s10": {
+      "leader": "s10",
+      "members": [
+        "s10",
+        "s01"
+      ],
+      "idea": "idea_4_s10"
+    },
+    "team_4_s12": {
+      "leader": "s12",
+      "members": [
+        "s12",
+        "s09"
+      ],
+      "idea": "idea_4_s12"
+    },
+    "team_4_s14": {
+      "leader": "s14",
+      "members": [
+        "s14"
+      ],
+      "idea": "idea_4_s14"
+    },
+    "team_4_s16": {
+      "leader": "s16",
+      "members": [
+        "s16"
+      ],
+      "idea": "idea_4_s16"
+    },
+    "team_4_s18": {
+      "leader": "s18",
+      "members": [
+        "s18",
+        "s15"
+      ],
+      "idea": "idea_4_s18"
+    }
+  },
+  "invitations": [
+    {
+      "id": "inv_4_s00",
+      "sender": "s00",
+      "target": "s03",
+      "team": "team_4_s00",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s02",
+      "sender": "s02",
+      "target": "s05",
+      "team": "team_4_s02",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s04",
+      "sender": "s04",
+      "target": "s13",
+      "team": "team_4_s04",
+      "status": "accepted"
+    },
+    {
+      "id": "inv_4_s06",
+      "sender": "s06",
+      "target": "s09",
+      "team": "team_4_s06",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s08",
+      "sender": "s08",
+      "target": "s05",
+      "team": "team_4_s08",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s10",
+      "sender": "s10",
+      "target": "s01",
+      "team": "team_4_s10",
+      "status": "accepted"
+    },
+    {
+      "id": "inv_4_s12",
+      "sender": "s12",
+      "target": "s09",
+      "team": "team_4_s12",
+      "status": "accepted"
+    },
+    {
+      "id": "inv_4_s14",
+      "sender": "s14",
+      "target": "s05",
+      "team": "team_4_s14",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s16",
+      "sender": "s16",
+      "target": "s19",
+      "team": "team_4_s16",
+      "status": "rejected"
+    },
+    {
+      "id": "inv_4_s18",
+      "sender": "s18",
+      "target": "s15",
+      "team": "team_4_s18",
+      "status": "accepted"
+    }
+  ],
+  "policy": "recognition",
+  "network": "closed",
+  "history": [
+    {
+      "cycle": 0,
+      "tick": 5
+    },
+    {
+      "cycle": 1,
+      "tick": 11
+    },
+    {
+      "cycle": 2,
+      "tick": 17
+    },
+    {
+      "cycle": 3,
+      "tick": 23
+    },
+    {
+      "cycle": 4,
+      "tick": 29
+    }
+  ]
+}

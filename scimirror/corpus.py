@@ -45,3 +45,29 @@ class Corpus:
     # 以文本和历史语料的最大相似度补数计算新颖性代理。
     def novelty(self, text):
         return 1 - max(similarity(text, p['title']+' '+p['abstract']) for p in self.papers.values())
+
+    # 从统一候选池按query相关性与政策特征选择固定数量文献并返回审计信息。
+    def retrieve_v02(self, query, read_ids, topic_model, policy_context, candidate_pool_size, top_k):
+        scored = []
+        read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
+        for paper in self.papers.values():
+            text = paper['field']+' '+paper['title']+' '+paper['abstract']
+            relevance = similarity(query, text)
+            exploration = (sum(1-similarity(text, old) for old in read_texts)/len(read_texts)
+                           if read_texts else .5)
+            topic_ids = topic_model.paper_topics[paper['id']]
+            attention = (sum(topic_model.attention[t] for t in topic_ids)/len(topic_ids) if topic_ids else 0.0)
+            scored.append({'paper': paper, 'query_relevance': relevance, 'exploration': exploration,
+                           'recognition': attention, 'topic_ids': topic_ids})
+        pool = sorted(scored, key=lambda x: (-x['query_relevance'], x['paper']['id']))[:min(candidate_pool_size, len(scored))]
+        wn, wr = policy_context.weights
+        for item in pool:
+            item['policy_weighted_features'] = wn*item['exploration'] + wr*item['recognition']
+            item['retrieval_score'] = .5*item['query_relevance'] + .5*item['policy_weighted_features']
+        selected = sorted(pool, key=lambda x: (-x['retrieval_score'], x['paper']['id']))[:min(top_k, len(pool))]
+        audit = {'query': query, 'candidate_pool_size': len(pool), 'selected_count': len(selected),
+                 'candidates': [{k: v for k, v in item.items() if k != 'paper'} |
+                                {'paper_id': item['paper']['id']} for item in pool],
+                 'selected_ids': [item['paper']['id'] for item in selected],
+                 'policy_context': policy_context.audit()}
+        return [item['paper'] for item in selected], audit

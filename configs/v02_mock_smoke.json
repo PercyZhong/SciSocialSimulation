@@ -1,0 +1,12 @@
+{
+  "schema_version":"0.2","agents":20,"ticks":12,"branch_tick":6,"seeds":[42,43,44],
+  "policies":["balanced","novelty","recognition"],"networks":["closed","open"],"backend":"mock",
+  "corpus":"data/demo_papers.jsonl","topics":"data/topics.json","cutoff_year":2025,"allow_synthetic":true,
+  "recognition":{"method":"community_attention","alpha":1.0,"freeze_at_fork":true},
+  "policy_paths":{"topic":true,"retrieval":true,"idea_selection":true,"invitation":true,"exit":true},
+  "candidate_pool":{"size":3,"open_same_field":1,"open_other_field":2},
+  "topic_candidates":3,"retrieval_candidate_pool":20,"retrieval_top_k":3,
+  "project_exit":{"enabled":true,"max_per_agent_per_cycle":1,"outside_option":0.35,"switching_cost":0.08,"remaining_cost":0.22},
+  "pressure_mode":"frozen","dynamic_values":false,"decision_temperature":0.2,"stage_lambda":0.5,
+  "temperature":0.2,"max_tokens":1000,"timeout_seconds":60,"max_calls":800,"send_seed":false,"cache_only":false
+}

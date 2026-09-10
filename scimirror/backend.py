@@ -26,7 +26,7 @@ class Backend:
     def generate(self, stage, context, key):
         if self.mode == 'mock':
             return self.mock(stage, context, key)
-        schema = ({'candidates': [{'title': 'string', 'hypothesis': 'string', 'method': 'string',
+        schema = ({'candidates': [{'title': 'string', 'hypothesis': 'string', 'method': 'string', 'topic_id': 'selected topic id',
                    'references': ['visible paper id'], 'expected_novelty': 0.5, 'expected_feasibility': 0.5,
                    'expected_recognition': 0.5}]} if stage == 'propose' else
                   {'critique': 'specific limitation', 'revised_hypothesis': 'string', 'revised_method': 'string'})
@@ -38,7 +38,8 @@ class Backend:
                    'temperature': self.cfg['temperature'], 'max_tokens': self.cfg['max_tokens']}
         if self.cfg.get('send_seed', False):
             request['seed'] = int(digest(key)[:7], 16)
-        cache_key = digest({'base': self.base, 'request': request, 'semantic_key': key, 'protocol': 1})
+        protocol = 2 if self.cfg.get('schema_version') == '0.2' else 1
+        cache_key = digest({'base': self.base, 'request': request, 'semantic_key': key, 'protocol': protocol})
         path = self.root / 'cache' / (cache_key+'.json')
         if path.exists():
             self.hits += 1
@@ -86,11 +87,14 @@ class Backend:
                     'revised_method': context['idea']['method']+' Add independent runs and a no-sharing control.'}
         papers = context['papers']
         field = context['self']['field']
+        topic = context.get('selected_topic') or {'topic_id': field, 'keywords': [field]}
+        topic_id = topic['topic_id']
+        topic_phrase = ' '.join(topic.get('keywords') or [topic_id])
         choices = []
         for j in range(2):
             n = r.uniform(.2, .9)
-            choices.append({'title': f'{field} study {key[-1]} approach {j}',
-                            'hypothesis': f'Combining {papers[j]["title"]} with resource-limited collaboration changes performance.',
+            choices.append({'title': f'{topic_phrase} study {key[-1]} approach {j}', 'topic_id': topic_id,
+                            'hypothesis': f'Combining {papers[j]["title"]} with {topic_phrase} changes performance.',
                             'method': ('Controlled graph benchmark and matched trials.' if j == 0 else
                                        'Cross-domain transfer with randomized team composition and ablations.'),
                             'references': [papers[j]['id']], 'expected_novelty': n,
@@ -115,6 +119,8 @@ def validate_response(stage, value, context):
             for k in ('expected_novelty', 'expected_feasibility', 'expected_recognition'):
                 if type(c[k]) not in (float, int) or not 0 <= c[k] <= 1:
                     raise ValueError('Invalid score')
+            if context.get('schema_version') == '0.2' and c.get('topic_id') != context['selected_topic']['topic_id']:
+                raise ValueError('Candidate topic_id must match selected topic')
     else:
         for k in ('critique', 'revised_hypothesis', 'revised_method'):
             if not isinstance(value[k], str) or not value[k].strip() or len(value[k]) > 8000:

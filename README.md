@@ -1,4 +1,38 @@
-# SciMirror v0.1：20个Agent科研社会模拟实验
+# SciMirror：20个Agent科研社会模拟实验
+
+## v0.2 四项机制升级
+
+v0.1 入口、配置和旧结果保持不变。v0.2 使用独立入口 `v02_run.py` / `execute_v02.py`、显式 `schema_version: "0.2"` 和独立输出目录 `outputs_v02/`，主要变化如下：
+
+1. `community_attention_proxy` 来自截点前语料的冻结主题频率，不再定义为 `1 - novelty`；词汇新颖性明确命名为 `lexical_novelty_proxy`。
+2. policy 通过可独立关闭、可审计的通路进入选题、检索、候选 Idea 选择、合作邀请和项目退出；`all_policy_paths_off` 还会固定制度反馈，并自动检查政策泄漏。
+3. 每个 `(seed, cycle, leader)` 预先冻结 K=3 候选日程。closed 为 3 名同领域候选；open 为 1 名同领域加 2 名其他领域候选。后续不可用只减少 actionable 数，不补位。
+4. 草案、项目、版本和最终成果使用不同 ID；项目支持 completed / abandoned / merged / censored，投入使用追加式账本，最终成果按实际投入分配守恒份额。
+
+离线完整验收：
+
+```bash
+python3 --version                    # 必须 >= 3.11
+python3 execute_v02.py --suite       # 测试、主实验、六组消融、10-seed诊断
+```
+
+只运行默认 3-seed、20-Agent、30-tick 主实验：
+
+```bash
+python3 execute_v02.py
+```
+
+分步运行与只估算真实后端调用：
+
+```bash
+.venv/bin/python v02_run.py test
+.venv/bin/python v02_run.py run --config configs/v02_mock_full.json
+.venv/bin/python v02_run.py estimate --config configs/v02_llm_pilot.json
+```
+
+`estimate` 不联网。不得在没有端点预检、预算复核和用户明确授权时运行 `v02_llm_pilot.json`。v0.2 协议见 [docs/EXPERIMENT_V02.md](docs/EXPERIMENT_V02.md)，本次实现与验收见 [UPGRADE_REPORT.md](UPGRADE_REPORT.md)。mock 与合成语料只用于工程和机制验证，不是现实科研政策证据。
+
+## v0.1 原型说明
 
 完整可运行原型，Python 3.11+，Windows / Linux / VS Code Remote可用。运行与测试只依赖Python标准库，不需要GPU、CUDA、PyTorch、数据库服务或pip安装。20个Agent是20份独立状态和决策上下文，可共享一个模型服务，并不需要加载20个模型。
 

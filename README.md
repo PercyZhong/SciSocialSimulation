@@ -1,5 +1,31 @@
 # SciMirror：20个Agent科研社会模拟实验
 
+## v0.3 检索、盲评和质量计量升级
+
+v0.3 保留 v0.1/v0.2 的入口、状态机和旧实验归档，使用独立的 `execute_v03.py`、`configs/v03_*.json`、`outputs_v03/` 与 schema 0.3。新增能力包括：
+
+- 将选题 ID 展开为冻结的主题描述/关键词，按 topic、field、memory 的固定权重进行词法相关性召回；policy 只重排共同的相关性合格池，低证据时允许检索短缺而不以无关文献补位。
+- 导出冻结查询探针、实时检索审计、文献重合、主题匹配、相关性、近重复与短缺诊断。
+- 从单次运行的干预期完成项目冻结总体，以 `seed×policy×network×solo/team` 分层抽样；公开盲评包与私有条件映射隔离，支持人工评分导入、覆盖/一致性/分歧和抽样质量分析。
+- 区分项目合并、成员离队、废弃、完成、失败投入、成果近重复和抽样质量调整产出。评分缺失时质量估计保持 incomplete，不作零填补。
+
+本地离线命令：
+
+```bash
+python3 execute_v03.py check
+python3 execute_v03.py test
+python3 execute_v03.py retrieval-diagnose --config configs/v03_mock_main.json
+python3 execute_v03.py run --config configs/v03_mock_main.json
+python3 execute_v03.py export-review --run-dir outputs_v03/YOUR_RUN --config configs/v03_review.json --review-dir outputs_v03/YOUR_REVIEW_PACKAGE
+python3 execute_v03.py review-estimate --review-dir outputs_v03/YOUR_REVIEW_PACKAGE
+python3 execute_v03.py analyze --run-dir outputs_v03/YOUR_RUN --review-dir outputs_v03/YOUR_REVIEW_PACKAGE
+python3 execute_v03.py validate --run-dir outputs_v03/YOUR_RUN --review-dir outputs_v03/YOUR_REVIEW_PACKAGE --diagnosis-dir outputs_v03/YOUR_DIAGNOSIS
+```
+
+`export-review`、`review-estimate`、`analyze` 和 `validate` 均不调用真实模型。`review-run` 默认明确拒绝执行，因为本项目没有获得外部评分预算授权。待评包不是完成的独立评分；只有导入有效的人工或明确授权的外部评分后，才可能计算完整质量指标。完整协议见 [docs/EXPERIMENT_V03.md](docs/EXPERIMENT_V03.md)，本次交付见 [V03_UPGRADE_REPORT.md](V03_UPGRADE_REPORT.md)。
+
+## v0.2 四项机制升级
+
 ## v0.2 四项机制升级
 
 v0.1 入口、配置和旧结果保持不变。v0.2 使用独立入口 `v02_run.py` / `execute_v02.py`、显式 `schema_version: "0.2"` 和独立输出目录 `outputs_v02/`，主要变化如下：

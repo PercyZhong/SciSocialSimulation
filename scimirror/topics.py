@@ -21,7 +21,7 @@ class TopicModel:
         counts = Counter()
         unknown = []
         for paper in papers.values():
-            labels = list(paper.get('topic_ids') or self.classify(paper['title']+' '+paper['abstract']))
+            labels = list(paper.get('topic_ids') or self.classify(paper['title']+' '+paper['abstract'], paper['field']))
             labels = sorted(set(labels))
             if not labels:
                 unknown.append(paper['id'])
@@ -44,10 +44,10 @@ class TopicModel:
         self.audit['snapshot_hash'] = digest(self.audit)
 
     # 使用冻结关键词规则为文本返回全部命中的主题ID。
-    def classify(self, text):
+    def classify(self, text, field_name=None):
         words = tokens(text)
         return sorted(topic_id for topic_id, topic in self.topics.items()
-                      if words & set(topic['keywords']))
+                      if words & set(topic['keywords']) and (field_name is None or topic['field'] == field_name))
 
     # 计算文本主题的固定历史关注度均值并返回评分依据。
     def recognition(self, text):
@@ -60,5 +60,4 @@ class TopicModel:
         topic = self.topics[topic_id]
         return {'topic_id': topic_id, 'field': topic['field'],
                 'attention': self.attention[topic_id], 'keywords': list(topic['keywords'])}
-
 

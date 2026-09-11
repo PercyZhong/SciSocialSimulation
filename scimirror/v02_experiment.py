@@ -171,7 +171,7 @@ def run_v02(cfg, output, ablation='full'):
     validate_v02_config(cfg)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
-    corpus = Corpus(ROOT/cfg['corpus'], cfg['cutoff_year'], cfg['allow_synthetic'])
+    corpus = Corpus(ROOT/cfg['corpus'], cfg['cutoff_year'], cfg['allow_synthetic'], cfg.get('retrieval'))
     topic_model = TopicModel(ROOT/cfg['topics'], corpus.papers, cfg['recognition']['alpha'])
     backend = Backend(cfg, ROOT)
     branch_cfg = ablated_config(cfg, ablation)
@@ -290,4 +290,3 @@ def run_v02(cfg, output, ablation='full'):
              'prompt_tokens_reported': backend.prompt_tokens, 'completion_tokens_reported': backend.completion_tokens,
              'note': 'Mock has zero HTTP attempts; provider totals are used only when reported.'})
     return output
-

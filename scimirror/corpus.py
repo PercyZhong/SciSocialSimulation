@@ -17,7 +17,7 @@ def similarity(a, b):
 
 class Corpus:
     # 加载并校验语料，同时应用年份边界和合成语料限制。
-    def __init__(self, path, cutoff, allow_synthetic):
+    def __init__(self, path, cutoff, allow_synthetic, retrieval_config=None):
         raw = [json.loads(line) for line in Path(path).read_text(encoding='utf-8').splitlines() if line.strip()]
         self.papers = {}
         for p in raw:
@@ -37,6 +37,7 @@ class Corpus:
             self.papers[p['id']] = p
         if len(self.papers) < 3:
             raise ValueError('Need at least 3 pre-cutoff papers')
+        self.retrieval_config = retrieval_config
 
     # 按词汇相似度检索最相关的前 k 篇文献。
     def retrieve(self, query, k=3):
@@ -47,7 +48,13 @@ class Corpus:
         return 1 - max(similarity(text, p['title']+' '+p['abstract']) for p in self.papers.values())
 
     # 从统一候选池按query相关性与政策特征选择固定数量文献并返回审计信息。
-    def retrieve_v02(self, query, read_ids, topic_model, policy_context, candidate_pool_size, top_k):
+    def retrieve_v02(self, query, read_ids, topic_model, policy_context, candidate_pool_size, top_k,
+                     selected_topic_id=None, field_name=None, memory_terms=None):
+        if self.retrieval_config and self.retrieval_config.get('mode') == 'relevance_gated':
+            from .v03_retrieval import retrieve_relevance_gated
+            read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
+            return retrieve_relevance_gated(self.papers, topic_model, policy_context, self.retrieval_config,
+                                            selected_topic_id, field_name, memory_terms or [], read_texts)
         scored = []
         read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
         for paper in self.papers.values():

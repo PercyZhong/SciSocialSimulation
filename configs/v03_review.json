@@ -1,0 +1,6 @@
+{
+  "schema_version":"0.3","mode":"human_import","sample_seed":7303,"strata":["seed","policy","network","output_type"],"per_stratum":3,
+  "reviewers":[{"id":"reviewer_a","kind":"human"},{"id":"reviewer_b","kind":"human"}],
+  "rubric_version":"scimirror_review_v03_1","retry_limit":0,"budget":{"authorized":false,"currency":null,"amount":null},
+  "status_without_scores":"awaiting_external_reviews"
+}

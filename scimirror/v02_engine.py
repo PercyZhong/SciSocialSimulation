@@ -174,7 +174,16 @@ def step_v02(original, corpus, topic_model, backend, cfg):
             retrieval_context = context(cfg, world.policy, 'retrieval')
             query = f"{agent.field} {selected_topic} " + ' '.join(agent.public_topics)
             papers, retrieval_audit = corpus.retrieve_v02(query, agent.read_ids, topic_model, retrieval_context,
-                                                           cfg['retrieval_candidate_pool'], cfg['retrieval_top_k'])
+                                                           cfg['retrieval_candidate_pool'], cfg['retrieval_top_k'],
+                                                           selected_topic, agent.field, agent.public_topics)
+            if len(papers) < 2:
+                retrieval_audit.update({'agent': aid, 'tick': tick, 'stage': 'retrieval'})
+                world.decision_audit.append(retrieval_audit)
+                agent.energy -= 4
+                events.append(event('knowledge.retrieval.shortfall', aid, {'selected_topic': selected_topic,
+                                    'selected_count': len(papers), 'fallback': retrieval_audit.get('fallback'),
+                                    'query_id': retrieval_audit.get('query_id')}, [aid]))
+                continue
             model_context = proposal_observation(world, aid, papers, topic_model, retrieval_context.effective_policy)
             response = backend.generate('propose', model_context, [world.seed, tick, aid, selected_topic])
             validate_response('propose', response, model_context)

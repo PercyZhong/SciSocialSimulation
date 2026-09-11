@@ -38,7 +38,7 @@ class Backend:
                    'temperature': self.cfg['temperature'], 'max_tokens': self.cfg['max_tokens']}
         if self.cfg.get('send_seed', False):
             request['seed'] = int(digest(key)[:7], 16)
-        protocol = 2 if self.cfg.get('schema_version') == '0.2' else 1
+        protocol = int(self.cfg.get('cache_protocol', 2 if self.cfg.get('schema_version') == '0.2' else 1))
         cache_key = digest({'base': self.base, 'request': request, 'semantic_key': key, 'protocol': protocol})
         path = self.root / 'cache' / (cache_key+'.json')
         if path.exists():

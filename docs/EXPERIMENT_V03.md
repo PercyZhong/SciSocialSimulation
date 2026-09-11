@@ -36,6 +36,10 @@ Q[p] = mean_d((mean_valid_reviewer_score[p,d] - 1) / 4)
 
 四维等权、`Q∈[0,1]` 是透明分析约定，不是科研价值的比率尺度。分层样本且每层评分完整时使用 Horvitz–Thompson 估计：`Σ_h N_h × mean(Q_h)`；分别报告已评样本和总体估计。评分非响应不由纳入概率自动修正，结果保持 incomplete，并给出 `Q∈[0,1]` 的缺失界限。世界 seed 是政策/网络配对的重复单位；世界 bootstrap 条件于当前样本，不能假装覆盖评审抽样不确定性。
 
+评分文件允许按 reviewer 或批次增量导入。每次导入先校验全部新行，再追加原始记录并合并到累计有效评分；已导入的 `review_id×reviewer_id` 不得重复覆盖。状态依次为 `awaiting_external_reviews`、`reviews_partially_imported` 和 `reviews_imported_complete`。所有抽中项目的两份评分及四维分数完整前，配对质量均值与区间保持空值。
+
+质量敏感性预先报告四维等权，以及分别强调 novelty、feasibility、scientific_value、evidence_support 的五套权重。逐 seed 条件表和 solo/team 表报告四维均值、质量总量与均值；solo/team 另报告按分支内部聚类后汇总的冗余率。政策、网络及二者交互的质量差异在 seed 层配对，并用配置中的固定随机种子和次数进行世界 bootstrap。
+
 ## 执行与状态
 
-Linux/Python 3.11+ 是权威平台。所有 check/test/analyze/export 命令离线；默认无付费 API 调用。没有已授权的独立评审资源时，评审包状态必须为 `awaiting_external_reviews`，整体交付可标为 `completed_with_external_review_pending`，但不得声称真实质量、评审覆盖或一致性已经完成。
+Linux/Python 3.11+ 是权威平台。所有 check/test/analyze/export 命令离线；默认无付费 API 调用。没有已授权的独立评审资源时，评审包状态必须为 `awaiting_external_reviews`，整体交付可标为 `completed_with_external_review_pending`，但不得声称真实质量、评审覆盖或一致性已经完成。只验收模拟运行且未提供诊断与评审包时，整体状态为 `completed_simulation_only`；部分评分为 `completed_with_external_review_incomplete`；全部评分已导入但存在不可评项目时保持质量不完整。

@@ -34,6 +34,14 @@ def load_v03_config(path):
         raise ValueError('Invalid retrieval weights or threshold')
     if retrieval['top_k'] > retrieval['candidate_pool_size']:
         raise ValueError('top_k exceeds common candidate pool')
+    analysis = config.get('analysis', {})
+    schemes = analysis.get('quality_weight_schemes', {})
+    if schemes and ('equal' not in schemes or any(set(weights) != {'novelty','feasibility','scientific_value','evidence_support'}
+                   or any(value < 0 for value in weights.values()) or abs(sum(weights.values())-1) > 1e-12
+                   for weights in schemes.values())):
+        raise ValueError('Invalid quality sensitivity weights')
+    if analysis.get('bootstrap_repetitions', 0) < 2:
+        raise ValueError('Quality bootstrap requires at least two repetitions')
     return config
 
 

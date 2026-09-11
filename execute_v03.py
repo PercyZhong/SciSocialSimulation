@@ -101,8 +101,9 @@ def main():
         review_dir = project_path(args.review_dir)
         rows = import_reviews(review_dir, project_path(args.input))
         population = json.loads((review_dir/'population_manifest.json').read_text(encoding='utf-8'))
-        result = analyze_reviews(Path(population['source_run']), review_dir, review_dir/'review_results')
-        print(json.dumps({'imported':len(rows), **result}, indent=2)); return
+        source_run = Path(population['source_run'])
+        result = analyze_reviews(source_run, review_dir, source_run/'analysis')
+        print(json.dumps({'valid_rows_total':len(rows), **result}, indent=2)); return
     if args.command == 'analyze':
         if not args.run_dir:
             raise SystemExit('--run-dir required')
@@ -117,15 +118,19 @@ def main():
             raise SystemExit('--run-dir required')
         from scimirror.common import dump
         run_dir = project_path(args.run_dir)
+        run_config = json.loads((run_dir/'config.json').read_text(encoding='utf-8'))
         simulation = validate_v03(run_dir)
         external = {'status':'not_run','reason':'no_authorized_independent_review_resource'}
         quality = {'status':'awaiting_external_reviews','reason':'no_valid_external_scores'}
+        review_validation = None
         if args.review_dir:
             from scimirror.v03_review import validate_review_package
             review_dir = project_path(args.review_dir)
             review_status = json.loads((review_dir/'status.json').read_text(encoding='utf-8'))
             external = {'status': review_status['status'], 'sampled_ideas': review_status.get('sampled_ideas'),
-                        'requested_ratings': review_status.get('requested_ratings')}
+                        'requested_ratings': review_status.get('requested_ratings'),
+                        'valid_ratings':review_status.get('valid_rows', 0),
+                        'remaining_ratings':review_status.get('remaining_ratings', review_status.get('requested_ratings'))}
             review_validation = validate_review_package(review_dir)
             quality_path = run_dir/'analysis'/'quality_status.json'
             if quality_path.exists():
@@ -138,14 +143,27 @@ def main():
             probes = (diagnosis_dir/'retrieval_query_probes.jsonl').read_text(encoding='utf-8').splitlines()
             diagnosis = {'status':'completed' if diagnosis_status.get('status') == 'completed' and len(comparisons) >= 4 and len(probes) >= 5 else 'failed',
                          'path':str(diagnosis_dir),'probe_rows':len(probes),'comparison_rows':len(comparisons)}
+        if not simulation['all_passed'] or (review_validation and not review_validation['all_passed']) or diagnosis['status'] == 'failed':
+            overall_status = 'failed'
+        elif not args.review_dir and not args.diagnosis_dir:
+            overall_status = 'completed_simulation_only'
+        elif quality.get('status') == 'completed':
+            overall_status = 'completed'
+        elif external.get('status') == 'reviews_partially_imported':
+            overall_status = 'completed_with_external_review_incomplete'
+        elif external.get('status') in ('reviews_imported_complete','reviews_imported'):
+            overall_status = 'completed_with_quality_incomplete'
+        else:
+            overall_status = 'completed_with_external_review_pending'
         report = {'schema_version':'0.3','declared_scope':'local_mock_and_review_workflow',
-          'implementation':{'status':'completed'}, 'mock_validation':{'status':'completed'},
+          'implementation':{'status':'present'},
+          'mock_validation':{'status':'completed' if simulation['all_passed'] and run_config.get('backend') == 'mock' else 'not_applicable_or_failed'},
           'retrieval_diagnosis':diagnosis,
           'simulation':{'status':'completed' if simulation['all_passed'] else 'failed', **simulation},
           'review_sampling':({'status':'completed' if review_validation['all_passed'] else 'failed', **review_validation}
                              if args.review_dir else {'status':'not_checked'}),
           'external_review':external, 'quality_analysis':quality,
-          'overall':{'status':'completed_with_external_review_pending' if simulation['all_passed'] else 'failed',
+          'overall':{'status':overall_status,
                      'paid_api_calls':0,'real_world_causal_claim_supported':False}}
         output = project_path(args.output) if args.output else run_dir/'DELIVERY_VALIDATION_V03.json'
         dump(output, report); print(output)

@@ -35,8 +35,8 @@
 
 - `scimirror/v03_review.py` 冻结 completed 项目总体，按 `seed×policy×network×solo/team` 分层 SRSWOR 抽样，记录 `N_h`、`n_h`、π、样本 hash 和独立 sample seed。
 - 公共材料和私有条件映射严格分目录，随机 review ID 使用持久随机 token，而不是项目 ID 的可逆 hash；公共内容会扫描条件标识和制度分数字段。
-- 导出的 rubric 覆盖 novelty、feasibility、scientific value 与 evidence support 四维 1–5 评分、理由、证据定位和 `unassessable`。
-- 人工导入拒绝越界/重复/未知证据/错误 rubric/mock 记录；支持 coverage、二次加权 kappa、绝对分歧和≥2分分歧队列。mock reviewer 仅能生成 `is_mock=true, validation_only=true` 的测试数据。
+- 导出的 rubric 规定 novelty、feasibility、scientific value 与 evidence support 四维 1–5 评分、理由、证据定位和 `unassessable`；更细的分值锚点仍需继续补入公开 rubric。
+- 人工导入拒绝越界/重复/未知证据/错误 rubric/mock 记录，支持按评审者分批追加且不会覆盖已导入评分；支持 coverage、二次加权 kappa、绝对分歧和≥2分分歧队列。mock reviewer 仅能生成 `is_mock=true, validation_only=true` 的测试数据。
 
 ### 当前待评包
 
@@ -48,7 +48,7 @@
 
 - `scimirror/v03_analysis.py` 保留项目守恒，分开合并、成员离队、全员离队废弃、其他废弃、完成、截尾和失败投入；并输出 relative-to-balanced 会计恒等分解，明确不是因果中介。
 - branch 内完全/近重复采用规范化文本和冻结词法 Jaccard 连通分量；报告簇大小、重复对和 redundant output rate。主题相同但方法不同的定向 fixture 不会被高阈值规则合并。
-- 已实现四维等权 `Q`、全量和分层 Horvitz–Thompson 估计、观察样本和总体估计区分、质量/投入比、solo/team 分开表及缺失 [0,1] 界限。没有有效双评分时，估计保持 null。
+- 已实现四维等权 `Q`、全量和分层 Horvitz–Thompson 估计、观察样本和总体估计区分、质量/投入比、solo/team 四维均值与重复率、缺失 [0,1] 界限、五套预设权重敏感性，以及政策、网络和交互的世界层配对质量效应。没有完整有效双评分时，估计和区间保持 null，但表中保留预期及实际世界对数。
 
 3-seed 主实验共计 1,440 个启动项目、420 个合并、80 个废弃、940 个完成；196 次成员离队，192 个发生离队的项目，80 个全员离队废弃，其他废弃为 0，失败投入为 2,088 模拟单位。各分支重复成果率平均约 0.636，近重复对率平均约 0.046；这是 mock 模板产生相近文本的诊断，不能当作真实科研重复率。
 
@@ -62,7 +62,7 @@
 | no_retrieval | 3 | 18 | 30 | 18 | 72 | 完成、重放通过 |
 | diagnostic | 10 | 60 | 30 | 60 | 240 | 完成、重放通过；用于评审总体 |
 
-全套回归与新增定向测试共 38/38 通过。测试覆盖 topic 展开、可区分主题、零相关短缺、年份过滤、近重复、schema/cache 隔离、分层抽样、公开包泄漏、评分导入、一致性、质量估计/缺失界限、项目流量与既有 v0.1/v0.2 行为。
+原始 v0.3 Linux 主实验对应的测试为 38/38 通过。质量分析和增量导入补丁加入定向测试后，本地全套回归为 41/41 通过；补丁仍需推送后在 Linux 重新执行同一测试命令。测试覆盖 topic 展开、可区分主题、零相关短缺、年份过滤、近重复、schema/cache 隔离、分层抽样、公开包泄漏、增量评分导入与生命周期、一致性、非空质量配对/敏感性输出、质量估计/缺失界限、项目流量与既有 v0.1/v0.2 行为。
 
 ## 输出位置
 
@@ -70,13 +70,13 @@
 - smoke：`outputs_v03/delivery_20260911/smoke/`
 - main/full：`outputs_v03/delivery_20260911/main/`
 - 两组消融：`outputs_v03/delivery_20260911/ablations/`
-- 10-seed 诊断、数量与质量空表：`outputs_v03/delivery_20260911/diagnostic_10seed/`
+- 10-seed 诊断、数量与待评质量表：`outputs_v03/delivery_20260911/diagnostic_10seed/`
 - 待评包：`outputs_v03/delivery_20260911/review_package/`
 - 最终状态验收：`outputs_v03/delivery_20260911/DELIVERY_VALIDATION_V03.json`
 
 ## 未完成与解释限制
 
-- 尚未在用户远程 Linux 环境执行，不能把本机 Windows 结果称为权威 Linux 验收。
+- v0.3 原始主实验已在用户远程 Linux/Python 3.11.16 完成 18 个分支并通过重放；本次质量分析和增量导入补丁尚待推送后进行 Linux 验收。
 - 尚未导入真实独立评分，因而没有可报告的 Q、质量调整成果、质量/投入率、评审一致性或质量配对效应。
 - 评审抽样的纳入概率不能自动修正评分非响应；评分完成前仅报告缺失状态与边界。
 - 20 Agent mock、合成语料、固定词法规则和模板化文本只验证平台协议；任何 policy、network、solo/team 差异都不能外推为现实科研规律或因果效应。

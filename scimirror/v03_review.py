@@ -196,17 +196,35 @@ def validate_review_package(review_dir):
     keys = read_csv(review_dir/'review_private'/'review_key.csv')
     sample = read_csv(review_dir/'review_private'/'sample_manifest.csv')
     ratings = read_csv(review_dir/'review_public'/'ratings_template.csv')
+    validated_path = review_dir/'review_results'/'validated_reviews.csv'
+    validated = read_csv(validated_path) if validated_path.exists() else []
+    status = json.loads((review_dir/'status.json').read_text(encoding='utf-8'))
     validate_public_payload(ideas); validate_public_payload(evidence)
     idea_ids = [row['review_id'] for row in ideas]
+    requested_pairs = {(row['review_id'], row['reviewer_id']) for row in ratings}
+    validated_pairs = [(row.get('review_id'), row.get('reviewer_id')) for row in validated]
+    valid_count = len(validated_pairs)
+    expected_status = ('awaiting_external_reviews' if valid_count == 0 else
+                       'reviews_imported_complete' if valid_count == len(requested_pairs) else
+                       'reviews_partially_imported')
+    status_consistent = status.get('status') == expected_status
+    # Accept complete packages produced by the original v0.3 importer while
+    # reporting all new lifecycle states explicitly for new imports.
+    if status.get('status') == 'reviews_imported' and valid_count == len(requested_pairs):
+        status_consistent = True
     checks = {'review_ids_unique': len(idea_ids) == len(set(idea_ids)),
       'random_id_shape': all(value.startswith('rvw_') and len(value) == 28 for value in idea_ids),
       'public_private_id_alignment': set(idea_ids) == {row['review_id'] for row in keys} == {row['review_id'] for row in sample},
       'sampling_probabilities_valid': all(abs(float(row['inclusion_probability'])-int(row['n_h'])/int(row['N_h'])) < 1e-12 for row in sample),
       'two_requested_reviewers': len(ratings) == 2*len(ideas),
-      'no_mock_as_formal': all(row['is_mock'].lower() == 'false' for row in ratings),
-      'status_waiting': json.loads((review_dir/'status.json').read_text(encoding='utf-8'))['status'] == 'awaiting_external_reviews'}
+      'validated_pairs_unique': len(validated_pairs) == len(set(validated_pairs)),
+      'validated_pairs_requested': set(validated_pairs) <= requested_pairs,
+      'no_mock_as_formal': all(row.get('is_mock','').lower() == 'false' for row in ratings+validated),
+      'status_consistent': status_consistent}
     return {'checks': checks, 'all_passed': all(checks.values()), 'sampled_ideas': len(ideas),
-            'requested_ratings': len(ratings), 'external_scores_present': False}
+            'requested_ratings': len(ratings), 'valid_ratings': valid_count,
+            'external_scores_present': bool(validated),
+            'ratings_complete': valid_count == len(requested_pairs)}
 
 
 # 验证并导入人工或外部模型评分且拒绝mock混入正式结果。
@@ -216,14 +234,21 @@ def import_reviews(review_dir, input_path):
     allowed = {item['review_id']: set(item['reference_ids']) for item in ideas}
     provenance = json.loads((review_dir/'review_private'/'reviewer_provenance.json').read_text(encoding='utf-8'))
     allowed_reviewers = {item['id'] for item in provenance['reviewers']}
-    rows = read_csv(input_path)
-    if not rows:
+    submitted = read_csv(input_path)
+    if not submitted:
         raise ValueError('No external review rows supplied')
-    seen = set()
-    normalized = []
-    for row in rows:
+    template = read_csv(review_dir/'review_public'/'ratings_template.csv')
+    requested_pairs = {(row['review_id'], row['reviewer_id']) for row in template}
+    validated_path = review_dir/'review_results'/'validated_reviews.csv'
+    existing = read_csv(validated_path) if validated_path.exists() else []
+    existing_pairs = {(row.get('review_id'), row.get('reviewer_id')) for row in existing}
+    seen = set(existing_pairs)
+    normalized_new = []
+    for row in submitted:
         pair = (row.get('review_id'), row.get('reviewer_id'))
-        if pair in seen or not all(pair) or pair[0] not in allowed or pair[1] not in allowed_reviewers:
+        if pair in seen:
+            raise ValueError('Duplicate review identity already imported or repeated in input')
+        if not all(pair) or pair[0] not in allowed or pair[1] not in allowed_reviewers or pair not in requested_pairs:
             raise ValueError('Duplicate/unknown review identity')
         seen.add(pair)
         if row.get('rubric_version') != RUBRIC_VERSION or row.get('is_mock','').lower() == 'true':
@@ -248,12 +273,23 @@ def import_reviews(review_dir, input_path):
                 if evidence_id and evidence_id not in allowed[pair[0]]:
                     raise ValueError('Review cites evidence outside public package')
                 output[dimension+'_score'] = score
-        normalized.append(output)
+        normalized_new.append(output)
     results = review_dir/'review_results'
-    (results/'raw_reviews.jsonl').write_text(''.join(canonical(row)+'\n' for row in rows), encoding='utf-8')
-    write_csv(results/'validated_reviews.csv', normalized)
-    dump(review_dir/'status.json', {'schema_version': '0.3', 'status': 'reviews_imported',
-         'valid_rows': len(normalized), 'is_mock': False, 'input_hash': digest(rows)})
+    normalized = existing + normalized_new
+    raw_path = results/'raw_reviews.jsonl'
+    with raw_path.open('a', encoding='utf-8') as stream:
+        stream.write(''.join(canonical(row)+'\n' for row in submitted))
+    write_csv(validated_path, normalized, list(template[0]) if template else None)
+    imported_pairs = {(row['review_id'], row['reviewer_id']) for row in normalized}
+    lifecycle = ('reviews_imported_complete' if imported_pairs == requested_pairs else
+                 'reviews_partially_imported')
+    previous = json.loads((review_dir/'status.json').read_text(encoding='utf-8'))
+    imports = list(previous.get('imports', []))
+    imports.append({'input_hash': digest(submitted), 'submitted_rows': len(submitted)})
+    dump(review_dir/'status.json', {'schema_version': '0.3', 'status': lifecycle,
+         'sampled_ideas': len(ideas), 'requested_ratings': len(requested_pairs),
+         'valid_rows': len(normalized), 'remaining_ratings': len(requested_pairs)-len(imported_pairs),
+         'is_mock': False, 'imports': imports})
     return normalized
 
 
@@ -295,8 +331,11 @@ def agreement_rows(reviews):
     return output
 
 
-# 按预注册四维等权公式计算具备双评分的项目质量Q。
-def quality_scores(reviews):
+# 按给定四维权重计算具备双评分的项目质量Q并保留逐维均值。
+def quality_scores(reviews, weights=None):
+    weights = weights or {dimension: 1/len(DIMENSIONS) for dimension in DIMENSIONS}
+    if set(weights) != set(DIMENSIONS) or any(value < 0 for value in weights.values()) or abs(sum(weights.values())-1) > 1e-12:
+        raise ValueError('Quality weights must be nonnegative, cover four dimensions and sum to one')
     grouped = defaultdict(list)
     for row in reviews:
         grouped[row['review_id']].append(row)
@@ -308,8 +347,8 @@ def quality_scores(reviews):
             if len(values) >= 2:
                 means[dimension] = sum(values[:2])/2
         result[review_id] = {'dimension_means': means,
-            'Q': sum((means[d]-1)/4 for d in DIMENSIONS)/4 if len(means) == 4 else None,
-            'quality_formula_version': 'four_dimension_equal_weight_v03_1'}
+            'Q': sum(weights[d]*(means[d]-1)/4 for d in DIMENSIONS) if len(means) == 4 else None,
+            'quality_formula_version': 'four_dimension_weighted_v03_2', 'weights': dict(weights)}
     return result
 
 

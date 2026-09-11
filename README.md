@@ -24,6 +24,8 @@ python3 execute_v03.py validate --run-dir outputs_v03/YOUR_RUN --review-dir outp
 
 `export-review`、`review-estimate`、`analyze` 和 `validate` 均不调用真实模型。`review-run` 默认明确拒绝执行，因为本项目没有获得外部评分预算授权。待评包不是完成的独立评分；只有导入有效的人工或明确授权的外部评分后，才可能计算完整质量指标。完整协议见 [docs/EXPERIMENT_V03.md](docs/EXPERIMENT_V03.md)，本次交付见 [V03_UPGRADE_REPORT.md](V03_UPGRADE_REPORT.md)。
 
+人工评分可以分批导入，例如先导入 reviewer_a、再导入 reviewer_b；程序累计保存有效评分和原始记录，并拒绝覆盖已经存在的 reviewer-review 配对。分析会生成逐条件/逐成果类型四维质量、五套预设权重敏感性，以及在 seed 层配对的政策、网络和交互质量效应。评分不完整时，这些总体估计、均值和区间保持空值并报告实际样本量。
+
 ## v0.2 四项机制升级
 
 ## v0.2 四项机制升级

@@ -1,6 +1,5 @@
 """Directed retrieval, blind-review and quality-accounting tests for v0.3."""
 import copy
-import csv
 import json
 import tempfile
 import unittest
@@ -10,11 +9,12 @@ from scimirror.corpus import Corpus
 from scimirror.policy import context
 from scimirror.topics import TopicModel
 from scimirror.v03_pipeline import load_v03_config, simulation_adapter
-from scimirror.v03_analysis import condition_key, estimate_stratum_quality
+from scimirror.v03_analysis import (analyze_reviews, condition_key, estimate_stratum_quality,
+                                    paired_quality_effects)
 from scimirror.v03_retrieval import build_query, document_overlap, duplicate_clusters, retrieve_relevance_gated
 from scimirror.v03_review import (DIMENSIONS, RUBRIC_VERSION, agreement_rows, import_reviews,
                                   mock_review_records, quadratic_weighted_kappa, quality_scores, stratified_sample,
-                                  validate_public_payload, write_csv)
+                                  read_csv, validate_public_payload, validate_review_package, write_csv)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -134,6 +134,10 @@ class V03Tests(unittest.TestCase):
             (review_dir/'review_public'/'ideas.jsonl').write_text(json.dumps({'review_id':'rvw_x','reference_ids':['e1']})+'\n', encoding='utf-8')
             (review_dir/'review_private'/'reviewer_provenance.json').write_text(json.dumps({'reviewers':[{'id':'a'}]}), encoding='utf-8')
             fields = list(self.review_row())
+            write_csv(review_dir/'review_public'/'ratings_template.csv', [self.review_row()], fields)
+            write_csv(review_dir/'review_results'/'validated_reviews.csv', [], fields)
+            (review_dir/'review_results'/'raw_reviews.jsonl').write_text('', encoding='utf-8')
+            (review_dir/'status.json').write_text(json.dumps({'status':'awaiting_external_reviews'}), encoding='utf-8')
             cases = []
             bad = self.review_row(); bad['novelty_score'] = 6; cases.append([bad])
             bad = self.review_row(); bad['rubric_version'] = 'wrong'; cases.append([bad])
@@ -144,6 +148,34 @@ class V03Tests(unittest.TestCase):
                 path = review_dir/f'bad{index}.csv'; write_csv(path, rows, fields)
                 with self.assertRaises(ValueError):
                     import_reviews(review_dir, path)
+
+    # 验证两位评审可分批导入、原始记录追加且生命周期状态保持一致。
+    def test_incremental_review_import_and_status(self):
+        with tempfile.TemporaryDirectory() as folder:
+            review_dir = Path(folder); public = review_dir/'review_public'; private = review_dir/'review_private'; results = review_dir/'review_results'
+            public.mkdir(); private.mkdir(); results.mkdir()
+            review_id = 'rvw_'+'1'*24
+            (public/'ideas.jsonl').write_text(json.dumps({'review_id':review_id,'reference_ids':['e1']})+'\n', encoding='utf-8')
+            (public/'evidence.jsonl').write_text(json.dumps({'evidence_id':'e1'})+'\n', encoding='utf-8')
+            (private/'reviewer_provenance.json').write_text(json.dumps({'reviewers':[{'id':'a'},{'id':'b'}]}), encoding='utf-8')
+            write_csv(private/'review_key.csv', [{'review_id':review_id}])
+            write_csv(private/'sample_manifest.csv', [{'review_id':review_id,'N_h':1,'n_h':1,'inclusion_probability':1}])
+            template = [self.review_row(review_id,'a'), self.review_row(review_id,'b')]
+            fields = list(template[0]); write_csv(public/'ratings_template.csv', template, fields)
+            write_csv(results/'validated_reviews.csv', [], fields)
+            (results/'raw_reviews.jsonl').write_text('', encoding='utf-8')
+            (review_dir/'status.json').write_text(json.dumps({'status':'awaiting_external_reviews'}), encoding='utf-8')
+            first = review_dir/'first.csv'; second = review_dir/'second.csv'
+            write_csv(first, [template[0]], fields); write_csv(second, [template[1]], fields)
+            self.assertEqual(len(import_reviews(review_dir, first)), 1)
+            self.assertEqual(json.loads((review_dir/'status.json').read_text())['status'], 'reviews_partially_imported')
+            self.assertTrue(validate_review_package(review_dir)['all_passed'])
+            self.assertEqual(len(import_reviews(review_dir, second)), 2)
+            validation = validate_review_package(review_dir)
+            self.assertTrue(validation['all_passed']); self.assertTrue(validation['ratings_complete'])
+            self.assertEqual(len((results/'raw_reviews.jsonl').read_text(encoding='utf-8').splitlines()), 2)
+            with self.assertRaises(ValueError):
+                import_reviews(review_dir, second)
 
     # 验证一致、分歧、恒定和无共同项目时的一致性边界。
     def test_agreement_boundaries(self):
@@ -163,6 +195,47 @@ class V03Tests(unittest.TestCase):
         self.assertEqual(quality['Q'], .75)
         rows[1]['evidence_support_score'] = None
         self.assertIsNone(quality_scores(rows)['rvw_x']['Q'])
+
+    # 验证完整双评分会生成非空配对效应、逐类型四维统计和权重敏感性表。
+    def test_complete_quality_analysis_outputs(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); run_dir = root/'run'; review_dir = root/'review'; output = run_dir/'analysis'
+            run_dir.mkdir(); (review_dir/'review_private').mkdir(parents=True); (review_dir/'review_results').mkdir()
+            seeds = [1,2]
+            config = copy.deepcopy(self.cfg); config['seeds'] = seeds
+            (run_dir/'config.json').write_text(json.dumps(config), encoding='utf-8')
+            summary = []; keys = []; sample = []; reviews = []
+            for seed in seeds:
+                for policy in ('balanced','novelty','recognition'):
+                    for network in ('closed','open'):
+                        summary.append({'seed':seed,'policy':policy,'network':network,'total_effort_units':100})
+                        for output_type in ('solo','team'):
+                            review_id = f'rvw_{seed}_{policy}_{network}_{output_type}'
+                            keys.append({'review_id':review_id,'seed':seed,'policy':policy,'network':network,'output_type':output_type})
+                            sample.append({'review_id':review_id,'N_h':1,'n_h':1})
+                            score = {'balanced':3,'novelty':5,'recognition':2}[policy]
+                            reviews.extend([self.review_row(review_id,'a',score),self.review_row(review_id,'b',score)])
+            write_csv(run_dir/'summary.csv', summary)
+            write_csv(review_dir/'review_private'/'review_key.csv', keys)
+            write_csv(review_dir/'review_private'/'sample_manifest.csv', sample)
+            write_csv(review_dir/'review_results'/'validated_reviews.csv', reviews)
+            result = analyze_reviews(run_dir, review_dir, output)
+            self.assertEqual(result['status'], 'completed')
+            effects = read_csv(output/'quality_paired_effects.csv')
+            sensitivity = read_csv(output/'quality_weight_sensitivity.csv')
+            by_type = read_csv(output/'quality_by_output_type.csv')
+            self.assertEqual(len(effects), 18); self.assertTrue(all(row['status'] == 'complete' for row in effects))
+            self.assertEqual(len(sensitivity), 15); self.assertTrue(all(row['estimated_quality_total'] for row in sensitivity))
+            self.assertEqual(len(by_type), 2); self.assertTrue(all(row['novelty_mean'] for row in by_type))
+
+    # 验证评分缺失时配对效应保留样本量但不输出伪完整均值和区间。
+    def test_quality_paired_effects_incomplete(self):
+        rows = [{'seed':1,'policy':'balanced','network':'closed','estimated_mean_quality':.5,
+                 'estimated_quality_per_100_effort':1.0}]
+        effects = paired_quality_effects(rows, [1,2], 3, 20)
+        self.assertTrue(effects)
+        self.assertTrue(all(row['status'] == 'incomplete_external_reviews' for row in effects))
+        self.assertTrue(all(row['mean_difference'] is None for row in effects))
 
     # 验证分层质量估计、全抽退化、缺失边界和零总体行为。
     def test_stratified_quality_estimator(self):

@@ -198,6 +198,9 @@ def validate_review_package(review_dir):
     ratings = read_csv(review_dir/'review_public'/'ratings_template.csv')
     validated_path = review_dir/'review_results'/'validated_reviews.csv'
     validated = read_csv(validated_path) if validated_path.exists() else []
+    provenance = json.loads((review_dir/'review_private'/'reviewer_provenance.json').read_text(encoding='utf-8'))
+    provenance_reviewers = provenance.get('reviewers', [])
+    provenance_kinds = {row.get('id'): row.get('kind') for row in provenance_reviewers}
     status = json.loads((review_dir/'status.json').read_text(encoding='utf-8'))
     validate_public_payload(ideas); validate_public_payload(evidence)
     idea_ids = [row['review_id'] for row in ideas]
@@ -219,12 +222,17 @@ def validate_review_package(review_dir):
       'two_requested_reviewers': len(ratings) == 2*len(ideas),
       'validated_pairs_unique': len(validated_pairs) == len(set(validated_pairs)),
       'validated_pairs_requested': set(validated_pairs) <= requested_pairs,
+      'provenance_reviewer_ids_unique': len(provenance_kinds) == len(provenance_reviewers),
+      'validated_reviewer_kinds_match_provenance': all(
+          row.get('reviewer_kind') == provenance_kinds.get(row.get('reviewer_id')) for row in validated),
       'no_mock_as_formal': all(row.get('is_mock','').lower() == 'false' for row in ratings+validated),
       'status_consistent': status_consistent}
     return {'checks': checks, 'all_passed': all(checks.values()), 'sampled_ideas': len(ideas),
             'requested_ratings': len(ratings), 'valid_ratings': valid_count,
             'external_scores_present': bool(validated),
-            'ratings_complete': valid_count == len(requested_pairs)}
+            'ratings_complete': valid_count == len(requested_pairs),
+            'review_independence_status': provenance.get('review_independence_status', 'not_declared'),
+            'review_scope': provenance.get('review_scope', 'not_declared')}
 
 
 # 验证并导入人工或外部模型评分且拒绝mock混入正式结果。
@@ -297,7 +305,7 @@ def import_reviews(review_dir, input_path):
 def quadratic_weighted_kappa(left, right):
     if len(left) != len(right) or not left:
         return None, 'no_common_items'
-    if len(set(left+right)) == 1:
+    if len(set(left)) == 1 or len(set(right)) == 1:
         return None, 'constant_ratings'
     total = len(left)
     observed = Counter(zip(left, right)); left_counts = Counter(left); right_counts = Counter(right)

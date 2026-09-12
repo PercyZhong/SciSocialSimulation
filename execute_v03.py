@@ -132,9 +132,16 @@ def main():
                         'valid_ratings':review_status.get('valid_rows', 0),
                         'remaining_ratings':review_status.get('remaining_ratings', review_status.get('requested_ratings'))}
             review_validation = validate_review_package(review_dir)
+            independence_status = review_validation.get('review_independence_status', 'not_declared')
+            independent_review = independence_status in ('independent', 'verified_independent')
+            external.update({'review_independence_status': independence_status,
+                             'review_scope': review_validation.get('review_scope', 'not_declared'),
+                             'independent_review_confirmed': independent_review})
             quality_path = run_dir/'analysis'/'quality_status.json'
             if quality_path.exists():
                 quality = json.loads(quality_path.read_text(encoding='utf-8'))
+                quality['interpretation_status'] = ('independent_review' if independent_review
+                                                    else 'exploratory_nonindependent_review')
         diagnosis = {'status':'not_checked'}
         if args.diagnosis_dir:
             diagnosis_dir = project_path(args.diagnosis_dir)
@@ -147,8 +154,10 @@ def main():
             overall_status = 'failed'
         elif not args.review_dir and not args.diagnosis_dir:
             overall_status = 'completed_simulation_only'
-        elif quality.get('status') == 'completed':
+        elif quality.get('status') == 'completed' and external.get('independent_review_confirmed'):
             overall_status = 'completed'
+        elif quality.get('status') == 'completed':
+            overall_status = 'completed_exploratory_review_only'
         elif external.get('status') == 'reviews_partially_imported':
             overall_status = 'completed_with_external_review_incomplete'
         elif external.get('status') in ('reviews_imported_complete','reviews_imported'):
@@ -164,7 +173,9 @@ def main():
                              if args.review_dir else {'status':'not_checked'}),
           'external_review':external, 'quality_analysis':quality,
           'overall':{'status':overall_status,
-                     'paid_api_calls':0,'real_world_causal_claim_supported':False}}
+                     'paid_api_calls':0,
+                     'independent_review_confirmed':external.get('independent_review_confirmed', False),
+                     'real_world_causal_claim_supported':False}}
         output = project_path(args.output) if args.output else run_dir/'DELIVERY_VALIDATION_V03.json'
         dump(output, report); print(output)
 

@@ -157,7 +157,9 @@ class V03Tests(unittest.TestCase):
             review_id = 'rvw_'+'1'*24
             (public/'ideas.jsonl').write_text(json.dumps({'review_id':review_id,'reference_ids':['e1']})+'\n', encoding='utf-8')
             (public/'evidence.jsonl').write_text(json.dumps({'evidence_id':'e1'})+'\n', encoding='utf-8')
-            (private/'reviewer_provenance.json').write_text(json.dumps({'reviewers':[{'id':'a'},{'id':'b'}]}), encoding='utf-8')
+            (private/'reviewer_provenance.json').write_text(json.dumps({
+                'reviewers':[{'id':'a','kind':'human'},{'id':'b','kind':'human'}],
+                'review_independence_status':'independent', 'review_scope':'formal'}), encoding='utf-8')
             write_csv(private/'review_key.csv', [{'review_id':review_id}])
             write_csv(private/'sample_manifest.csv', [{'review_id':review_id,'N_h':1,'n_h':1,'inclusion_probability':1}])
             template = [self.review_row(review_id,'a'), self.review_row(review_id,'b')]
@@ -174,6 +176,11 @@ class V03Tests(unittest.TestCase):
             validation = validate_review_package(review_dir)
             self.assertTrue(validation['all_passed']); self.assertTrue(validation['ratings_complete'])
             self.assertEqual(len((results/'raw_reviews.jsonl').read_text(encoding='utf-8').splitlines()), 2)
+            imported = read_csv(results/'validated_reviews.csv')
+            imported[0]['reviewer_kind'] = 'external_model'
+            write_csv(results/'validated_reviews.csv', imported, fields)
+            mismatch = validate_review_package(review_dir)
+            self.assertFalse(mismatch['checks']['validated_reviewer_kinds_match_provenance'])
             with self.assertRaises(ValueError):
                 import_reviews(review_dir, second)
 
@@ -184,6 +191,8 @@ class V03Tests(unittest.TestCase):
         value, _ = quadratic_weighted_kappa([1,1,5,5],[5,5,1,1])
         self.assertLess(value, 0)
         value, reason = quadratic_weighted_kappa([3,3],[3,3])
+        self.assertIsNone(value); self.assertEqual(reason, 'constant_ratings')
+        value, reason = quadratic_weighted_kappa([3,3,3],[2,3,4])
         self.assertIsNone(value); self.assertEqual(reason, 'constant_ratings')
         value, reason = quadratic_weighted_kappa([],[])
         self.assertIsNone(value); self.assertEqual(reason, 'no_common_items')

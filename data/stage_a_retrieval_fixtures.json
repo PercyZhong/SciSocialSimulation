@@ -1,0 +1,13 @@
+{
+  "schema_version": "stage_a_fixture_1",
+  "split_rule": "document_family_grouped; calibration and test families are disjoint",
+  "calibration": [
+    {"family": "cal_memory", "topic": "memory retrieval", "relevant": ["cal_memory_a"], "irrelevant": ["cal_coordination_a"]},
+    {"family": "cal_dedup", "duplicates": ["cal_dup_s1", "cal_dup_s2"], "distinct": ["cal_distinct_method"]}
+  ],
+  "test": [
+    {"family": "test_gate", "topic": "memory retrieval", "relevant": ["test_cross_field"], "irrelevant": ["test_same_field_unrelated"]},
+    {"family": "test_dedup", "duplicates": ["test_dup_s1", "test_dup_s2", "test_dup_punctuation"], "distinct": ["test_distinct_question"]}
+  ],
+  "frozen_parameters": {"minimum_relevance": 0.08, "near_duplicate_threshold": 0.97, "candidate_pool_size": 20, "top_k": 3}
+}

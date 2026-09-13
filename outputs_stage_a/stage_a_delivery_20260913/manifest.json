@@ -1,0 +1,41 @@
+{
+  "schema_version": "stage_a_1",
+  "created_at": "2026-09-13T16:36:57.781555+08:00",
+  "python": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.22631-SP0",
+  "dependencies": {
+    "runtime": "python_standard_library"
+  },
+  "config_hash": "b45807e5cdc5bf2e60f7aaaffaf5f226597c81d63a9b84c5ead8e95422aa709b",
+  "corpus_hash": "5f48660b9dcc0bc0b2d937c35d95304007af99efb6bcd5c0a83fc29cdbd21086",
+  "topics_hash": "8dd02ba6c840b24ed04e32d0f327ce74a7bfc6d6648bea0d6033c2d7e0ee83f6",
+  "fixture_hash": "fd8896f5472c27348fe4cca802a860a43da0c9c7da31110396d9f86229887477",
+  "source_hash": "7fee7e256e8477bfa8c5e261eeffeb437ecb120864d382ed3fb58369a4bbe41a",
+  "baseline_source_hash": "15693215c625dbf66f7ab96dcac67464e10e870058ee5a36f7eea785ec3c984d",
+  "baseline_repository_commit": "2c98c8437d203037e471d4ac9eedc95b26d23492",
+  "baseline_identity": "repository v0.3 retrieve_relevance_gated / v03_ranker_1",
+  "baseline_function_hash": "06e913861ddf7f7e3db501a171352ef76d47ce8e8b2e3a92e0f66f9f057d45a1",
+  "fixed_function_hash": "b1486194ecee6d44c6a44218b4a737dd1bb773199103b8e2863e7e48b15a37ac",
+  "versions": {
+    "state": "stage_a_frozen_state_1",
+    "query": "stage_a_normalized_topic_memory_1",
+    "ranker": "stage_a_evidence_gate_context_rerank_1",
+    "dedup": "stage_a_exact_fixture_family_plus_greedy_1",
+    "cache": "stage_a_full_result_cache_1"
+  },
+  "expected_frozen_states": 108,
+  "expected_core_cases": 648,
+  "network_requests": 0,
+  "llm_calls": 0,
+  "engine_integration": {
+    "passed": true,
+    "mode": "stage_a_fixed",
+    "ranker_version": "stage_a_evidence_gate_context_rerank_1",
+    "selected_count": 2,
+    "empty_selected_count": 0
+  },
+  "actual_frozen_states": 108,
+  "actual_core_cases": 648,
+  "candidate_rows": 12960,
+  "failed_cases": 0
+}

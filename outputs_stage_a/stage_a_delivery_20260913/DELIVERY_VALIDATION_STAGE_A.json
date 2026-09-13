@@ -1,0 +1,78 @@
+{
+  "schema_version": "stage_a_1",
+  "status": "completed",
+  "all_passed": true,
+  "sections": {
+    "baseline": {
+      "status": "passed",
+      "checked_count": 1,
+      "failed_count": 0,
+      "evidence_path": "manifest.json"
+    },
+    "frozen_state": {
+      "status": "passed",
+      "checked_count": 648,
+      "failed_count": 0,
+      "evidence_path": "core_results.jsonl"
+    },
+    "memory": {
+      "status": "passed",
+      "checked_count": 2,
+      "failed_count": 0,
+      "evidence_path": "targeted_probe_results.jsonl"
+    },
+    "relevance_gate": {
+      "status": "passed",
+      "checked_count": 4,
+      "failed_count": 0,
+      "evidence_path": "targeted_probe_results.jsonl"
+    },
+    "cross_field_retrieval": {
+      "status": "passed",
+      "checked_count": 1,
+      "failed_count": 0,
+      "evidence_path": "targeted_probe_results.jsonl"
+    },
+    "deduplication": {
+      "status": "passed",
+      "checked_count": 1,
+      "failed_count": 0,
+      "evidence_path": "targeted_probe_results.jsonl"
+    },
+    "cache": {
+      "status": "passed",
+      "checked_count": 649,
+      "failed_count": 0,
+      "evidence_path": "core_results.jsonl"
+    },
+    "core_matrix": {
+      "status": "passed",
+      "checked_count": 648,
+      "failed_count": 0,
+      "evidence_path": "core_results.jsonl"
+    },
+    "targeted_probes": {
+      "status": "passed",
+      "checked_count": 15,
+      "failed_count": 0,
+      "evidence_path": "targeted_probe_results.jsonl"
+    },
+    "engine_integration": {
+      "status": "passed",
+      "checked_count": 1,
+      "failed_count": 0,
+      "evidence_path": "manifest.json"
+    },
+    "offline_execution": {
+      "status": "passed",
+      "checked_count": 2,
+      "failed_count": 0,
+      "evidence_path": "usage.json"
+    }
+  },
+  "core_expected": 648,
+  "core_actual": 648,
+  "candidate_rows": 12960,
+  "scientific_scope": "synthetic_fixture_engineering_validation_only",
+  "real_world_causal_claim_supported": false
+}

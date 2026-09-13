@@ -235,6 +235,22 @@ python run.py replay --events outputs/YOUR_RUN/seed_42/novelty_open/events.jsonl
 - 输出目录存在：指定新目录，本程序不覆盖日志。
 - 某tick失败：失败状态和已有checkpoint保留；修正问题后相同配置新建输出目录重跑，可命中已有缓存。
 
+## Stage A 冻结状态检索实验
+
+Stage A 在不修改科研社会机制的前提下，并存比较真实的 `baseline_v03` 与显式启用的 `stage_a_fixed`。旧 `configs/v03_mock_main.json` 继续使用 `relevance_gated`；只有新配置 `configs/v03_mock_stage_a_fixed.json` 会让生产检索接口进入修复版。
+
+Linux（Python 3.11+）完整离线执行：
+
+```bash
+python3 execute_stage_a.py check --config configs/stage_a_frozen_retrieval.json
+python3 execute_stage_a.py test
+python3 execute_stage_a.py all --config configs/stage_a_frozen_retrieval.json
+```
+
+也可依次运行 `calibrate`、`run`、`analyze` 和 `validate`，并用 `--output`/`--run-dir` 指向同一目录。`run` 支持输入 hash 一致时按 case 恢复；输入或配置变化时会拒绝复用旧目录。使用 `--dry-run` 只打印计划，不发起实验。默认配置强制 `allow_network=false`、`allow_llm_calls=false`，核心矩阵是 108 个冻结状态上的 648 次确定性检索调用，不是 648 个社会模拟世界。
+
+当前本地验收输出位于 `outputs_stage_a/stage_a_delivery_20260913/`。其中 `STAGE_A_REPORT.md` 是中文结论，`DELIVERY_VALIDATION_STAGE_A.json` 是逐项验收，`stage_a_delivery.zip` 是便携归档。它们只验证合成 fixture 的工程行为，不构成真实文献检索质量或现实政策效应证据。
+
 ## 验证边界与下一步
 
 本版优先证明系统实现正确：状态隔离、资源/团队约束、共同前缀、模拟复现、日志重放和模式明确。实验设计、指标定义与后续研究要求见docs/EXPERIMENT.md。mock和合成语料不得支持真实社会机制结论；LLM+真实语料也需要独立评审和校准。

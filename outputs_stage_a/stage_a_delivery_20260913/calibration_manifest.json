@@ -1,0 +1,25 @@
+{
+  "schema_version": "stage_a_1",
+  "status": "completed",
+  "method": "predeclared_fixture_parameters_no_search",
+  "fixture_hash": "fd8896f5472c27348fe4cca802a860a43da0c9c7da31110396d9f86229887477",
+  "split_rule": "document_family_grouped; calibration and test families are disjoint",
+  "calibration_families": [
+    "cal_dedup",
+    "cal_memory"
+  ],
+  "test_families": [
+    "test_dedup",
+    "test_gate"
+  ],
+  "family_overlap": [],
+  "frozen_parameters": {
+    "minimum_relevance": 0.08,
+    "near_duplicate_threshold": 0.97,
+    "candidate_pool_size": 20,
+    "top_k": 3
+  },
+  "test_set_used_for_tuning": false,
+  "network_requests": 0,
+  "llm_calls": 0
+}

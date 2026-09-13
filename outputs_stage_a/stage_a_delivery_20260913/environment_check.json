@@ -1,0 +1,15 @@
+{
+  "schema_version": "stage_a_1",
+  "python": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]",
+  "python_supported": true,
+  "config_valid": true,
+  "engine_integration": {
+    "passed": true,
+    "mode": "stage_a_fixed",
+    "ranker_version": "stage_a_evidence_gate_context_rerank_1",
+    "selected_count": 2,
+    "empty_selected_count": 0
+  },
+  "network_requests": 0,
+  "llm_calls": 0
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "stage_a_1",
+  "status": "completed",
+  "core_cases": 648,
+  "failed_cases": 0,
+  "network_requests": 0,
+  "llm_calls": 0
+}

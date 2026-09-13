@@ -1,0 +1,4 @@
+{"baseline_memory_component":0.0,"check":"memory_representation_only","expanded_memory_component":1.0,"status":"confirmed"}
+{"baseline_same_field_raw_passes":true,"check":"gate_logic_only","fixed_same_field_evidence_passes":false,"status":"confirmed"}
+{"check":"recall_scope_only","cross_field_selected":true,"status":"confirmed"}
+{"check":"complete_fix","passed_probes":15,"status":"confirmed"}

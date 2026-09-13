@@ -1,0 +1,5 @@
+{
+  "status": "passed",
+  "tests": 47,
+  "command": "python -m unittest discover -s tests -v"
+}

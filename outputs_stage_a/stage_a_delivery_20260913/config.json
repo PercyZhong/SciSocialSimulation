@@ -1,0 +1,71 @@
+{
+  "schema_version": "stage_a_1",
+  "baseline_repository_commit": "2c98c8437d203037e471d4ac9eedc95b26d23492",
+  "rankers": [
+    "baseline_v03",
+    "stage_a_fixed"
+  ],
+  "memory_conditions": [
+    "empty",
+    "related",
+    "unrelated"
+  ],
+  "policies": [
+    "balanced",
+    "novelty",
+    "recognition"
+  ],
+  "fields": [
+    "agents",
+    "learning",
+    "science"
+  ],
+  "read_history_mode": "fixed_empty",
+  "candidate_pool_size": 20,
+  "top_k": 3,
+  "fixture_seed": 4101,
+  "execution_order_seed": 4102,
+  "allow_network": false,
+  "allow_llm_calls": false,
+  "output_root": "outputs_stage_a",
+  "corpus": "data/demo_papers.jsonl",
+  "topics": "data/topics.json",
+  "calibration_fixture": "data/stage_a_retrieval_fixtures.json",
+  "cutoff_year": 2025,
+  "allow_synthetic": true,
+  "recognition_alpha": 1.0,
+  "stage_lambda": 0.5,
+  "policy_paths": {
+    "retrieval": true
+  },
+  "baseline_retrieval": {
+    "mode": "relevance_gated",
+    "query_weights": {
+      "topic": 0.7,
+      "field": 0.2,
+      "memory": 0.1
+    },
+    "minimum_relevance": 0.08,
+    "candidate_pool_size": 20,
+    "top_k": 3,
+    "relevance_weight": 0.75,
+    "near_duplicate_threshold": 0.97,
+    "max_per_near_duplicate_cluster": 1,
+    "version": "v03_ranker_1"
+  },
+  "fixed_retrieval": {
+    "mode": "stage_a_fixed",
+    "query_weights": {
+      "topic": 0.7,
+      "field": 0.2,
+      "memory": 0.1
+    },
+    "minimum_relevance": 0.08,
+    "candidate_pool_size": 20,
+    "top_k": 3,
+    "relevance_weight": 0.75,
+    "near_duplicate_threshold": 0.97,
+    "max_per_near_duplicate_cluster": 1,
+    "version": "stage_a_ranker_1"
+  }
+}

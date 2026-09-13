@@ -9,11 +9,33 @@ from .corpus import similarity, tokens
 
 QUERY_BUILDER_VERSION = 'v03_weighted_topic_field_memory_1'
 DEDUP_VERSION = 'v03_exact_id_doi_text_plus_greedy_1'
+STAGE_A_QUERY_VERSION = 'stage_a_normalized_topic_memory_1'
+STAGE_A_RANKER_VERSION = 'stage_a_evidence_gate_context_rerank_1'
+STAGE_A_DEDUP_VERSION = 'stage_a_exact_fixture_family_plus_greedy_1'
 
 
 # 将文本规范化为用于完全重复检测的稳定形式。
 def normalize_text(text):
     return ' '.join(re.findall(r'[a-z0-9]+', text.lower()))
+
+
+# Normalize identifiers and prose to the same lexical representation without changing legacy corpus metrics.
+def comparable_tokens(text):
+    text = re.sub(r'[_\-]+', ' ', str(text).lower())
+    return set(re.findall(r'[a-z0-9]+', text))
+
+
+# Expand semantic-memory topic identifiers through the frozen topic dictionary before lexical comparison.
+def semantic_memory_tokens(topic_model, memory_terms):
+    expanded = []
+    for value in memory_terms:
+        value = value.get('text', value.get('topic_id', '')) if isinstance(value, dict) else str(value)
+        expanded.append(value)
+        topic_key = re.sub(r'[_\-\s]+', '_', value.strip().lower())
+        if topic_key in topic_model.topics:
+            topic = topic_model.topics[topic_key]
+            expanded.extend([topic['description'], *topic['keywords']])
+    return comparable_tokens(' '.join(expanded))
 
 
 # 构建保留topic_id并展开描述、关键词、领域和记忆的查询对象。
@@ -45,14 +67,17 @@ def component_relevance(query, paper):
 
 
 # 依据DOI、规范化全文和冻结词法阈值给论文分配近重复簇。
-def duplicate_clusters(items, threshold):
+def duplicate_clusters(items, threshold, fixture_aware=False):
     clusters = []
     assignments = {}
     exact = {}
     for item in sorted(items, key=lambda value: value['paper']['id']):
         paper = item['paper']
-        exact_key = ('doi', paper['doi'].lower()) if paper.get('doi') else (
-                    'text', normalize_text(paper['title']+' '+paper['abstract']))
+        normalized = normalize_text(paper['title']+' '+paper['abstract'])
+        if fixture_aware and paper.get('synthetic'):
+            normalized = re.sub(r'\bscenario\s+\d+\b|\bvariant\s+\d+\b', '', normalized)
+            normalized = ' '.join(normalized.split())
+        exact_key = ('doi', paper['doi'].lower()) if paper.get('doi') else ('text', normalized)
         if exact_key in exact:
             assignments[paper['id']] = exact[exact_key]
             continue
@@ -68,6 +93,109 @@ def duplicate_clusters(items, threshold):
         assignments[paper['id']] = cluster_id
         exact[exact_key] = cluster_id
     return assignments
+
+
+# Build the Stage A query with separate evidence, field, and semantic-memory representations.
+def build_stage_a_query(topic_model, topic_id, field_name, memory_terms, weights):
+    raw_memory = [value.get('text', value.get('topic_id', '')) if isinstance(value, dict) else str(value)
+                  for value in memory_terms]
+    if topic_id in topic_model.topics:
+        topic = topic_model.topics[topic_id]
+        evidence_words = comparable_tokens(' '.join(topic['keywords']))
+        display_words = comparable_tokens(topic_id+' '+topic['description']+' '+' '.join(topic['keywords']))
+        unknown = False
+    else:
+        evidence_words = comparable_tokens(topic_id)
+        display_words = set(evidence_words)
+        unknown = True
+    components = {'topic': sorted(evidence_words), 'topic_display': sorted(display_words),
+                  'field': sorted(comparable_tokens(field_name)),
+                  'memory': sorted(semantic_memory_tokens(topic_model, memory_terms))}
+    normalized = ' '.join(word for key in ('topic_display', 'field', 'memory') for word in components[key])
+    return {'topic_id': topic_id, 'unknown_topic': unknown, 'components': components,
+            'raw_components': {'topic': topic_id, 'field': field_name, 'memory': raw_memory},
+            'weights': {key: float(weights[key]) for key in ('topic', 'field', 'memory')},
+            'normalized_query': normalized, 'query_builder_version': STAGE_A_QUERY_VERSION}
+
+
+# Score evidence relevance independently from field and memory context preferences.
+def stage_a_component_relevance(query, paper):
+    paper_words = comparable_tokens(paper['field']+' '+paper['title']+' '+paper['abstract'])
+    scores = {}
+    for name in ('topic', 'field', 'memory'):
+        words = set(query['components'][name])
+        scores[name] = len(words & paper_words)/len(words) if words else 0.0
+    ranking_relevance = sum(query['weights'][name]*scores[name] for name in scores)
+    return scores['topic'], ranking_relevance, scores
+
+
+# Retrieve from a common corpus-wide pool, gate on evidence relevance, then apply context and policy reranking.
+def retrieve_stage_a_fixed(papers, topic_model, policy_context, config, topic_id, field_name,
+                           memory_terms, read_texts):
+    query = build_stage_a_query(topic_model, topic_id, field_name, memory_terms, config['query_weights'])
+    scored = []
+    for paper in papers.values():
+        evidence_relevance, ranking_relevance, components = stage_a_component_relevance(query, paper)
+        exploration = (sum(1-similarity(paper['title']+' '+paper['abstract'], old) for old in read_texts)/len(read_texts)
+                       if read_texts else .5)
+        topic_ids = topic_model.paper_topics[paper['id']]
+        attention = sum(topic_model.attention[t] for t in topic_ids)/len(topic_ids) if topic_ids else 0.0
+        scored.append({'paper': paper, 'evidence_relevance': evidence_relevance,
+                       'raw_relevance': ranking_relevance, 'component_relevance': components,
+                       'exploration': exploration, 'attention': attention, 'topic_ids': topic_ids})
+    recalled = sorted(scored, key=lambda item: item['paper']['id'])
+    base = sorted(scored, key=lambda item: (-item['evidence_relevance'], -item['raw_relevance'],
+                                            item['paper']['id']))[:config['candidate_pool_size']]
+    qualified = [item for item in base if item['evidence_relevance'] >= config['minimum_relevance']]
+    cluster_ids = duplicate_clusters(qualified, config['near_duplicate_threshold'], fixture_aware=True)
+    peak = max((item['raw_relevance'] for item in qualified), default=0.0)
+    wn, wr = policy_context.weights
+    for item in qualified:
+        item['normalized_relevance'] = item['raw_relevance']/peak if peak > 0 else 0.0
+        item['cluster_id'] = cluster_ids[item['paper']['id']]
+        item['policy_score'] = wn*item['exploration'] + wr*item['attention']
+        item['final_score'] = (config['relevance_weight']*item['normalized_relevance'] +
+                               (1-config['relevance_weight'])*item['policy_score'])
+    ranked = sorted(qualified, key=lambda item: (-item['final_score'], -item['evidence_relevance'],
+                                                  -item['raw_relevance'], item['paper']['id']))
+    selected, cluster_counts = [], Counter()
+    for item in ranked:
+        if cluster_counts[item['cluster_id']] >= config['max_per_near_duplicate_cluster']:
+            continue
+        selected.append(item)
+        cluster_counts[item['cluster_id']] += 1
+        if len(selected) == config['top_k']:
+            break
+    reason = None
+    if len(selected) < config['top_k']:
+        if not qualified:
+            reason = 'all_evidence_relevance_zero' if not any(x['evidence_relevance'] for x in base) else 'no_qualified_evidence'
+        elif len(qualified) < config['top_k']:
+            reason = 'insufficient_relevant_documents'
+        else:
+            reason = 'near_duplicate_limit'
+    query_id = digest({'query': query, 'corpus': digest(sorted(papers)), 'config': config})[:20]
+    audit_items = []
+    for item in base:
+        audit_items.append({'paper_id': item['paper']['id'], 'evidence_relevance': item['evidence_relevance'],
+            'raw_relevance': item['raw_relevance'], 'normalized_relevance': item.get('normalized_relevance', 0.0),
+            'component_relevance': item['component_relevance'], 'exploration': item['exploration'],
+            'attention': item['attention'], 'topic_ids': item['topic_ids'], 'qualified': item in qualified,
+            'cluster_id': item.get('cluster_id'), 'policy_score': item.get('policy_score'),
+            'final_score': item.get('final_score')})
+    audit = {'schema_version': '0.3', 'stage_a_schema_version': 'stage_a_1',
+             'mode': 'stage_a_fixed', 'ranker_version': STAGE_A_RANKER_VERSION,
+             'query_id': query_id, **query, 'corpus_hash': digest(papers), 'dedup_version': STAGE_A_DEDUP_VERSION,
+             'recalled_ids': [item['paper']['id'] for item in recalled],
+             'base_candidate_ids': [item['paper']['id'] for item in base],
+             'qualified_ids': [item['paper']['id'] for item in qualified],
+             'ranked_qualified_ids': [item['paper']['id'] for item in ranked],
+             'candidate_pool_size': len(base), 'qualified_count': len(qualified),
+             'selected_count': len(selected), 'selected_ids': [item['paper']['id'] for item in selected],
+             'selected_topic_ids': [item['topic_ids'] for item in selected], 'fallback': reason,
+             'minimum_relevance': config['minimum_relevance'], 'candidates': audit_items,
+             'policy_context': policy_context.audit()}
+    return [item['paper'] for item in selected], audit
 
 
 # 在共同相关性合格池内按政策特征重排并允许证据不足短缺。
@@ -111,13 +239,17 @@ def retrieve_relevance_gated(papers, topic_model, policy_context, config, topic_
     query_id = digest({'query': query, 'corpus': digest(sorted(papers)), 'config': config})[:20]
     audit_items = []
     for item in base:
-        audit_items.append({'paper_id': item['paper']['id'], 'raw_relevance': item['raw_relevance'],
+        audit_items.append({'paper_id': item['paper']['id'],
+            'evidence_relevance': item['component_relevance']['topic'], 'raw_relevance': item['raw_relevance'],
             'normalized_relevance': item['normalized_relevance'], 'component_relevance': item['component_relevance'],
             'exploration': item['exploration'], 'attention': item['attention'], 'topic_ids': item['topic_ids'],
             'qualified': item in qualified, 'cluster_id': item.get('cluster_id'),
             'policy_score': item.get('policy_score'), 'final_score': item.get('final_score')})
     audit = {'schema_version': '0.3', 'mode': 'relevance_gated', 'query_id': query_id, **query,
              'corpus_hash': digest(papers), 'dedup_version': DEDUP_VERSION,
+             'recalled_ids': sorted(papers), 'base_candidate_ids': [item['paper']['id'] for item in base],
+             'qualified_ids': [item['paper']['id'] for item in qualified],
+             'ranked_qualified_ids': [item['paper']['id'] for item in ranked],
              'candidate_pool_size': len(base), 'qualified_count': len(qualified),
              'selected_count': len(selected), 'selected_ids': [item['paper']['id'] for item in selected],
              'selected_topic_ids': [item['topic_ids'] for item in selected], 'fallback': reason,

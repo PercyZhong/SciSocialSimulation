@@ -1,0 +1,14 @@
+[
+  {"topic_id":"agent_memory","description":"Agent memory and retrieval","keywords":["memory","retrieval"],"field":"agents"},
+  {"topic_id":"agent_communication","description":"Agent communication and coordination","keywords":["communication","coordination"],"field":"agents"},
+  {"topic_id":"agent_tools","description":"Agent tool use and selection","keywords":["tool","selection"],"field":"agents"},
+  {"topic_id":"agent_planning","description":"Agent planning and reasoning","keywords":["planning","reasoning"],"field":"agents"},
+  {"topic_id":"learning_policy","description":"Learning policy optimization","keywords":["policy","optimization"],"field":"learning"},
+  {"topic_id":"learning_graph","description":"Graph generalization","keywords":["graph","generalization"],"field":"learning"},
+  {"topic_id":"learning_reward","description":"Reward design","keywords":["reward"],"field":"learning"},
+  {"topic_id":"learning_exploration","description":"Exploration strategy","keywords":["exploration"],"field":"learning"},
+  {"topic_id":"science_hypothesis","description":"Scientific hypothesis generation","keywords":["hypothesis","generation"],"field":"science"},
+  {"topic_id":"science_retrieval","description":"Scientific paper retrieval","keywords":["paper","retrieval"],"field":"science"},
+  {"topic_id":"science_collaboration","description":"Research collaboration","keywords":["collaboration"],"field":"science"},
+  {"topic_id":"science_evaluation","description":"Idea evaluation","keywords":["evaluation"],"field":"science"}
+]

@@ -1,0 +1,13 @@
+﻿topic_id,independent_family_count,shared_family_count,total_relevant_family_count
+agent_memory,6,1,7
+agent_communication,6,1,7
+agent_tools,6,0,6
+agent_planning,6,0,6
+learning_policy,6,1,7
+learning_graph,6,0,6
+learning_reward,6,1,7
+learning_exploration,6,0,6
+science_hypothesis,6,0,6
+science_retrieval,6,1,7
+science_collaboration,6,1,7
+science_evaluation,6,0,6

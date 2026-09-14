@@ -251,6 +251,21 @@ python3 execute_stage_a.py all --config configs/stage_a_frozen_retrieval.json
 
 当前本地验收输出位于 `outputs_stage_a/stage_a_delivery_20260913/`。其中 `STAGE_A_REPORT.md` 是中文结论，`DELIVERY_VALIDATION_STAGE_A.json` 是逐项验收，`stage_a_delivery.zip` 是便携归档。它们只验证合成 fixture 的工程行为，不构成真实文献检索质量或现实政策效应证据。
 
+## Stage A 补充实验
+
+补充实验在不改变排序公式和科研社会机制的前提下，增加内容不同的合成证据、隔离的 gold 家族、policy 选择链路探针、测试分区去重评价，以及一个 20-Agent/12-tick 生产接口 smoke。默认严格离线，禁止网络、LLM 和收费 API。
+
+Linux（权威运行环境）执行：
+
+```bash
+python3 execute_stage_a_supplement.py check --config configs/stage_a_supplement.json
+python3 execute_stage_a_supplement.py prepare --config configs/stage_a_supplement.json
+python3 execute_stage_a_supplement.py test
+python3 execute_stage_a_supplement.py all --config configs/stage_a_supplement.json --output outputs_stage_a_supplement/<run_id>
+```
+
+Windows 可将 `python3` 换成当前 Python 3.11+ 环境的 `python`。`all` 运行 1296 次冻结状态检索、54 次启用 policy 探针、6 次关闭控制和 2376 行复用式主题对比较；这些是确定性合成工程验证，不是随机社会世界重复或现实因果证据。结果以 `DELIVERY_VALIDATION_STAGE_A_SUPPLEMENT.json` 和 `stage_a_supplement_delivery.zip` 为准。
+
 ## 验证边界与下一步
 
 本版优先证明系统实现正确：状态隔离、资源/团队约束、共同前缀、模拟复现、日志重放和模式明确。实验设计、指标定义与后续研究要求见docs/EXPERIMENT.md。mock和合成语料不得支持真实社会机制结论；LLM+真实语料也需要独立评审和校准。

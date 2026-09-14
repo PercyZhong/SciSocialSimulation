@@ -1,0 +1,116 @@
+{
+  "schema_version": "stage_a_supplement_1",
+  "status": "completed",
+  "all_passed": true,
+  "sections": {
+    "baseline": {
+      "status": "passed",
+      "checked_count": 2,
+      "failed_count": 0,
+      "evidence_path": "manifest.json",
+      "reason": "reference and supplement function hashes frozen"
+    },
+    "corpus_content": {
+      "status": "passed",
+      "checked_count": 75,
+      "failed_count": 0,
+      "evidence_path": "family_content_audit.jsonl",
+      "reason": ""
+    },
+    "gold_isolation": {
+      "status": "passed",
+      "checked_count": 87,
+      "failed_count": 0,
+      "evidence_path": "reproduction/data/corpus_expanded.jsonl",
+      "reason": ""
+    },
+    "splits": {
+      "status": "passed",
+      "checked_count": 75,
+      "failed_count": 0,
+      "evidence_path": "reproduction/data/split_manifest.json",
+      "reason": ""
+    },
+    "core_matrix": {
+      "status": "passed",
+      "checked_count": 1296,
+      "failed_count": 0,
+      "evidence_path": "core_results.jsonl",
+      "reason": ""
+    },
+    "policy_unit": {
+      "status": "passed",
+      "checked_count": 18,
+      "failed_count": 0,
+      "evidence_path": "policy_unit_results.jsonl",
+      "reason": ""
+    },
+    "policy_e2e": {
+      "status": "passed",
+      "checked_count": 60,
+      "failed_count": 0,
+      "evidence_path": "policy_e2e_results.jsonl",
+      "reason": ""
+    },
+    "cluster_metrics": {
+      "status": "passed",
+      "checked_count": 1296,
+      "failed_count": 0,
+      "evidence_path": "gold_cluster_metrics.csv",
+      "reason": ""
+    },
+    "deduplication": {
+      "status": "passed",
+      "checked_count": 63,
+      "failed_count": 0,
+      "evidence_path": "dedup_summary.jsonl",
+      "reason": "expanded corpus evaluated on frozen test families only"
+    },
+    "topic_pairs": {
+      "status": "passed",
+      "checked_count": 2376,
+      "failed_count": 0,
+      "evidence_path": "topic_pair_results.csv",
+      "reason": ""
+    },
+    "shortfall": {
+      "status": "passed",
+      "checked_count": 1296,
+      "failed_count": 0,
+      "evidence_path": "shortfall_attribution.csv",
+      "reason": ""
+    },
+    "engine_integration": {
+      "status": "passed",
+      "checked_count": 5,
+      "failed_count": 0,
+      "evidence_path": "engine_integration_results.jsonl",
+      "reason": ""
+    },
+    "offline_execution": {
+      "status": "passed",
+      "checked_count": 4,
+      "failed_count": 0,
+      "evidence_path": "usage.json",
+      "reason": ""
+    },
+    "reproducibility": {
+      "status": "passed",
+      "checked_count": 1,
+      "failed_count": 0,
+      "evidence_path": "reproduction/CHECKSUMS.sha256",
+      "reason": ""
+    }
+  },
+  "failure_cases": 0,
+  "retrieval_calls": 1396,
+  "retrieval_call_breakdown": {
+    "E1": 1296,
+    "E2_enabled": 54,
+    "E2_disabled": 6,
+    "E4_smoke": 40
+  },
+  "comparison_rows": 2376,
+  "scientific_scope": "synthetic_engineering_only",
+  "real_world_causal_claim_supported": false
+}

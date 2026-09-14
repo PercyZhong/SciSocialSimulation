@@ -1,0 +1,84 @@
+{
+  "schema_version": "stage_a_supplement_1",
+  "prepared_data_version": "stage_a_supplement_v2_test_split_dedup",
+  "reference_commit": "e9cd32ed07a9298696bd19ce53bbe221f15724a5",
+  "corpora": {
+    "corpus_original": "data/demo_papers.jsonl",
+    "corpus_expanded": "data/stage_a_supplement_v2/corpus_expanded.jsonl"
+  },
+  "topics": "data/topics.json",
+  "gold_paths": {
+    "families": "data/stage_a_supplement_v2/gold_families.jsonl",
+    "qrels": "data/stage_a_supplement_v2/qrels.jsonl",
+    "document_map": "data/stage_a_supplement_v2/document_family_map.jsonl",
+    "split_manifest": "data/stage_a_supplement_v2/split_manifest.json"
+  },
+  "family_content_audit": "data/stage_a_supplement_v2/family_content_audit.jsonl",
+  "policy_fixture": "data/stage_a_supplement_v2/policy_e2e_corpus.jsonl",
+  "rankers": [
+    "stage_a_reference",
+    "stage_a_supplement"
+  ],
+  "policies": [
+    "balanced",
+    "novelty",
+    "recognition"
+  ],
+  "fields": [
+    "agents",
+    "learning",
+    "science"
+  ],
+  "memory_conditions": [
+    "empty",
+    "related",
+    "unrelated"
+  ],
+  "read_history_mode": "fixed_empty",
+  "policy_paths": {
+    "retrieval": true
+  },
+  "candidate_pool_size": 20,
+  "top_k": 3,
+  "cutoff_year": 2025,
+  "allow_synthetic": true,
+  "recognition_alpha": 1.0,
+  "stage_lambda": 0.5,
+  "fixture_seed": 5101,
+  "execution_order_seed": 5102,
+  "policy_scenarios": [
+    "memory_tradeoff",
+    "retrieval_tradeoff",
+    "communication_tradeoff"
+  ],
+  "policy_histories": [
+    "empty",
+    "familiar_a",
+    "familiar_b"
+  ],
+  "retrieval": {
+    "mode": "stage_a_fixed",
+    "query_weights": {
+      "topic": 0.7,
+      "field": 0.2,
+      "memory": 0.1
+    },
+    "minimum_relevance": 0.08,
+    "candidate_pool_size": 20,
+    "top_k": 3,
+    "relevance_weight": 0.75,
+    "near_duplicate_threshold": 0.97,
+    "max_per_near_duplicate_cluster": 1,
+    "version": "stage_a_ranker_1"
+  },
+  "smoke": {
+    "seed": 42,
+    "policy": "balanced",
+    "network": "open",
+    "agents": 20,
+    "ticks": 12
+  },
+  "output_root": "outputs_stage_a_supplement",
+  "allow_network": false,
+  "allow_llm_calls": false
+}

@@ -1,0 +1,53 @@
+{
+  "status": "completed",
+  "documents": 90,
+  "eligible_documents": 87,
+  "unique_families": 75,
+  "topic_family_associations": 78,
+  "families_per_topic": {
+    "agent_memory": 7,
+    "agent_communication": 7,
+    "agent_tools": 6,
+    "agent_planning": 6,
+    "learning_policy": 7,
+    "learning_graph": 6,
+    "learning_reward": 7,
+    "learning_exploration": 6,
+    "science_hypothesis": 6,
+    "science_retrieval": 7,
+    "science_collaboration": 7,
+    "science_evaluation": 6
+  },
+  "independent_families_per_topic": {
+    "agent_memory": 6,
+    "agent_communication": 6,
+    "agent_tools": 6,
+    "agent_planning": 6,
+    "learning_policy": 6,
+    "learning_graph": 6,
+    "learning_reward": 6,
+    "learning_exploration": 6,
+    "science_hypothesis": 6,
+    "science_retrieval": 6,
+    "science_collaboration": 6,
+    "science_evaluation": 6
+  },
+  "shared_families_per_topic": {
+    "agent_memory": 1,
+    "agent_communication": 1,
+    "agent_tools": 0,
+    "agent_planning": 0,
+    "learning_policy": 1,
+    "learning_graph": 0,
+    "learning_reward": 1,
+    "learning_exploration": 0,
+    "science_hypothesis": 0,
+    "science_retrieval": 1,
+    "science_collaboration": 1,
+    "science_evaluation": 0
+  },
+  "calibration_families": 24,
+  "test_families": 51,
+  "family_overlap": [],
+  "future_documents": 3
+}

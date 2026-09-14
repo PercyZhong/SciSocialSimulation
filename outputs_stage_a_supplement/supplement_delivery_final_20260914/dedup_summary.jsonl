@@ -1,0 +1,2 @@
+{"corpus":"corpus_original","evaluated_documents":90,"evaluation_split":"all_legacy_documents","false_negative_pairs":0,"false_positive_pairs":0,"pairwise_precision":1.0,"pairwise_recall":1.0,"precision_null_reason":null,"recall_null_reason":null,"true_positive_pairs":294}
+{"corpus":"corpus_expanded","evaluated_documents":63,"evaluation_split":"test","false_negative_pairs":0,"false_positive_pairs":0,"pairwise_precision":1.0,"pairwise_recall":1.0,"precision_null_reason":null,"recall_null_reason":null,"true_positive_pairs":12}

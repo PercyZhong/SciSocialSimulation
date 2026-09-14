@@ -1,0 +1,25 @@
+{
+  "schema_version": "stage_a_supplement_1",
+  "prepared_data_version": "stage_a_supplement_v2_test_split_dedup",
+  "input_hashes": {
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\configs\\stage_a_supplement.json": "cb43a97244a40c41236ea2d150d0ac0fd509c5519d92c2e4d0477514cd331428",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\demo_papers.jsonl": "5f48660b9dcc0bc0b2d937c35d95304007af99efb6bcd5c0a83fc29cdbd21086",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\corpus_expanded.jsonl": "0b60be6462acbb7ace10bcb3989bdfb73107bb5bd6e406579d3f115508b7b156",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\topics.json": "8dd02ba6c840b24ed04e32d0f327ce74a7bfc6d6648bea0d6033c2d7e0ee83f6",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\gold_families.jsonl": "3e934413de1f315ccec95659149ae5c0ad8766b73eef2d974937c24d4c40ff91",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\qrels.jsonl": "b4f642fe82a9166e0b92cf383f2c46494cff985eaef0296434a052351ef94e85",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\document_family_map.jsonl": "158c4aa14c0efe40e9b6aaa16d2d33e3abf36530b8ace36d5a06a0d5205b2cf5",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\split_manifest.json": "03f9e02ee3f59dc6610777e7775917c85f1549ec10773c4a6e5eca0efdb33a8c",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\family_content_audit.jsonl": "8a1a183e572be6b3b0a54267b8b413467c400a4493eddd220eaeb04344f7f0ca",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\data\\stage_a_supplement_v2\\policy_e2e_corpus.jsonl": "10cffd8ea918a499e6aed7ecacb482ab04d6525dadefceefa868d4e141cb02b1"
+  },
+  "source_hashes": {
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\scimirror\\stage_a_supplement.py": "6a9dcd95f8f905f5707d6b2a4e3cb72215be98a533296ad7d66d123cd5810752",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\scimirror\\stage_a.py": "f41bcb54e6682a16454d3e5e6f0f69c37ecacefc701192a0da0194627b78480f",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\scimirror\\v03_retrieval.py": "15693215c625dbf66f7ab96dcac67464e10e870058ee5a36f7eea785ec3c984d",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\scimirror\\corpus.py": "6efc96c47a0109a5720765e8c51a3246f5369a4448a1ab2a748867a0dfad7089",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\scimirror\\policy.py": "b390377526c6e292f88bf1f4f185eafcba3337c85910dc61aa158c52035e174f",
+    "D:\\Tools\\GradeFirst\\SciSocialSimulation\\execute_stage_a_supplement.py": "f65f4a6df98f3731ee3c42f0d8f33f4b70951160347f9dd1e1c3cfa04f1b4b4c"
+  },
+  "implementation_bundle_hash": "a612c4c48f7b5d9c64c68093c0259bca60d25614400420aa3d11c4c3bc412066"
+}

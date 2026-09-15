@@ -26,7 +26,7 @@ def load_v03_config(path):
     retrieval = config.get('retrieval', {})
     required = {'mode','query_weights','minimum_relevance','candidate_pool_size','top_k',
                 'relevance_weight','near_duplicate_threshold','max_per_near_duplicate_cluster','version'}
-    if not required <= set(retrieval) or retrieval['mode'] not in ('legacy_v02','relevance_gated','stage_a_fixed','stage_a_semantic_guarded'):
+    if not required <= set(retrieval) or retrieval['mode'] not in ('legacy_v02','relevance_gated','stage_a_fixed','stage_a_semantic_guarded','stage_a_repaired_v1'):
         raise ValueError('Incomplete or invalid v0.3 retrieval configuration')
     if abs(sum(retrieval['query_weights'].values())-1) > 1e-12:
         raise ValueError('Query weights must sum to one')

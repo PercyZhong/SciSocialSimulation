@@ -1,0 +1,31 @@
+{
+  "schema_version":"stage_a_repair_1",
+  "review_commit":"33fd6ecd7fa2fb9f7f029c6566ade50a324579cb",
+  "topics":"data/topics.json",
+  "profiles_closure":"data/retrieval_topic_profiles_v1.json",
+  "profiles_repaired":"data/retrieval_topic_profiles_repair_v1.json",
+  "supplement_config":"configs/stage_a_supplement.json",
+  "closure_config":"configs/stage_a_closure.json",
+  "rankers":["stage_a_fixed","stage_a_semantic_guarded","stage_a_repaired_v1"],
+  "policies":["balanced","novelty","recognition"],
+  "fields":["agents","learning","science"],
+  "memory_conditions":["empty","related","unrelated"],
+  "cutoff_year":2025,
+  "allow_synthetic":true,
+  "recognition_alpha":1.0,
+  "stage_lambda":0.5,
+  "execution_order_seed":7102,
+  "reference_retrieval":{"mode":"stage_a_fixed","query_weights":{"topic":0.7,"field":0.2,"memory":0.1},"minimum_relevance":0.08,"candidate_pool_size":20,"top_k":3,"relevance_weight":0.75,"near_duplicate_threshold":0.97,"max_per_near_duplicate_cluster":1,"version":"stage_a_ranker_1"},
+  "closure_retrieval":{"mode":"stage_a_semantic_guarded","version":"stage_a_closure_1","profile_path":"data/retrieval_topic_profiles_v1.json","query_weights":{"topic":1.0,"field":0.0,"memory":0.0},"minimum_relevance":0.8,"match_window_tokens":18,"field_context_weight":0.05,"candidate_pool_size":20,"top_k":3,"relevance_weight":0.75,"near_duplicate_threshold":0.97,"max_per_near_duplicate_cluster":1},
+  "repaired_defaults":{"mode":"stage_a_repaired_v1","version":"stage_a_repaired_v1","profile_path":"data/retrieval_topic_profiles_repair_v1.json","query_weights":{"topic":1.0,"field":0.0,"memory":0.0},"minimum_relevance":0.8,"match_window_tokens":18,"alpha":0.75,"relevance_weight":0.75,"beta_field":0.05,"beta_memory":0.10,"memory_enabled":true,"candidate_pool_size":20,"top_k":3,"near_duplicate_threshold":0.97,"max_per_near_duplicate_cluster":1},
+  "calibration_grid":[
+    {"trial_id":"c01","minimum_relevance":0.8,"match_window_tokens":12,"beta_memory":0.05},
+    {"trial_id":"c02","minimum_relevance":0.8,"match_window_tokens":12,"beta_memory":0.10},
+    {"trial_id":"c03","minimum_relevance":0.8,"match_window_tokens":18,"beta_memory":0.05},
+    {"trial_id":"c04","minimum_relevance":0.8,"match_window_tokens":18,"beta_memory":0.10},
+    {"trial_id":"c05","minimum_relevance":0.9,"match_window_tokens":18,"beta_memory":0.05},
+    {"trial_id":"c06","minimum_relevance":0.9,"match_window_tokens":18,"beta_memory":0.10}
+  ],
+  "quality_thresholds":{"max_coverage_drop":0.05,"max_precision_drop":0.05,"positive_gate_recall":0.90,"negative_gate_false_positive_rate":0.0},
+  "output_root":"outputs_stage_a_repair","allow_network":false,"allow_llm_calls":false
+}

@@ -14,6 +14,8 @@ STAGE_A_RANKER_VERSION = 'stage_a_evidence_gate_context_rerank_1'
 STAGE_A_DEDUP_VERSION = 'stage_a_exact_fixture_family_plus_greedy_1'
 SEMANTIC_QUERY_VERSION = 'retrieval_topic_profiles_v1'
 SEMANTIC_RANKER_VERSION = 'stage_a_closure_1'
+REPAIRED_QUERY_VERSION = 'retrieval_topic_profiles_repair_v1'
+REPAIRED_RANKER_VERSION = 'stage_a_repaired_v1'
 
 
 # 将文本规范化为用于完全重复检测的稳定形式。
@@ -142,7 +144,7 @@ def load_retrieval_profiles(path):
     import json
     from pathlib import Path
     raw=json.loads(Path(path).read_text(encoding='utf-8'))
-    if raw.get('version')!=SEMANTIC_QUERY_VERSION or len(raw.get('topics',{}))!=12:
+    if raw.get('version') not in (SEMANTIC_QUERY_VERSION,REPAIRED_QUERY_VERSION) or len(raw.get('topics',{}))!=12:
         raise ValueError('Invalid retrieval topic profiles')
     required={'definition','positive_phrases','concept_groups','generic_terms','scope_note'}
     if any(not required<=set(profile) for profile in raw['topics'].values()):
@@ -151,6 +153,112 @@ def load_retrieval_profiles(path):
     if any(any(token in str(profile).lower() for token in forbidden) for profile in raw['topics'].values()):
         raise ValueError('Evaluation identifiers leaked into retrieval profiles')
     return raw
+
+
+# Normalize only explicitly frozen English inflections instead of truncating every trailing s.
+def repaired_words(text):
+    mapping={'agents':'agent','ideas':'idea','proposals':'proposal','papers':'paper','tools':'tool',
+      'strategies':'strategy','policies':'policy','hypotheses':'hypothesis','researchers':'researcher',
+      'teams':'team','graphs':'graph','signals':'signal','systems':'system','actions':'action'}
+    return [mapping.get(word,word) for word in re.findall(r'[a-z0-9]+',str(text).lower().replace('-',' '))]
+
+
+# Test a normalized phrase as a contiguous token sequence with explicit token boundaries.
+def token_phrase_present(words,phrase):
+    target=repaired_words(phrase)
+    return bool(target) and any(words[index:index+len(target)]==target for index in range(len(words)-len(target)+1))
+
+
+# Score the repaired profile using bounded phrase and concept co-occurrence in title/abstract only.
+def repaired_evidence_score(profile,paper,window_size):
+    title=repaired_words(paper['title']); abstract=repaired_words(paper['abstract'])
+    title_hits=[phrase for phrase in profile['positive_phrases'] if token_phrase_present(title,phrase)]
+    abstract_hits=[phrase for phrase in profile['positive_phrases'] if token_phrase_present(abstract,phrase)]
+    sentences=[repaired_words(value) for value in re.split(r'[.!?;]+',paper['title']+'. '+paper['abstract']) if value.strip()]
+    groups={name:list(values) for name,values in profile['concept_groups'].items()}
+    group_in=lambda words,values:any(token_phrase_present(words,value) for value in values)
+    matched=[name for name,values in groups.items() if any(group_in(sentence,values) for sentence in sentences)]
+    group_pass=bool(groups) and any(all(group_in(sentence,values) for values in groups.values()) for sentence in sentences)
+    if not group_pass and profile.get('cooccurrence_scope')!='sentence_only':
+        stream=repaired_words(paper['title']+' '+paper['abstract'])
+        group_pass=any(all(group_in(stream[index:index+window_size],values) for values in groups.values()) for index in range(len(stream)))
+        if group_pass: matched=list(groups)
+    generic_hit=any(token_phrase_present(title+abstract,value) for value in profile['generic_terms'])
+    score=max(1.0 if title_hits else 0.0,.9 if abstract_hits else 0.0,.8 if group_pass else 0.0)
+    return score,{'title_match_score':1.0 if title_hits else 0.0,'abstract_match_score':.9 if abstract_hits else 0.0,
+      'matched_phrases':title_hits+abstract_hits,'matched_concept_groups':matched,'generic_only_match':generic_hit and score==0}
+
+
+# Resolve semantic-memory terms through frozen retrieval profiles and report unknown literals.
+def repaired_memory_tokens(profiles,memory_terms):
+    words=set(); statuses=[]
+    for raw in memory_terms:
+        value=raw.get('topic_id',raw.get('text','')) if isinstance(raw,dict) else str(raw)
+        key=re.sub(r'[_\-\s]+','_',value.strip().lower())
+        if key in profiles['topics']:
+            profile=profiles['topics'][key]
+            material=' '.join([profile['definition'],*profile['positive_phrases'],*(term for values in profile['concept_groups'].values() for term in values)])
+            words.update(repaired_words(material)); statuses.append({'input':value,'status':'resolved_topic','topic_id':key})
+        else:
+            words.update(repaired_words(value)); statuses.append({'input':value,'status':'unknown_literal','topic_id':None})
+    return words,statuses
+
+
+# Retrieve with a memory-independent evidence pool and repaired field/memory/policy reranking.
+def retrieve_stage_a_repaired(papers,topic_model,policy_context,config,topic_id,field_name,memory_terms,read_texts):
+    profiles=config.get('_profiles')
+    if not profiles or profiles.get('version')!=REPAIRED_QUERY_VERSION or topic_id not in profiles['topics']:
+        raise ValueError('Repaired retrieval profiles were not loaded')
+    beta_field=float(config['beta_field']); requested_beta_memory=float(config['beta_memory'])
+    if beta_field<0 or requested_beta_memory<0 or beta_field+requested_beta_memory>=1: raise ValueError('Invalid repaired weights')
+    memory_enabled=bool(config.get('memory_enabled',True)); memory_words,memory_status=repaired_memory_tokens(profiles,memory_terms)
+    beta_memory=requested_beta_memory if memory_enabled and memory_words else 0.0
+    evidence_weight=1-beta_field-beta_memory; profile=profiles['topics'][topic_id]; scored=[]
+    for paper in papers.values():
+        evidence,detail=repaired_evidence_score(profile,paper,int(config['match_window_tokens']))
+        text_words=set(repaired_words(paper['title']+' '+paper['abstract']))
+        memory_score=len(memory_words&text_words)/len(memory_words) if memory_words and memory_enabled else 0.0
+        field_score=1.0 if field_name and field_name!='unknown' and paper['field']==field_name else 0.0
+        exploration=(sum(1-similarity(paper['title']+' '+paper['abstract'],old) for old in read_texts)/len(read_texts) if read_texts else .5)
+        labels=topic_model.paper_topics[paper['id']]; attention=sum(topic_model.attention[t] for t in labels)/len(labels) if labels else 0.0
+        scored.append({'paper':paper,'evidence_score':evidence,'field_score':field_score,'memory_score':memory_score,
+          'exploration_score':exploration,'attention_score':attention,'topic_ids':labels,**detail})
+    qualified=[row for row in scored if row['evidence_score']>=float(config['minimum_relevance'])]
+    base=sorted(qualified,key=lambda row:(-row['evidence_score'],row['paper']['id']))[:int(config['candidate_pool_size'])]
+    clusters=duplicate_clusters(base,float(config['near_duplicate_threshold']),fixture_aware=True); wn,wr=policy_context.weights
+    alpha=float(config['alpha'])
+    for row in base:
+        row['cluster_id']=clusters[row['paper']['id']]
+        row['retrieval_score']=evidence_weight*row['evidence_score']+beta_field*row['field_score']+beta_memory*row['memory_score']
+        row['policy_score']=wn*row['exploration_score']+wr*row['attention_score']
+        row['final_score']=alpha*row['retrieval_score']+(1-alpha)*row['policy_score']
+    ranked=sorted(base,key=lambda row:(-row['final_score'],-row['evidence_score'],row['paper']['id']))
+    selected=[]; counts=Counter()
+    for row in ranked:
+        if counts[row['cluster_id']]>=int(config['max_per_near_duplicate_cluster']): continue
+        selected.append(row); counts[row['cluster_id']]+=1
+        if len(selected)==int(config['top_k']): break
+    candidate_rank={row['paper']['id']:index+1 for index,row in enumerate(base)}; selected_rank={row['paper']['id']:index+1 for index,row in enumerate(selected)}
+    diagnostics=[]
+    for row in sorted(scored,key=lambda value:value['paper']['id']):
+        pid=row['paper']['id']; passed=row in qualified
+        diagnostics.append({'paper_id':pid,**{key:row[key] for key in ('title_match_score','abstract_match_score','matched_phrases','matched_concept_groups','generic_only_match','evidence_score','field_score','memory_score','exploration_score','attention_score')},
+          'gate_passed':passed,'gate_reason':'passed_semantic_evidence' if passed else ('generic_only' if row['generic_only_match'] else 'no_semantic_evidence'),
+          'retrieval_score':row.get('retrieval_score'),'policy_score':row.get('policy_score'),'final_score':row.get('final_score'),
+          'candidate_rank':candidate_rank.get(pid),'selected_rank':selected_rank.get(pid),'pool_member':pid in candidate_rank,
+          'effective_evidence_weight':evidence_weight,'effective_beta_field':beta_field,'effective_beta_memory':beta_memory})
+    config_identity={key:value for key,value in config.items() if key!='_profiles'}
+    query_id=digest({'corpus':digest(papers),'topic':topic_id,'field':field_name,'memory':memory_terms,'read_texts':read_texts,
+      'policy':policy_context.audit(),'config':config_identity,'profile':digest(profile)})[:20]
+    audit={'schema_version':'0.3','stage_a_schema_version':'stage_a_repair_1','mode':'stage_a_repaired_v1','ranker_version':REPAIRED_RANKER_VERSION,
+      'query_id':query_id,'decision_id':query_id,'topic_id':topic_id,'query_profile_hash':digest(profile),'corpus_hash':digest(papers),
+      'recognition_snapshot_hash':topic_model.audit['snapshot_hash'],'memory_enabled':memory_enabled,'memory_resolution':memory_status,
+      'scored_ids':sorted(papers),'evidence_qualified_ids':[row['paper']['id'] for row in qualified],
+      'qualified_ids':[row['paper']['id'] for row in qualified],'base_candidate_ids':[row['paper']['id'] for row in base],
+      'ranked_ids':[row['paper']['id'] for row in ranked],'selected_ids':[row['paper']['id'] for row in selected],
+      'selected_count':len(selected),'fallback':None if len(selected)==int(config['top_k']) else ('no_qualified_evidence' if not qualified else 'insufficient_distinct_evidence'),
+      'diagnostics':diagnostics,'candidates':[row for row in diagnostics if row['pool_member']],'policy_context':policy_context.audit()}
+    return [row['paper'] for row in selected],audit
 
 
 # Score phrases and concept-group co-occurrence using only title and abstract text.

@@ -1,0 +1,8 @@
+{
+  "schema_version":"stage_b_retrieval_pilot_1",
+  "topics":["agent_memory","science_retrieval","science_evaluation"],
+  "target_documents":[100,200],"target_queries":[20,30],"cutoff_year":2025,
+  "rankers":["bm25_lexical","stage_a_semantic_guarded","stage_a_repaired_v1"],
+  "top_k":10,"policy":"balanced_off","memory_enabled":false,"field_context_enabled":false,
+  "allow_network":false,"allow_llm_calls":false
+}

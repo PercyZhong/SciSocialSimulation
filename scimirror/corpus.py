@@ -60,6 +60,16 @@ class Corpus:
             read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
             return retrieve_stage_a_fixed(self.papers, topic_model, policy_context, self.retrieval_config,
                                           selected_topic_id, field_name, memory_terms or [], read_texts)
+        if self.retrieval_config and self.retrieval_config.get('mode') == 'stage_a_semantic_guarded':
+            from .v03_retrieval import load_retrieval_profiles, retrieve_stage_a_semantic_guarded
+            read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
+            config=dict(self.retrieval_config)
+            if '_profiles' not in config:
+                profile_path=config.get('profile_path')
+                if not profile_path: raise ValueError('Semantic retrieval profile_path missing')
+                config['_profiles']=load_retrieval_profiles(profile_path)
+            return retrieve_stage_a_semantic_guarded(self.papers, topic_model, policy_context, config,
+                selected_topic_id, field_name, memory_terms or [], read_texts)
         scored = []
         read_texts = [self.papers[x]['title']+' '+self.papers[x]['abstract'] for x in read_ids if x in self.papers]
         for paper in self.papers.values():

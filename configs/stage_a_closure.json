@@ -1,0 +1,47 @@
+{
+  "schema_version": "stage_a_closure_1",
+  "review_commit": "ba45e7b42e0eb5655a3e17dfc6e0313eba4c9445",
+  "topics": "data/topics.json",
+  "profiles": "data/retrieval_topic_profiles_v1.json",
+  "supplement_config": "configs/stage_a_supplement.json",
+  "corpora": {
+    "corpus_original": "data/demo_papers.jsonl",
+    "corpus_expanded": "data/stage_a_closure_v3/corpus_expanded_closure.jsonl"
+  },
+  "gold_paths": {
+    "families": "data/stage_a_closure_v3/gold_families_closure.jsonl",
+    "qrels": "data/stage_a_closure_v3/qrels_closure.jsonl",
+    "document_map": "data/stage_a_closure_v3/document_family_map_closure.jsonl",
+    "challenge_qrels": "data/stage_a_closure_v3/challenge_qrels.jsonl",
+    "split_manifest": "data/stage_a_closure_v3/split_manifest.json"
+  },
+  "rankers": ["stage_a_reference", "stage_a_semantic_guarded"],
+  "policies": ["balanced", "novelty", "recognition"],
+  "fields": ["agents", "learning", "science"],
+  "memory_conditions": ["empty", "related", "unrelated"],
+  "read_history_mode": "fixed_empty",
+  "cutoff_year": 2025,
+  "allow_synthetic": true,
+  "recognition_alpha": 1.0,
+  "stage_lambda": 0.5,
+  "fixture_seed": 6101,
+  "execution_order_seed": 6102,
+  "reference_retrieval": {
+    "mode":"stage_a_fixed","query_weights":{"topic":0.7,"field":0.2,"memory":0.1},"minimum_relevance":0.08,
+    "candidate_pool_size":20,"top_k":3,"relevance_weight":0.75,"near_duplicate_threshold":0.97,
+    "max_per_near_duplicate_cluster":1,"version":"stage_a_ranker_1"
+  },
+  "semantic_retrieval": {
+    "mode":"stage_a_semantic_guarded","version":"stage_a_closure_1","profile_path":"data/retrieval_topic_profiles_v1.json",
+    "query_weights":{"topic":1.0,"field":0.0,"memory":0.0},
+    "minimum_relevance":0.8,"match_window_tokens":18,"field_context_weight":0.05,"candidate_pool_size":20,"top_k":3,
+    "relevance_weight":0.75,"near_duplicate_threshold":0.97,"max_per_near_duplicate_cluster":1
+  },
+  "quality_thresholds": {
+    "science_evaluation_capacity_coverage":0.80,"macro_capacity_coverage":0.90,
+    "minimum_topic_capacity_coverage":0.80,"maximum_baseline_drop":0.05,"generic_negative_gate_passes":0,
+    "gold_perturbation_ranking_changes":0,"zero_relevant_returns_with_supply":0
+  },
+  "smoke":{"seed":42,"policy":"balanced","network":"open","agents":20,"ticks":12},
+  "output_root":"outputs_stage_a_closure","allow_network":false,"allow_llm_calls":false
+}

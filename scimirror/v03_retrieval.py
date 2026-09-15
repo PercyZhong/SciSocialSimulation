@@ -12,6 +12,8 @@ DEDUP_VERSION = 'v03_exact_id_doi_text_plus_greedy_1'
 STAGE_A_QUERY_VERSION = 'stage_a_normalized_topic_memory_1'
 STAGE_A_RANKER_VERSION = 'stage_a_evidence_gate_context_rerank_1'
 STAGE_A_DEDUP_VERSION = 'stage_a_exact_fixture_family_plus_greedy_1'
+SEMANTIC_QUERY_VERSION = 'retrieval_topic_profiles_v1'
+SEMANTIC_RANKER_VERSION = 'stage_a_closure_1'
 
 
 # 将文本规范化为用于完全重复检测的稳定形式。
@@ -127,6 +129,112 @@ def stage_a_component_relevance(query, paper):
         scores[name] = len(words & paper_words)/len(words) if words else 0.0
     ranking_relevance = sum(query['weights'][name]*scores[name] for name in scores)
     return scores['topic'], ranking_relevance, scores
+
+
+# Normalize punctuation, hyphens, case, and simple English plurals for guarded matching.
+def semantic_words(text):
+    words=re.findall(r'[a-z0-9]+',str(text).lower().replace('-',' '))
+    return [word[:-1] if len(word)>3 and word.endswith('s') and not word.endswith('ss') else word for word in words]
+
+
+# Load and validate retrieval-only profiles without consulting corpus labels or qrels.
+def load_retrieval_profiles(path):
+    import json
+    from pathlib import Path
+    raw=json.loads(Path(path).read_text(encoding='utf-8'))
+    if raw.get('version')!=SEMANTIC_QUERY_VERSION or len(raw.get('topics',{}))!=12:
+        raise ValueError('Invalid retrieval topic profiles')
+    required={'definition','positive_phrases','concept_groups','generic_terms','scope_note'}
+    if any(not required<=set(profile) for profile in raw['topics'].values()):
+        raise ValueError('Incomplete retrieval topic profile')
+    forbidden=('supp_','family_','gold_','variant_','challenge_')
+    if any(any(token in str(profile).lower() for token in forbidden) for profile in raw['topics'].values()):
+        raise ValueError('Evaluation identifiers leaked into retrieval profiles')
+    return raw
+
+
+# Score phrases and concept-group co-occurrence using only title and abstract text.
+def semantic_evidence_score(profile,paper,window_size):
+    title=' '.join(semantic_words(paper['title'])); abstract=' '.join(semantic_words(paper['abstract']))
+    phrases=[' '.join(semantic_words(x)) for x in profile['positive_phrases']]
+    title_hits=[p for p in phrases if p and p in title]; abstract_hits=[p for p in phrases if p and p in abstract]
+    sentences=[semantic_words(x) for x in re.split(r'[.!?;]+',paper['title']+'. '+paper['abstract']) if x.strip()]
+    normalized_groups={group:[semantic_words(x) for x in alternatives] for group,alternatives in profile['concept_groups'].items()}
+    has_alt=lambda segment,alternatives:any(all(word in segment for word in alt) for alt in alternatives)
+    matched_groups=[group for group,alternatives in normalized_groups.items() if any(has_alt(segment,alternatives) for segment in sentences)]
+    group_pass=bool(normalized_groups) and any(all(has_alt(segment,alternatives) for alternatives in normalized_groups.values()) for segment in sentences)
+    if not group_pass and len(profile['concept_groups'])>1 and profile.get('cooccurrence_scope')!='sentence_only':
+        stream=semantic_words(paper['title']+' '+paper['abstract'])
+        for start in range(len(stream)):
+            segment=stream[start:start+window_size]
+            window_present=[]
+            for alternatives in normalized_groups.values():
+                window_present.append(any(all(word in segment for word in alt) for alt in alternatives))
+            if all(window_present): group_pass=True; matched_groups=list(normalized_groups); break
+    generic={' '.join(semantic_words(x)) for x in profile['generic_terms']}
+    generic_hit=any(term and term in title+' '+abstract for term in generic)
+    score=max(1.0 if title_hits else 0.0,.9 if abstract_hits else 0.0,.8 if group_pass else 0.0)
+    generic_only=generic_hit and score==0
+    return score,{'title_match_score':1.0 if title_hits else 0.0,'abstract_match_score':.9 if abstract_hits else 0.0,
+                  'matched_phrases':title_hits+abstract_hits,'matched_concept_groups':matched_groups,
+                  'generic_only_match':generic_only}
+
+
+# Retrieve with a corpus-wide content gate followed by a common pool and policy reranking.
+def retrieve_stage_a_semantic_guarded(papers,topic_model,policy_context,config,topic_id,field_name,
+                                      memory_terms,read_texts):
+    profiles=config.get('_profiles')
+    if not profiles or topic_id not in profiles['topics']:
+        raise ValueError('Semantic retrieval profiles were not loaded')
+    profile=profiles['topics'][topic_id]; scored=[]
+    for paper in papers.values():
+        evidence,detail=semantic_evidence_score(profile,paper,int(config['match_window_tokens']))
+        exploration=(sum(1-similarity(paper['title']+' '+paper['abstract'],old) for old in read_texts)/len(read_texts) if read_texts else .5)
+        topic_ids=topic_model.paper_topics[paper['id']]
+        attention=sum(topic_model.attention[t] for t in topic_ids)/len(topic_ids) if topic_ids else 0.0
+        context=(1.0 if paper['field']==field_name else 0.0)*config['field_context_weight']
+        scored.append({'paper':paper,'evidence_relevance':evidence,'raw_relevance':evidence+context,
+                       'context_score':context,'exploration':exploration,'attention':attention,
+                       'topic_ids':topic_ids,**detail})
+    qualified=[x for x in scored if x['evidence_relevance']>=config['minimum_relevance']]
+    base=sorted(qualified,key=lambda x:(-x['evidence_relevance'],-x['context_score'],x['paper']['id']))[:config['candidate_pool_size']]
+    clusters=duplicate_clusters(base,config['near_duplicate_threshold'],fixture_aware=True)
+    wn,wr=policy_context.weights
+    for item in base:
+        item['normalized_relevance']=item['evidence_relevance']
+        item['cluster_id']=clusters[item['paper']['id']]
+        item['policy_score']=wn*item['exploration']+wr*item['attention']
+        item['final_score']=config['relevance_weight']*item['normalized_relevance']+(1-config['relevance_weight'])*item['policy_score']
+    ranked=sorted(base,key=lambda x:(-x['final_score'],-x['evidence_relevance'],x['paper']['id']))
+    selected=[]; counts=Counter()
+    for item in ranked:
+        if counts[item['cluster_id']]>=config['max_per_near_duplicate_cluster']: continue
+        selected.append(item); counts[item['cluster_id']]+=1
+        if len(selected)==config['top_k']: break
+    selected_rank={x['paper']['id']:i+1 for i,x in enumerate(selected)}
+    candidate_rank={x['paper']['id']:i+1 for i,x in enumerate(base)}
+    diagnostics=[]
+    for item in sorted(scored,key=lambda x:x['paper']['id']):
+        pid=item['paper']['id']; passed=item in qualified
+        diagnostics.append({'paper_id':pid,'title_match_score':item['title_match_score'],'abstract_match_score':item['abstract_match_score'],
+          'matched_phrases':item['matched_phrases'],'matched_concept_groups':item['matched_concept_groups'],
+          'generic_only_match':item['generic_only_match'],'evidence_score':item['evidence_relevance'],'gate_passed':passed,
+          'gate_reason':'passed_semantic_evidence' if passed else ('generic_only' if item['generic_only_match'] else 'no_semantic_evidence'),
+          'context_score':item['context_score'],'exploration_score':item['exploration'],'attention_score':item['attention'],
+          'policy_score':item.get('policy_score'),'final_score':item.get('final_score'),'candidate_rank':candidate_rank.get(pid),
+          'selected_rank':selected_rank.get(pid),'topic_ids':item['topic_ids'],'cluster_id':item.get('cluster_id')})
+    reason=None if len(selected)==config['top_k'] else ('no_qualified_evidence' if not qualified else 'insufficient_distinct_evidence')
+    profile_hash=digest(profile); query_id=digest({'profile':profile_hash,'topic':topic_id,'corpus':digest(papers),'config':{k:v for k,v in config.items() if k!='_profiles'}})[:20]
+    audit={'schema_version':'0.3','stage_a_schema_version':'stage_a_closure_1','mode':'stage_a_semantic_guarded',
+      'ranker_version':SEMANTIC_RANKER_VERSION,'query_id':query_id,'topic_id':topic_id,'query_profile_hash':profile_hash,
+      'corpus_hash':digest(papers),'dedup_version':STAGE_A_DEDUP_VERSION,'scored_ids':sorted(papers),
+      'recalled_ids':sorted(papers),'evidence_qualified_ids':[x['paper']['id'] for x in qualified],
+      'qualified_ids':[x['paper']['id'] for x in qualified],'base_candidate_ids':[x['paper']['id'] for x in base],
+      'ranked_ids':[x['paper']['id'] for x in ranked],'ranked_qualified_ids':[x['paper']['id'] for x in ranked],
+      'selected_ids':[x['paper']['id'] for x in selected],'selected_count':len(selected),'candidate_pool_size':len(base),
+      'fallback':reason,'minimum_relevance':config['minimum_relevance'],'diagnostics':diagnostics,
+      'candidates':[x for x in diagnostics if x['candidate_rank'] is not None],'policy_context':policy_context.audit()}
+    return [x['paper'] for x in selected],audit
 
 
 # Retrieve from a common corpus-wide pool, gate on evidence relevance, then apply context and policy reranking.

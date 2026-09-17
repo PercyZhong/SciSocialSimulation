@@ -204,15 +204,20 @@ def analyze(config,root,output,registry):
     output=Path(output); rows=read_jsonl(output/'core_results.jsonl'); evaluated=[]
     datasets={name:load_dataset(config,root,registry,name) for name in ('original_legacy','supplement_unchanged')}
     for row in rows:
-        _,_,doc_family,relevant=datasets[row['dataset_id']]; evaluated.append({**row,**evaluate_selection(row['topic_id'],row['selected_ids'],row['candidate_ids'],doc_family,relevant)})
+        _,_,doc_family,relevant=datasets[row['dataset_id']]
+        spec=registry[row['dataset_id']]; judged=None
+        if spec['qrels_path']:
+            _,judged,_=build_gold(read_jsonl(Path(root)/spec['document_map_path']),read_jsonl(Path(root)/spec['qrels_path']),set(doc_family))
+        evaluated.append({**row,**evaluate_selection(row['topic_id'],row['selected_ids'],row['candidate_ids'],doc_family,relevant,judged=judged)})
     grouped=defaultdict(list)
     for row in evaluated: grouped[(row['dataset_id'],row['ranker'],row['topic_id'],row['memory_condition'])].append(row)
     topic=[]
     for (dataset,ranker,topic_id,memory),values in sorted(grouped.items()):
-        cov=[x['capacity_coverage'] for x in values if x['capacity_coverage'] is not None]; prec=[x['document_precision'] for x in values if x['document_precision'] is not None]
+        cov_num=sum(x['capacity_coverage_numerator'] for x in values); cov_den=sum(x['capacity_coverage_denominator'] for x in values); prec_num=sum(x['relevant_selected_count'] for x in values); prec_den=sum(x['document_precision_denominator'] for x in values)
         topic.append({'dataset_id':dataset,'ranker':ranker,'topic_id':topic_id,'memory_condition':memory,'n':len(values),
-          'mean_capacity_coverage':statistics.mean(cov) if cov else None,'coverage_n':len(cov),'mean_document_precision':statistics.mean(prec) if prec else None,
-          'precision_n':len(prec),'empty_results':sum(x['empty_result'] for x in values),'all_irrelevant':sum(x['all_returned_irrelevant'] for x in values)})
+          'mean_capacity_coverage':cov_num/cov_den if cov_den else None,'coverage_n':sum(x['capacity_coverage'] is not None for x in values),'capacity_coverage_numerator':cov_num,'capacity_coverage_denominator':cov_den,
+          'mean_document_precision':prec_num/prec_den if prec_den else None,'precision_n':sum(x['document_precision'] is not None for x in values),'document_precision_numerator':prec_num,'document_precision_denominator':prec_den,
+          'empty_results':sum(x['empty_result'] for x in values),'all_irrelevant':sum(x['all_returned_irrelevant'] for x in values)})
     write_jsonl(output/'evaluated_results.jsonl',evaluated); write_csv(output/'metrics_by_dataset_topic.csv',topic)
     mixed=read_jsonl(output/'mixed_source_results.jsonl'); write_csv(output/'source_contribution.csv',[{'source':'old_supplement','slots':sum(x['old_selected'] for x in mixed)},{'source':'closure_new','slots':sum(x['closure_selected'] for x in mixed)}])
     challenges=read_jsonl(output/'challenge_results.jsonl'); positives=[x for x in challenges if x['expected_positive'] and x['eligible']]; negatives=[x for x in challenges if not x['expected_positive'] and x['eligible']]
@@ -257,6 +262,8 @@ def validate(config,root,output,registry,reproduction_status=None):
     engine_path=output/'engine_boundary'/'results.jsonl'; engine=read_jsonl(engine_path); engine_ok=len(engine)==9 and all(row['status']=='passed' and row.get('replay_equal',True) for row in engine)
     repository_path=output/'repository_regression'/'result.json'; repository=json.loads(repository_path.read_text()) if repository_path.exists() else {'status':'not_run'}
     gold=json.loads((output/'gold_audit_status.json').read_text()); stage_b=json.loads((output/'stage_b_prep'/'status.json').read_text())
+    test_evidence=json.loads((output/'tests_report.json').read_text()) if (output/'tests_report.json').exists() else {'status':'missing'}
+    stage_b_tooling_ok=(test_evidence.get('status')=='passed' and all((output/'stage_b_prep'/name).exists() for name in ('config.json','queries_template.csv','family_map_template.csv','annotations_template.csv')))
     calibration=json.loads((output/'calibration_result.json').read_text()); trials=list(csv.DictReader((output/'calibration_trials.csv').open(encoding='utf-8-sig',newline=''))); calibration_cases=read_jsonl(output/'calibration_case_results.jsonl')
     selected=[row for row in trials if str(row.get('selected','')).lower()=='true']
     expected_calls=len(config['calibration_grid'])*len(json.loads((Path(root)/config['topics']).read_text(encoding='utf-8')))
@@ -272,12 +279,14 @@ def validate(config,root,output,registry,reproduction_status=None):
       'legacy_regression_status':'passed' if legacy_ok else 'failed','gold_review_status':gold['status'],'challenge_status':'passed' if challenge_ok else 'failed',
       'calibration_status':'passed' if calibration_ok else 'failed',
       'memory_status':'passed' if off_ok and on_response and pool_isolation else 'failed','engine_status':'passed' if engine_ok else 'failed',
-      'repository_regression_status':repository['status'],'reproduction_status':reproduction_status or 'not_run','stage_b_tooling_status':'passed',
+      'repository_regression_status':repository['status'],'reproduction_status':reproduction_status or 'not_run','stage_b_tooling_status':'passed' if stage_b_tooling_ok else 'failed',
       'stage_b_data_status':stage_b['data_status'],'stage_b_annotation_status':stage_b['annotation_status'],
       'all_required_a_checks_passed':engineering and legacy_ok and gold['status']=='supported','ready_for_real_corpus_pilot':engineering,
       'ready_for_scientific_claims':False,'checks':{'integrity':integrity,'recognition_isolation':recognition_ok,'challenge':challenge_ok,'memory_off_consistent':off_ok,
         'memory_on_response':on_response,'memory_pool_isolation':pool_isolation,'engine':engine_ok,'repository':repository['status']=='passed','reproduction':repro_ok},
-      'legacy_failure_count':len(analysis['legacy_regression_failures']),'known_limitations':['legacy synthetic gold contains semantic ambiguity','no real corpus supplied','no independent human labels supplied','deterministic diagnostics are not independent social worlds']}
+      'legacy_failure_record_count':len(analysis['legacy_regression_failures']),
+      'legacy_failed_topic_count':len({row['topic_id'] for row in analysis['legacy_regression_failures'] if row.get('status')=='failed'}),
+      'known_limitations':['legacy synthetic gold contains semantic ambiguity','no real corpus supplied','no independent human labels supplied','deterministic diagnostics are not independent social worlds']}
     result['checks']['measured_calibration']=calibration_ok
     dump(output/'DELIVERY_VALIDATION.json',result); return result
 

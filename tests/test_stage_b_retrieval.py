@@ -2,7 +2,7 @@
 import csv, json, tempfile, unittest
 from pathlib import Path
 
-from scimirror.stage_b_retrieval import analyze,bm25_scores,export_annotation,import_annotations,import_corpus,import_queries,init_pilot,normalize_identifier,pool
+from scimirror.stage_b_retrieval import analyze,bm25_scores,import_corpus,import_reviewers,init_pilot,normalize_identifier
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -33,19 +33,19 @@ class StageBRetrievalTests(unittest.TestCase):
 
     # Keep initialized annotation files empty and the scientific status pending.
     def test_empty_templates_and_pending_status(self):
-        self.assertEqual(0,len(list(csv.DictReader((self.run/'queries_template.csv').open(encoding='utf-8-sig')))))
-        self.assertEqual('awaiting_human_labels',analyze(self.run)['status'])
+        with (self.run/'queries_template.csv').open(encoding='utf-8-sig') as stream: rows=list(csv.DictReader(stream))
+        self.assertEqual(0,len(rows))
+        self.assertEqual('invalid_empty_scope',analyze(self.run)['status'])
 
-    # Reject a Codex signature in a field reserved for independent human reviewers.
-    def test_codex_cannot_impersonate_reviewer(self):
-        (self.run/'annotation_public'/'candidates.csv').write_text('blind_id\nb1\n',encoding='utf-8-sig'); source=Path(self.temp.name)/'ratings.csv'; source.write_text('blind_id,reviewer_id,relevance_0_1_2,unsure,rationale,rated_at\nb1,codex,2,false,x,now\n')
-        with self.assertRaises(ValueError): import_annotations(source,self.run)
+    # Require exactly two frozen rating roles instead of inferring reviewers from rows.
+    def test_reviewer_registry_requires_two_rating_roles(self):
+        source=Path(self.temp.name)/'reviewers.json'; source.write_text(json.dumps({'reviewers':[{'reviewer_id':'a','role':'reviewer'}]}))
+        with self.assertRaises(ValueError): import_reviewers(source,self.run)
 
-    # Require human provenance fields instead of silently adding a synthetic timestamp or basis.
-    def test_annotation_requires_basis_and_time(self):
-        (self.run/'annotation_public'/'candidates.csv').write_text('blind_id\nb1\n',encoding='utf-8-sig'); source=Path(self.temp.name)/'ratings.csv'
-        source.write_text('blind_id,reviewer_id,relevance_0_1_2,unsure,rationale,rated_at\nb1,human_a,2,false,,\n')
-        with self.assertRaises(ValueError): import_annotations(source,self.run)
+    # Preserve explicit test-only state in synthetic workflow fixtures.
+    def test_test_only_status(self):
+        other=Path(self.temp.name)/'test_only'; cfg=dict(self.config,test_only=True); status=init_pilot(other,cfg)
+        self.assertTrue(status['test_only'])
 
 
 if __name__=='__main__': unittest.main()

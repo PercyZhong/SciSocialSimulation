@@ -1,0 +1,46 @@
+{
+  "schema_version": "stage_b_small_1",
+  "topics": ["agent_memory", "science_retrieval", "science_evaluation"],
+  "topics_path": "data/topics.json",
+  "target_documents": [30, 50],
+  "target_queries": [6, 9],
+  "cutoff_year": 2025,
+  "annotation_scope": "full_corpus",
+  "rankers": ["bm25_lexical", "stage_a_semantic_guarded", "stage_a_repaired_v1"],
+  "parameter_origin": "stage_b_predeclared_not_stage_a_selected",
+  "ranker_config": {
+    "bm25_k1": 1.2,
+    "bm25_b": 0.75,
+    "gate_pool_size": 20,
+    "top_k": 10,
+    "query_weight": 0.2,
+    "near_duplicate_threshold": 0.97,
+    "max_per_near_duplicate_cluster": 1,
+    "tie_break": "paper_id_ascending"
+  },
+  "closure_gate": {
+    "mode": "stage_a_semantic_guarded",
+    "version": "stage_a_closure_1",
+    "profile_path": "data/retrieval_topic_profiles_v1.json",
+    "minimum_relevance": 0.8,
+    "match_window_tokens": 18,
+    "field_context_weight": 0.0,
+    "relevance_weight": 1.0
+  },
+  "repaired_gate": {
+    "mode": "stage_a_repaired_v1",
+    "version": "stage_a_repaired_v1",
+    "profile_path": "data/retrieval_topic_profiles_repair_v1.json",
+    "minimum_relevance": 0.8,
+    "match_window_tokens": 18,
+    "alpha": 1.0,
+    "beta_field": 0.0,
+    "beta_memory": 0.0,
+    "memory_enabled": false
+  },
+  "policy": "disabled",
+  "memory_enabled": false,
+  "field_context_enabled": false,
+  "allow_network": false,
+  "allow_llm_calls": false
+}

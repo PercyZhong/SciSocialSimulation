@@ -57,7 +57,7 @@ class StageARepairTests(unittest.TestCase):
     def test_calibration_is_measured_not_static(self):
         with tempfile.TemporaryDirectory() as directory:
             result=calibrate(self.config,ROOT,Path(directory),self.registry)
-            trials=list(csv.DictReader((Path(directory)/'calibration_trials.csv').open(encoding='utf-8-sig')))
+            with (Path(directory)/'calibration_trials.csv').open(encoding='utf-8-sig') as stream: trials=list(csv.DictReader(stream))
             cases=[json.loads(line) for line in (Path(directory)/'calibration_case_results.jsonl').read_text().splitlines()]
             self.assertEqual(6,len(trials)); self.assertEqual(72,result['production_retrieval_calls'])
             self.assertTrue(all(row['measurement_status']=='measured' for row in trials))

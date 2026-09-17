@@ -158,3 +158,10 @@ def analyze(run_dir):
     result={'status':'completed' if paired else 'awaiting_human_labels','ratings':len(ratings),'double_rated_pairs':len(paired),'raw_agreement':agreement,
       'linear_weighted_kappa':kappa,'kappa_null_reason':reason,'judged_coverage_status':'pending_without_complete_pool_labels','ready_for_scientific_claims':False}
     (run_dir/'analysis.json').write_text(json.dumps(result,indent=2)+'\n'); return result
+
+
+# The versioned small-pilot implementation supersedes these compatibility definitions.
+from .stage_b_pilot import (agreement_metrics, analyze, bm25_scores, coverage_status, export_adjudication,
+    export_annotation, freeze, import_adjudication, import_annotations, import_corpus,
+    import_family_map, import_queries, import_reviewers, init_pilot, normalize_identifier,
+    pool, read_records, run_config, verify_freeze)

@@ -266,6 +266,18 @@ python3 execute_stage_a_supplement.py all --config configs/stage_a_supplement.js
 
 Windows 可将 `python3` 换成当前 Python 3.11+ 环境的 `python`。`all` 运行 1296 次冻结状态检索、54 次启用 policy 探针、6 次关闭控制和 2376 行复用式主题对比较；这些是确定性合成工程验证，不是随机社会世界重复或现实因果证据。结果以 `DELIVERY_VALIDATION_STAGE_A_SUPPLEMENT.json` 和 `stage_a_supplement_delivery.zip` 为准。
 
+## 评价修补与真实文献小试验
+
+评价补丁使用完整的 `(dataset, ranker, topic, memory)` 分层重新计算旧结果，不运行检索或重新校准。真实文献小试验默认要求30–50篇文献、6–9条人工查询、family/canonical映射、两名固定评分者，并对整个有限语料逐查询盲评。缺少输入时只生成空模板并保持pending。
+
+```bash
+python3 execute_evaluation_patch.py all --previous-run outputs_stage_a_repair/<existing_run> --output outputs_evaluation_patch/<run_id>
+python3 execute_stage_b_retrieval.py init --config configs/stage_b_retrieval_small.json --output outputs_stage_b/pilot_small_001
+python3 execute_stage_b_retrieval.py --help
+```
+
+Stage B 的后续命令必须使用run内冻结配置。评分采用追加修订历史；输入变化必须新建run。部分标注的 `analyze` 返回状态 `partial_analysis` 和退出码2，不能解释为真实实验完成。完整命令和待输入字段见交付目录中的 `NEXT_INPUTS.md` 与 `ANNOTATION_GUIDE_ZH.md`。
+
 ## 验证边界与下一步
 
 本版优先证明系统实现正确：状态隔离、资源/团队约束、共同前缀、模拟复现、日志重放和模式明确。实验设计、指标定义与后续研究要求见docs/EXPERIMENT.md。mock和合成语料不得支持真实社会机制结论；LLM+真实语料也需要独立评审和校准。

@@ -1,0 +1,29 @@
+{
+  "schema_version": "retrieval_pilot_profiles_1",
+  "version": "retrieval_pilot_profiles_v1",
+  "profile_source": "developer_proposed_from_query_intent",
+  "human_validated": false,
+  "topics": {
+    "peer_review_reliability": {
+      "definition": "Reliability, consistency, and agreement in peer review of manuscripts or grant proposals",
+      "positive_phrases": ["peer review reliability", "reviewer agreement", "inter reviewer agreement", "grant peer review"],
+      "concept_groups": {"review_process":["peer review","reviewer","manuscript review","grant review"],"reliability":["reliability","agreement","consistency","reproducibility"]},
+      "generic_terms": ["review", "reliability", "agreement"],
+      "scope_note": "Generic model evaluation or review articles without assessment by reviewers are insufficient."
+    },
+    "peer_review_bias": {
+      "definition": "Identity, gender, and blinding bias in single-blind or double-blind peer review",
+      "positive_phrases": ["peer review bias", "double blind review", "single blind review", "gender bias in review", "author identity bias"],
+      "concept_groups": {"review_process":["peer review","reviewer","single blind","double blind"],"bias":["bias","gender","identity","blinding"]},
+      "generic_terms": ["review", "bias", "blind"],
+      "scope_note": "Bias outside manuscript or grant review is insufficient."
+    },
+    "bibliometric_evaluation": {
+      "definition": "Use, validity, and limitations of bibliometric indicators for evaluating research quality",
+      "positive_phrases": ["bibliometric indicator", "research evaluation", "research quality assessment", "citation impact evaluation"],
+      "concept_groups": {"indicator":["bibliometric","citation indicator","impact factor","h index"],"evaluation":["research quality","research evaluation","assessment","limitations"]},
+      "generic_terms": ["bibliometric", "citation", "evaluation"],
+      "scope_note": "Citation retrieval without evaluation of research quality is insufficient."
+    }
+  }
+}

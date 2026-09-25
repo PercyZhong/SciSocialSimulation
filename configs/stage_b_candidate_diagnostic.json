@@ -1,0 +1,34 @@
+{
+  "schema_version": "stage_b_candidate_diagnostic_1",
+  "evaluation_split": "exploratory_reused_pilot",
+  "candidate_sizes": [10, 20, "all"],
+  "main_candidate_k": 20,
+  "output_k": 10,
+  "lambda": 0.10,
+  "bm25_k1": 1.2,
+  "bm25_b": 0.75,
+  "tie_break": "paper_id_ascending",
+  "ks": [3, 5, 10],
+  "relevance_thresholds": [1, 2],
+  "floating_tolerance": 1e-12,
+  "routes_path": "data/stage_b_query_routes_v1.json",
+  "aligned_profiles_path": "data/retrieval_pilot_profiles_v1.json",
+  "legacy_profiles_path": "data/retrieval_topic_profiles_repair_v1.json",
+  "rankers": [
+    "bm25",
+    "soft_legacy_k20",
+    "soft_legacy_all",
+    "soft_aligned_k20",
+    "soft_aligned_all"
+  ],
+  "cached_ranker_mapping": {
+    "bm25": "bm25_lexical",
+    "soft_legacy_k20": "soft_legacy_profile",
+    "soft_aligned_k20": "soft_aligned_profile"
+  },
+  "normalization_rule": "candidate_maxima",
+  "counterfactual_rule": "all_candidates_with_k20_denominators_when_denominator_changes",
+  "allow_network": false,
+  "allow_llm_calls": false,
+  "production_ranker_changed": false
+}

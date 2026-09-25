@@ -1,0 +1,31 @@
+{
+  "schema_version": "stage_b_improvement_1",
+  "evaluation_split": "exploratory_reused_pilot",
+  "candidate_k": 20,
+  "output_k": 10,
+  "lambda": 0.10,
+  "bm25_k1": 1.2,
+  "bm25_b": 0.75,
+  "legacy_query_weight": 0.2,
+  "tie_break": "paper_id_ascending",
+  "routes_path": "data/stage_b_query_routes_v1.json",
+  "aligned_profiles_path": "data/retrieval_pilot_profiles_v1.json",
+  "legacy_closure_profiles_path": "data/retrieval_topic_profiles_v1.json",
+  "legacy_repair_profiles_path": "data/retrieval_topic_profiles_repair_v1.json",
+  "rankers": [
+    "bm25_lexical",
+    "legacy_closure",
+    "legacy_repair",
+    "soft_lambda0",
+    "soft_legacy_profile",
+    "soft_aligned_profile"
+  ],
+  "ks": [3, 5, 10],
+  "primary_endpoint": "final/query_macro_ndcg_at_5",
+  "relevance_threshold": 1,
+  "strict_relevance_threshold": 2,
+  "floating_tolerance": 1e-12,
+  "allow_network": false,
+  "allow_llm_calls": false,
+  "production_ranker_changed": false
+}

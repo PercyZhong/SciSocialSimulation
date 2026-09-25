@@ -278,6 +278,34 @@ python3 execute_stage_b_retrieval.py --help
 
 Stage B 的后续命令必须使用run内冻结配置。评分采用追加修订历史；输入变化必须新建run。部分标注的 `analyze` 返回状态 `partial_analysis` 和退出码2，不能解释为真实实验完成。完整命令和待输入字段见交付目录中的 `NEXT_INPUTS.md` 与 `ANNOTATION_GUIDE_ZH.md`。
 
+## Stage B 软重排探索实验
+
+该实验从已冻结且完整评分的小试验中迁移原始评分历史，不修改标签。它固定比较 BM25、两个历史排序器、lambda=0 等价对照以及两个 `lambda=0.10` 软重排臂；新排序器只对 BM25 top20 做非门控重排，不自动替换生产 Agent 的检索路径。
+
+```bash
+python3 execute_stage_b_improvement.py run \
+  --config configs/stage_b_improvement.json \
+  --source-run /path/to/frozen_stage_b_run \
+  --output outputs_stage_b_improvement/<run_id>
+python3 execute_stage_b_improvement.py validate --run-dir outputs_stage_b_improvement/<run_id>
+python3 execute_stage_b_improvement.py reproduce --run-dir outputs_stage_b_improvement/<run_id> --output outputs_stage_b_improvement/<reproduced_id>
+python3 execute_stage_b_improvement.py finalize --run-dir outputs_stage_b_improvement/<run_id>
+```
+
+执行严格离线，不调用 LLM、收费 API 或文献服务。查询属于重复使用的探索性 pilot；现有评分为 AI 辅助、人类抽查和提交，独立人工验证已延期，因此任何结果均保持 `ready_for_scientific_claims=false`。
+
+候选规模诊断在上述冻结结果上比较 K20 与全语料候选，并按需运行固定 K20 归一化分母的反事实。它不改变 lambda、画像、标签或生产检索路径：
+
+```bash
+python3 execute_stage_b_candidate_diagnostic.py run \
+  --config configs/stage_b_candidate_diagnostic.json \
+  --source-run outputs_stage_b_improvement/<previous_run> \
+  --output outputs_stage_b_candidate_diagnostic/<run_id>
+python3 execute_stage_b_candidate_diagnostic.py validate --run-dir outputs_stage_b_candidate_diagnostic/<run_id>
+python3 execute_stage_b_candidate_diagnostic.py reproduce --run-dir outputs_stage_b_candidate_diagnostic/<run_id> --output outputs_stage_b_candidate_diagnostic/<reproduced_id>
+python3 execute_stage_b_candidate_diagnostic.py finalize --run-dir outputs_stage_b_candidate_diagnostic/<run_id>
+```
+
 ## 验证边界与下一步
 
 本版优先证明系统实现正确：状态隔离、资源/团队约束、共同前缀、模拟复现、日志重放和模式明确。实验设计、指标定义与后续研究要求见docs/EXPERIMENT.md。mock和合成语料不得支持真实社会机制结论；LLM+真实语料也需要独立评审和校准。

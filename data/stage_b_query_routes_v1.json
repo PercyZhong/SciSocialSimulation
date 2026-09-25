@@ -1,0 +1,16 @@
+{
+  "schema_version": "stage_b_query_routes_1",
+  "route_version": "stage_b_query_routes_v1",
+  "evaluation_split": "exploratory_reused_pilot",
+  "routes": [
+    {"query_id":"q_agent_memory_01","original_topic_id":"agent_memory","retrieval_topic_id":"agent_memory","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_agent_memory_02","original_topic_id":"agent_memory","retrieval_topic_id":"agent_memory","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_agent_memory_03","original_topic_id":"agent_memory","retrieval_topic_id":"agent_memory","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_retrieval_01","original_topic_id":"science_retrieval","retrieval_topic_id":"science_retrieval","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_retrieval_02","original_topic_id":"science_retrieval","retrieval_topic_id":"science_retrieval","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_retrieval_03","original_topic_id":"science_retrieval","retrieval_topic_id":"science_retrieval","route_reason":"original profile retained","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_evaluation_01","original_topic_id":"science_evaluation","retrieval_topic_id":"peer_review_reliability","route_reason":"query concerns agreement and reliability of manuscript or grant peer review","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_evaluation_02","original_topic_id":"science_evaluation","retrieval_topic_id":"peer_review_bias","route_reason":"query concerns blinding, identity, and gender bias in peer review","route_source":"developer_proposed_from_query_intent","human_validated":false},
+    {"query_id":"q_science_evaluation_03","original_topic_id":"science_evaluation","retrieval_topic_id":"bibliometric_evaluation","route_reason":"query concerns appropriate and inappropriate bibliometric research evaluation","route_source":"developer_proposed_from_query_intent","human_validated":false}
+  ]
+}

@@ -6,3 +6,7 @@ cache/
 outputs/
 outputs_v02/
 outputs_v03/
+outputs_stage_c/
+configs/models.local.json
+configs/stage_c_live.local.json
+configs/stage_c_pilot.local.json

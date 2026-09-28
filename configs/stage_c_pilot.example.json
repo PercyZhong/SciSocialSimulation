@@ -1,0 +1,27 @@
+{
+  "schema_version": "stage_c_1",
+  "phase": "c0_connection_pilot",
+  "mode": "live",
+  "state_seeds": [42],
+  "policies": ["balanced"],
+  "networks": ["open"],
+  "stages": ["topic_selection", "retrieval_query_selection", "invitation", "project_exit"],
+  "draws": 1,
+  "models": ["deepseek_flash", "qwen_flash_snapshot"],
+  "model_registry": "configs/models.stage_c.example.json",
+  "prompt_version": "stage_c_c0_connection_pilot_1",
+  "evidence_limit": 3,
+  "evidence_source_env": "STAGE_C_EVIDENCE_ARCHIVE",
+  "evidence_requirement": "real_stage_b_archive_required",
+  "decision_mode": "llm",
+  "allow_network": true,
+  "allow_live_calls": false,
+  "budget": {
+    "max_logical_calls": 16,
+    "max_http_attempts": 24,
+    "max_input_tokens": 50000,
+    "max_output_tokens": 13000,
+    "max_total_cost_by_currency": {"USD": 1.0, "CNY": 5.0},
+    "walltime_seconds": 900
+  }
+}

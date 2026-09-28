@@ -315,3 +315,15 @@ python3 execute_stage_b_candidate_diagnostic.py finalize --run-dir outputs_stage
 - https://docs.vllm.ai/en/latest/serving/online_serving/openai_compatible_server/
 
 交付验收记录：VALIDATION.json。sample_results/包含本次完整mock运行的报告、数据及日志；你自己的新运行写入outputs/。交付环境实际为Linux/Python 3.12.14，Windows脚本尚未在Windows实机执行。
+
+## Stage C offline engineering and guarded live entry point
+
+Stage C keeps model choices separate from rule-policy choices. The committed configuration is offline by default; probe and live C0 require both an explicitly enabled local config and `--authorize-live`. C1 is prepared but is not authorized by this round.
+
+```bash
+python3 execute_stage_c.py doctor --config configs/stage_c_mock.json
+python3 execute_stage_c.py estimate --config configs/stage_c_live.example.json
+python3 execute_stage_c.py run --phase c0 --mode mock --config configs/stage_c_mock.json --output outputs_stage_c/c0_mock
+```
+
+For later live work, copy `configs/models.stage_c.example.json` to the ignored `configs/models.local.json`, copy `configs/stage_c_live.example.json` to the ignored `configs/stage_c_live.local.json`, point the latter at the local registry, review its budgets, and set `allow_live_calls` only after authorization. No key belongs in either JSON file.

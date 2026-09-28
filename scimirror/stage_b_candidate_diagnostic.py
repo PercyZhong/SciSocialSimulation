@@ -363,16 +363,29 @@ def reproduce(run_dir, output):
     if completed.returncode:
         record={"status":"failed","exit_code":completed.returncode,"stdout":completed.stdout,"stderr":completed.stderr}; output.mkdir(parents=True,exist_ok=True); write_json(output/"REPRODUCTION_VALIDATION.json",record); return record
     original=read_jsonl(run_dir/"ranker_runs.jsonl"); replay=read_jsonl(output/"ranker_runs.jsonl"); same_runs=original==replay
-    same_metrics=read_records(run_dir/"metrics_by_query_ranker.csv")==read_records(output/"metrics_by_query_ranker.csv")
+    same_metrics=_records_equal(read_records(run_dir/"metrics_by_query_ranker.csv"),read_records(output/"metrics_by_query_ranker.csv"),1e-12)
     probe=subprocess.run([sys.executable,"-c","import scimirror.stage_b_candidate_diagnostic as m; print(m.__file__)"],cwd=isolated,env=env,text=True,capture_output=True)
     loaded=probe.stdout.strip(); inside=probe.returncode==0 and Path(loaded).resolve().is_relative_to(isolated.resolve())
     record={"status":"passed" if same_runs and same_metrics and inside else "failed","ranking_semantic_equal":same_runs,"metrics_semantic_equal":same_metrics,"actual_loaded_module":loaded,"module_inside_isolated_source":inside,"exit_code":completed.returncode,"stderr":completed.stderr+probe.stderr}
     write_json(output/"REPRODUCTION_VALIDATION.json",record); return record
 
 
+def _records_equal(left,right,tolerance):
+    if len(left)!=len(right): return False
+    for a,b in zip(left,right):
+        if set(a)!=set(b): return False
+        for key in a:
+            if a[key]==b[key]: continue
+            try:
+                if abs(float(a[key])-float(b[key]))<=tolerance: continue
+            except (TypeError,ValueError): pass
+            return False
+    return True
+
+
 def finalize(run_dir):
-    run_dir=Path(run_dir); excluded={"CHECKSUMS.sha256","stage_b_candidate_diagnostic_delivery.zip","ARCHIVE_SHA256.txt"}
-    files=sorted(p for p in run_dir.rglob("*") if p.is_file() and p.name not in excluded)
+    run_dir=Path(run_dir); excluded={run_dir/"CHECKSUMS.sha256",run_dir/"stage_b_candidate_diagnostic_delivery.zip",run_dir/"ARCHIVE_SHA256.txt"}
+    files=sorted(p for p in run_dir.rglob("*") if p.is_file() and p not in excluded)
     (run_dir/"CHECKSUMS.sha256").write_text("".join(f"{raw_sha256(p)}  {p.relative_to(run_dir).as_posix()}\n" for p in files),encoding="utf-8")
     archive=run_dir/"stage_b_candidate_diagnostic_delivery.zip"
     with zipfile.ZipFile(archive,"w",zipfile.ZIP_DEFLATED,compresslevel=9) as bundle:

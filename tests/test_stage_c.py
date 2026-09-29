@@ -2,8 +2,9 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from scimirror.decision_backend import DecisionBackend, OpenAICompatibleTransport
+from scimirror.decision_backend import DecisionBackend, FatalProviderError, OpenAICompatibleTransport
 from scimirror.decision_schema import validate_decision
 from scimirror.model_registry import load_registry
 from scimirror.stage_c_frozen import _snapshot, build_schedule, run_c0
@@ -148,6 +149,41 @@ class StageCTests(unittest.TestCase):
             plan=json.loads((out/"PLAN_FROZEN.json").read_text(encoding="utf-8"))
             self.assertEqual(plan["matrix"],{"logical_calls":8,"models":2,"seeds":1,"policies":1,
                                              "networks":1,"stages":4,"draws":1})
+
+    def test_interrupted_run_resumes_cached_draw_without_new_call(self):
+        original=DecisionBackend.decide; calls={"count":0}
+        def interrupt_after_cache(backend,*args,**kwargs):
+            result=original(backend,*args,**kwargs); calls["count"]+=1
+            if calls["count"]==4: raise KeyboardInterrupt("simulated interruption")
+            return result
+        with tempfile.TemporaryDirectory() as temp:
+            out=Path(temp)/"resume"
+            with patch.object(DecisionBackend,"decide",new=interrupt_after_cache):
+                with self.assertRaises(KeyboardInterrupt):
+                    run_c0(ROOT/"configs"/"stage_c_pilot.example.json",out,"mock")
+            self.assertEqual(len(list((out/"cache").rglob("*.json"))),4)
+            result=run_c0(ROOT/"configs"/"stage_c_pilot.example.json",out,"mock")
+            self.assertEqual((result["decisions"],result["errors"]),(8,0))
+            ledger=json.loads((out/"USAGE_LEDGER.json").read_text(encoding="utf-8"))
+            self.assertEqual(ledger["logical_calls"],8)
+            protocol=json.loads((out/"PROTOCOL_METRICS.json").read_text(encoding="utf-8"))
+            self.assertEqual(protocol["cache_hits"],4)
+
+    def test_fatal_provider_error_blocks_only_affected_model(self):
+        original=DecisionBackend.decide; calls={"deepseek_flash":0,"qwen_flash_snapshot":0}
+        def fail_one_model(backend,*args,**kwargs):
+            key=backend.model["model_key"]; calls[key]+=1
+            if key=="deepseek_flash": raise FatalProviderError(401)
+            return original(backend,*args,**kwargs)
+        with tempfile.TemporaryDirectory() as temp:
+            out=Path(temp)/"blocked"
+            with patch.object(DecisionBackend,"decide",new=fail_one_model):
+                result=run_c0(ROOT/"configs"/"stage_c_pilot.example.json",out,"mock")
+            self.assertEqual(result["decisions"],8)
+            self.assertEqual(result["errors"],4)
+            self.assertEqual(calls,{"deepseek_flash":1,"qwen_flash_snapshot":4})
+            blocks=json.loads((out/"RUN_BLOCKS.json").read_text(encoding="utf-8"))
+            self.assertIn("deepseek_flash",blocks["models"])
 
     def test_final_zip_replays_from_extracted_source(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -14,6 +14,15 @@ class UsageLedger:
     costs: dict = field(default_factory=dict)
     started_at: float = field(default_factory=time.monotonic)
 
+    @classmethod
+    def from_export(cls, limits, saved):
+        ledger=cls(limits)
+        for name in ("logical_calls","http_attempts","input_tokens","output_tokens","usage_unknown"):
+            setattr(ledger,name,int(saved.get(name,0)))
+        ledger.costs={str(k):float(v) for k,v in saved.get("costs_by_currency",{}).items()}
+        ledger.started_at=time.monotonic()-float(saved.get("elapsed_seconds",0.0))
+        return ledger
+
     def reserve(self, input_tokens, output_tokens, currency=None, cost=0.0, http=False):
         if time.monotonic()-self.started_at > self.limits.get("walltime_seconds",float("inf")):
             raise RuntimeError("Stage C walltime budget exhausted")
@@ -42,4 +51,5 @@ class UsageLedger:
     def export(self):
         return {"logical_calls": self.logical_calls, "http_attempts": self.http_attempts,
                 "input_tokens": self.input_tokens, "output_tokens": self.output_tokens,
-                "usage_unknown": self.usage_unknown, "costs_by_currency": self.costs}
+                "usage_unknown": self.usage_unknown, "costs_by_currency": self.costs,
+                "elapsed_seconds": time.monotonic()-self.started_at}

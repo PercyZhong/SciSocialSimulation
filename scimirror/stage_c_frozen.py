@@ -8,7 +8,7 @@ import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 from .common import digest, dump
-from .decision_backend import DecisionBackend
+from .decision_backend import DecisionBackend, FatalProviderError
 from .model_registry import load_registry, public_manifest
 from .usage_ledger import UsageLedger
 
@@ -105,14 +105,39 @@ def run_c0(config_path, output, mode="mock", transport=None):
         raise RuntimeError("Live calls are not authorized by configuration")
     if mode not in ("mock","live"): raise ValueError("mode must be mock or live")
     registry=load_registry(root/config["model_registry"]); models={m["model_key"]:m for m in registry["models"]}
-    output=Path(output); output.mkdir(parents=True,exist_ok=False); ledger=UsageLedger(config["budget"])
     evidence_ids,evidence_scope=load_evidence(config,mode)
-    schedule=build_schedule(config); decisions=[]; request_log=[]; errors=[]; snapshots={}
+    schedule=build_schedule(config); output=Path(output); had_content=output.exists() and any(output.iterdir())
+    output.mkdir(parents=True,exist_ok=True)
+    contract={"schema_version":"stage_c_run_contract_1","mode":mode,"config_hash":digest(config),
+              "registry_hash":digest(public_manifest(registry)),"schedule_hash":digest(schedule),
+              "evidence_hash":digest(evidence_ids),"evidence_scope":evidence_scope}
+    contract_path=output/"RUN_CONTRACT.json"
+    if had_content:
+        if not contract_path.is_file(): raise ValueError("Existing output has no resumable Stage C run contract")
+        if json.loads(contract_path.read_text(encoding="utf-8"))!=contract:
+            raise ValueError("Existing output does not match the frozen Stage C run contract")
+    else:
+        dump(contract_path,contract)
+    progress_path=output/"RUN_PROGRESS.json"; saved_progress={}
+    if progress_path.is_file(): saved_progress=json.loads(progress_path.read_text(encoding="utf-8"))
+    saved_ledger=saved_progress.get("ledger",{})
+    cache_ledgers=[]
+    for cache_file in (output/"cache").rglob("*.json") if (output/"cache").exists() else ():
+        cached=json.loads(cache_file.read_text(encoding="utf-8"))
+        if cached.get("ledger_after"): cache_ledgers.append(cached["ledger_after"])
+    if cache_ledgers:
+        newest=max(cache_ledgers,key=lambda x:(x.get("http_attempts",0),x.get("logical_calls",0)))
+        if (newest.get("http_attempts",0),newest.get("logical_calls",0))>(saved_ledger.get("http_attempts",0),saved_ledger.get("logical_calls",0)):
+            saved_ledger=newest
+    ledger=UsageLedger.from_export(config["budget"],saved_ledger)
+    decisions=[]; request_log=[]; errors=[]; snapshots={}; attempts_dir=output/"attempts"
+    blocks_path=output/"RUN_BLOCKS.json"; blocks={"models":{},"global":None}
+    if blocks_path.is_file(): blocks=json.loads(blocks_path.read_text(encoding="utf-8"))
     if mode=="live" and transport is None:
         from .decision_backend import OpenAICompatibleTransport
         transport=OpenAICompatibleTransport(ledger)
     backends={k:DecisionBackend(models[k],mode,output/"cache"/k,ledger,transport) for k in config["models"]}
-    for item in schedule:
+    for position,item in enumerate(schedule,1):
         observation,actions,visible=_snapshot(item["seed"],item["stage"],item["network"],evidence_ids[:3])
         observation["policy"]=item["policy"]
         snapshot_key=(item["seed"],item["stage"],item["network"])
@@ -121,8 +146,33 @@ def run_c0(config_path, output, mode="mock", transport=None):
                                  "candidate_hash":digest(actions),"evidence_hash":digest(visible),"eligibility":"legal_action_available"}
         display_actions=sorted(actions,key=lambda a:digest([item["seed"],item["stage"],item["network"],item["draw_id"],a["action_id"]]))
         request_key={**item,"prompt_version":config["prompt_version"]}
+        backend=backends[item["model_key"]]; cache_path=backend.cache_path(item["stage"],observation,display_actions,request_key)
+        attempt_path=attempts_dir/f"{digest(request_key)}.json"; attempt=None
+        if attempt_path.is_file(): attempt=json.loads(attempt_path.read_text(encoding="utf-8"))
+        active_block=blocks.get("global") or blocks.get("models",{}).get(item["model_key"])
+        if active_block and not cache_path.is_file() and not attempt:
+            error={**item,"category":"RunBlocked","message":active_block["message"]}
+            dump(attempt_path,{"status":"failed","request_key":request_key,"error":error,"blocked_by":active_block})
+            errors.append(error); decisions.append({**item,"status":"missing","decision_source":"llm"})
+            dump(progress_path,{"schema_version":"stage_c_progress_1","processed":position,"scheduled":len(schedule),
+              "ledger":ledger.export(),"cache_records":len(list((output/"cache").rglob("*.json")))})
+            continue
+        if attempt and attempt.get("status") in ("failed","interrupted_in_flight_unknown"):
+            error=attempt["error"]; errors.append(error); decisions.append({**item,"status":"missing","decision_source":"llm"})
+            dump(progress_path,{"schema_version":"stage_c_progress_1","processed":position,"scheduled":len(schedule),
+              "ledger":ledger.export(),"cache_records":len(list((output/"cache").rglob("*.json")))})
+            continue
+        if attempt and attempt.get("status")=="started" and not cache_path.is_file():
+            error={**item,"category":"InterruptedInFlightUnknown","message":"Prior process ended with an in-flight request; not repeated to avoid duplicate billing"}
+            dump(attempt_path,{"status":"interrupted_in_flight_unknown","request_key":request_key,"error":error})
+            errors.append(error); decisions.append({**item,"status":"missing","decision_source":"llm"})
+            dump(progress_path,{"schema_version":"stage_c_progress_1","processed":position,"scheduled":len(schedule),
+              "ledger":ledger.export(),"cache_records":len(list((output/"cache").rglob("*.json")))})
+            continue
+        if not attempt:
+            dump(attempt_path,{"status":"started","request_key":request_key})
         try:
-            result=backends[item["model_key"]].decide(item["stage"],observation,display_actions,request_key,visible)
+            result=backend.decide(item["stage"],observation,display_actions,request_key,visible)
             payload=result["validated_payload"]
             row={**item,**snapshots[snapshot_key],"action_id":payload["action_id"],"decision_source":result["decision_source"],
                  "status":result["status"],"cache_hit":result["cache_hit"],"returned_model_id":result["returned_model_id"],
@@ -130,10 +180,22 @@ def run_c0(config_path, output, mode="mock", transport=None):
                  "display_order_hash":digest([a["action_id"] for a in display_actions])}
             decisions.append(row); request_log.append({**item,"status":"validated","provider_request_id":result["provider_request_id"],
                                                        "usage":result["usage"],"latency_seconds":result["latency_seconds"],
+                                                       "cache_hit":result["cache_hit"],
                                                        "first_pass":result.get("first_pass",True),"repair_attempted":result.get("repair_attempted",False),
                                                        "request_hash":digest(result.get("request_audit",{}))})
+            dump(attempt_path,{"status":"completed","request_key":request_key,"cache_file":str(cache_path.relative_to(output))})
         except Exception as exc:
-            errors.append({**item,"category":type(exc).__name__,"message":str(exc)}); decisions.append({**item,"status":"missing","decision_source":"llm"})
+            error={**item,"category":type(exc).__name__,"message":str(exc)}; errors.append(error)
+            decisions.append({**item,"status":"missing","decision_source":"llm"})
+            dump(attempt_path,{"status":"failed","request_key":request_key,"error":error})
+            if isinstance(exc,FatalProviderError):
+                blocks["models"][item["model_key"]]={"category":type(exc).__name__,"message":str(exc),"trigger":request_key}
+                dump(blocks_path,blocks)
+            elif isinstance(exc,RuntimeError) and ("budget exhausted" in str(exc) or "walltime budget" in str(exc)):
+                blocks["global"]={"category":type(exc).__name__,"message":str(exc),"trigger":request_key}
+                dump(blocks_path,blocks)
+        dump(progress_path,{"schema_version":"stage_c_progress_1","processed":position,"scheduled":len(schedule),
+          "ledger":ledger.export(),"cache_records":len(list((output/"cache").rglob("*.json")))})
     _write_csv(output/"REQUEST_SCHEDULE.csv",schedule); _write_csv(output/"DECISIONS.csv",decisions)
     _write_csv(output/"ERRORS.csv",errors); (output/"REQUEST_LOG.jsonl").write_text("".join(json.dumps(x,ensure_ascii=False)+"\n" for x in request_log),encoding="utf-8")
     snapshot_rows=[dict(zip(("seed","stage","network"),key))|value for key,value in snapshots.items()]
@@ -173,6 +235,9 @@ def run_c0(config_path, output, mode="mock", transport=None):
     dump(output/"CHECKPOINTS.json",{"schema_version":"stage_c_checkpoints_1","status":"completed" if not errors else "partial",
       "scheduled":len(schedule),"completed":valid,"missing":len(schedule)-valid,
       "completed_request_hashes":[digest({k:r.get(k) for k in ("seed","network","stage","draw_id","policy","model_key")}) for r in decisions if r.get("status")=="validated"]})
+    dump(progress_path,{"schema_version":"stage_c_progress_1","status":"completed" if not errors else "partial",
+      "processed":len(schedule),"scheduled":len(schedule),"ledger":ledger.export(),
+      "cache_records":len(list((output/"cache").rglob("*.json")))})
     dump(output/"TEST_STATUS.json",{"status":"passed" if valid==len(schedule) and not errors else "failed",
       "scope":"embedded_stage_c_protocol_validation","checks":{"schedule_nonempty":bool(schedule),
       "decision_rows_match_schedule":len(decisions)==len(schedule),"all_decisions_valid":valid==len(schedule),

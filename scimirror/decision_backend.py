@@ -17,16 +17,26 @@ class TruncationError(RuntimeError):
     pass
 
 
+class FatalProviderError(RuntimeError):
+    """A non-retryable provider response that must block later calls for that model."""
+    def __init__(self, status):
+        super().__init__(f"Live HTTP {status}; response body withheld")
+        self.status = status
+
+
 class DecisionBackend:
     def __init__(self, model, mode, cache_dir, ledger, transport=None):
         self.model, self.mode = model, mode
         self.cache_dir, self.ledger = Path(cache_dir), ledger
         self.transport = transport
 
-    def decide(self, stage, observation, allowed_actions, request_key, visible_evidence=()):
+    def cache_path(self, stage, observation, allowed_actions, request_key):
         key = digest({"model": self.model, "stage": stage, "observation": observation,
                       "allowed_actions": allowed_actions, "request_key": request_key})
-        path = self.cache_dir / f"{key}.json"
+        return self.cache_dir / f"{key}.json"
+
+    def decide(self, stage, observation, allowed_actions, request_key, visible_evidence=()):
+        path = self.cache_path(stage, observation, allowed_actions, request_key); key=path.stem
         if path.exists():
             saved = json.loads(path.read_text(encoding="utf-8"))
             return {**saved, "cache_hit": True}
@@ -72,6 +82,7 @@ class DecisionBackend:
                   "returned_model_id": returned_model, "cache_hit": False,
                   "first_pass": first_pass, "repair_attempted": repair_attempted,
                   "initial_invalid_raw_response": initial_raw,
+                  "ledger_after": self.ledger.export(),
                   "request_audit":{"stage":stage,"observation":observation,"allowed_actions":allowed_actions,
                                    "request_key":request_key,"visible_evidence":list(visible_evidence)}}
         dump(path, record)
@@ -172,7 +183,7 @@ class OpenAICompatibleTransport:
             except urllib.error.HTTPError as exc:
                 last=exc
                 if exc.code not in (429,500,502,503,504):
-                    raise RuntimeError(f"Live HTTP {exc.code}; response body withheld") from None
+                    raise FatalProviderError(exc.code) from None
             except (urllib.error.URLError,TimeoutError) as exc:
                 last=exc
             if attempt<2: time.sleep(2**attempt)

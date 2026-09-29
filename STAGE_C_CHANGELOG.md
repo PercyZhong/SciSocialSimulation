@@ -11,4 +11,6 @@
 - CLI: `execute_stage_c.py`
 - Tests: `tests/test_stage_c.py`
 
-The existing production ranker and historical result directories are unchanged. C1 and all real API calls remain unauthorized and unexecuted in this delivery.
+The existing production ranker and historical result directories are unchanged. The initial offline delivery executed no real API calls; later live stages require separate, explicit user authorization, and C1 remains unexecuted.
+
+Post-pilot engineering fixes add explicit JSON-object probing, dynamic connection-pilot validation metadata, and resumable C0 execution. Resume requires an exact frozen run contract, restores the cumulative budget ledger, reuses completed draw caches, preserves failed draws as missing, and never repeats a request left in an unknown in-flight state.

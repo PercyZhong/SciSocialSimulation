@@ -138,11 +138,16 @@ def run_c0(config_path, output, mode="mock", transport=None):
     _write_csv(output/"ERRORS.csv",errors); (output/"REQUEST_LOG.jsonl").write_text("".join(json.dumps(x,ensure_ascii=False)+"\n" for x in request_log),encoding="utf-8")
     snapshot_rows=[dict(zip(("seed","stage","network"),key))|value for key,value in snapshots.items()]
     _write_csv(output/"SNAPSHOT_MANIFEST.csv",snapshot_rows)
-    dump(output/"PLAN_FROZEN.json",{"schema_version":"stage_c_1","matrix":{"logical_calls":len(schedule),"models":2,"seeds":3,"policies":3,"networks":2,"stages":4,"draws":3},"config":config})
+    dump(output/"PLAN_FROZEN.json",{"schema_version":"stage_c_1","matrix":{"logical_calls":len(schedule),
+      "models":len(config["models"]),"seeds":len(config["state_seeds"]),"policies":len(config["policies"]),
+      "networks":len(config["networks"]),"stages":len(config["stages"]),"draws":config["draws"]},"config":config})
     dump(output/"POLICY_SPEC.json",{"schema_version":"stage_c_policy_1","weights":POLICY_SPEC,"actual_reward_update":"C0 fixed decision context only; no multi-round learning","constraints":"legal actions enforced by system"})
     dump(output/"MODEL_MANIFEST.json",public_manifest(registry)); dump(output/"USAGE_LEDGER.json",ledger.export())
-    counts=Counter(r["status"] for r in decisions); status={"engineering_complete":True,"mock_complete":mode=="mock" and not errors,
-      "live_c0_complete":mode=="live" and not errors,"live_c1_complete":False,"model_versions_pinned":all(not models[k].get("model_version_unpinned") for k in config["models"]),
+    counts=Counter(r["status"] for r in decisions); is_pilot=config.get("phase")=="c0_connection_pilot"
+    status={"engineering_complete":True,"mock_complete":mode=="mock" and not errors,
+      "connection_pilot_complete":mode=="live" and is_pilot and not errors,
+      "live_c0_complete":mode=="live" and not is_pilot and config.get("phase")=="c0" and not errors,
+      "live_c1_complete":False,"model_versions_pinned":all(not models[k].get("model_version_unpinned") for k in config["models"]),
       "independent_human_validation":"deferred_by_user","quality_evaluation":"not_performed","ready_for_scientific_claims":False,
       "network_requests":0 if mode=="mock" else ledger.http_attempts,"llm_calls":0 if mode=="mock" else ledger.logical_calls,
       "evidence_scope":evidence_scope}
@@ -168,15 +173,18 @@ def run_c0(config_path, output, mode="mock", transport=None):
     dump(output/"CHECKPOINTS.json",{"schema_version":"stage_c_checkpoints_1","status":"completed" if not errors else "partial",
       "scheduled":len(schedule),"completed":valid,"missing":len(schedule)-valid,
       "completed_request_hashes":[digest({k:r.get(k) for k in ("seed","network","stage","draw_id","policy","model_key")}) for r in decisions if r.get("status")=="validated"]})
-    dump(output/"TEST_STATUS.json",{"status":"passed","scope":"embedded_stage_c_protocol_validation",
-      "checks":{"schedule_432":len(schedule)==432,"decision_rows_432":len(decisions)==432,"mock_has_no_network":mode!="mock" or ledger.http_attempts==0,
-                "all_mock_decisions_valid":mode!="mock" or valid==432},"linux_authoritative_full_suite":"required_separately"})
+    dump(output/"TEST_STATUS.json",{"status":"passed" if valid==len(schedule) and not errors else "failed",
+      "scope":"embedded_stage_c_protocol_validation","checks":{"schedule_nonempty":bool(schedule),
+      "decision_rows_match_schedule":len(decisions)==len(schedule),"all_decisions_valid":valid==len(schedule),
+      "mock_has_no_network":mode!="mock" or ledger.http_attempts==0},"linux_authoritative_full_suite":"required_separately"})
     dump(output/"CODE_CHANGE_REPORT.json",{"schema_version":"stage_c_changes_1","production_ranker_changed":False,
       "paths":["execute_stage_c.py","scimirror/model_registry.py","scimirror/decision_schema.py","scimirror/decision_backend.py",
                "scimirror/usage_ledger.py","scimirror/stage_c_frozen.py","scimirror/stage_c_live.py","scimirror/stage_c_packaging.py",
                "scimirror/stage_c_delivery.py","configs/models.stage_c.example.json","configs/stage_c_mock.json","configs/stage_c_live.example.json"]})
     dump(output/"RUNTIME_MANIFEST.json",{"python":sys.version,"platform":platform.platform(),"mode":mode})
-    report=["# Stage C C0 离线工程报告","","本轮未授权且未执行任何真实API调用或probe。","",f"固定矩阵：{len(schedule)}个逻辑决策；validated={counts['validated']}，missing={counts['missing']}。","","模型动作直接写入DECISIONS，不再由policy.choose二次覆盖。mock仅用于协议工程验证。","","C1未执行；独立人工核查延期；quality_evaluation=not_performed；ready_for_scientific_claims=false。"]
+    execution=("本轮为mock协议工程验证，未执行真实API调用。" if mode=="mock" else
+               f"本轮执行已授权的真实API连接{'pilot' if is_pilot else 'C0'}；网络请求={ledger.http_attempts}，LLM逻辑调用={ledger.logical_calls}。")
+    report=["# Stage C C0 工程报告","",execution,"",f"固定矩阵：{len(schedule)}个逻辑决策；validated={counts['validated']}，missing={counts['missing']}。","","模型动作直接写入DECISIONS，不再由policy.choose二次覆盖。","","C1未执行；独立人工核查延期；quality_evaluation=not_performed；ready_for_scientific_claims=false。"]
     (output/"REPORT_ZH.md").write_text("\n".join(report)+"\n",encoding="utf-8")
     dump(output/"NEEDS_USER_CONFIG.json",{"required_file":"configs/models.local.json","environment_variables":["DEEPSEEK_API_KEY","DEEPSEEK_BASE_URL","DASHSCOPE_API_KEY","QWEN_BASE_URL","STAGE_C_EVIDENCE_ARCHIVE"],"budget_authorization_required":True,"probe_authorized":False,"c1_authorized":False})
     return {"output":str(output.resolve()),"schedule":len(schedule),"decisions":len(decisions),"errors":len(errors),"status":status}

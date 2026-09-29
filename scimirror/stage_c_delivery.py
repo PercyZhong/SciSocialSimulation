@@ -12,10 +12,16 @@ from .stage_c_packaging import sha, write_manifest, verify_manifest
 
 
 def replay_validate(run_dir):
-    run_dir=Path(run_dir); rows=list(csv.DictReader((run_dir/"DECISIONS.csv").open(encoding="utf-8-sig")))
+    run_dir=Path(run_dir)
+    with (run_dir/"DECISIONS.csv").open(encoding="utf-8-sig",newline="") as handle:
+        rows=list(csv.DictReader(handle))
+    with (run_dir/"REQUEST_SCHEDULE.csv").open(encoding="utf-8-sig",newline="") as handle:
+        schedule=list(csv.DictReader(handle))
     caches=list((run_dir/"cache").rglob("*.json")); valid=sum(r.get("status")=="validated" for r in rows)
-    return {"status":"passed" if len(rows)==432 and valid==432 and len(caches)==432 else "failed",
-            "decision_rows":len(rows),"validated_rows":valid,"cache_records":len(caches),"offline":True}
+    expected=len(schedule)
+    return {"status":"passed" if len(rows)==expected and valid==expected and len(caches)==expected else "failed",
+            "expected_rows":expected,"decision_rows":len(rows),"validated_rows":valid,
+            "cache_records":len(caches),"offline":True}
 
 
 def finalize(run_dir,root):

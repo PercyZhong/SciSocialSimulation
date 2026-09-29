@@ -7,7 +7,7 @@ from scimirror.decision_backend import DecisionBackend, OpenAICompatibleTranspor
 from scimirror.decision_schema import validate_decision
 from scimirror.model_registry import load_registry
 from scimirror.stage_c_frozen import _snapshot, build_schedule, run_c0
-from scimirror.stage_c_delivery import finalize
+from scimirror.stage_c_delivery import finalize, replay_validate
 from scimirror.stage_c_live import apply_model_decision
 from scimirror.usage_ledger import UsageLedger
 
@@ -136,6 +136,18 @@ class StageCTests(unittest.TestCase):
             self.assertEqual(len(rows),433)
             self.assertTrue((out/"CHECKPOINTS.json").is_file())
             self.assertTrue((out/"PROTOCOL_METRICS.json").is_file())
+
+    def test_connection_pilot_matrix_replays_without_432_assumption(self):
+        with tempfile.TemporaryDirectory() as temp:
+            out=Path(temp)/"pilot"
+            result=run_c0(ROOT/"configs"/"stage_c_pilot.example.json",out,"mock")
+            self.assertEqual(result["decisions"],8)
+            replay=replay_validate(out)
+            self.assertEqual(replay["status"],"passed")
+            self.assertEqual(replay["expected_rows"],8)
+            plan=json.loads((out/"PLAN_FROZEN.json").read_text(encoding="utf-8"))
+            self.assertEqual(plan["matrix"],{"logical_calls":8,"models":2,"seeds":1,"policies":1,
+                                             "networks":1,"stages":4,"draws":1})
 
     def test_final_zip_replays_from_extracted_source(self):
         with tempfile.TemporaryDirectory() as temp:

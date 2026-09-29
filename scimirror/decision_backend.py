@@ -120,13 +120,21 @@ class OpenAICompatibleTransport:
         self.ledger.reserve(0,0)
         request={"model":model["requested_model_id"],"messages":[
           {"role":"system","content":"Return JSON only."},{"role":"user","content":"Return {\"ok\":true}."}],
-          "temperature":model["temperature"],"top_p":model.get("top_p",1.0),"max_tokens":32}
+          "temperature":model["temperature"],"top_p":model.get("top_p",1.0),"max_tokens":32,
+          "response_format":{"type":"json_object"}}
         request.update(model.get("provider_options",{}))
         result=self._request(model,request,input_reserve=64,output_reserve=32)
-        parsed=json.loads(result["raw_response"])
-        if parsed!={"ok":True}: raise RuntimeError("Probe response did not match expected JSON")
-        return {"status":"passed","returned_model_id":result["returned_model_id"],"finish_reason":result["finish_reason"],
+        common={"returned_model_id":result["returned_model_id"],"finish_reason":result["finish_reason"],
                 "usage":result["usage"],"provider_request_id":result["provider_request_id"]}
+        try:
+            parsed=json.loads(result["raw_response"])
+        except json.JSONDecodeError:
+            return {"status":"failed","error_category":"invalid_json",
+                    "message":"Provider response was not strict JSON; response content withheld",**common}
+        if parsed!={"ok":True}:
+            return {"status":"failed","error_category":"schema_mismatch",
+                    "message":"Probe JSON did not exactly match the expected object",**common}
+        return {"status":"passed",**common}
 
     def repair(self, model, invalid_response, allowed_actions):
         schema = {"action_id":"one allowed action_id","reason_summary":"brief visible reason","evidence_ids":[]}

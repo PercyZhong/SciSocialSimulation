@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scimirror.decision_backend import DecisionBackend
+from scimirror.decision_backend import DecisionBackend, OpenAICompatibleTransport
 from scimirror.decision_schema import validate_decision
 from scimirror.model_registry import load_registry
 from scimirror.stage_c_frozen import _snapshot, build_schedule, run_c0
@@ -66,6 +66,30 @@ class StageCTests(unittest.TestCase):
         limits={"max_logical_calls":1,"max_http_attempts":1,"max_input_tokens":10,"max_output_tokens":10,"max_total_cost_by_currency":{"USD":1}}
         ledger=UsageLedger(limits); ledger.reserve(1,1,"USD",.1,http=True)
         with self.assertRaises(RuntimeError): ledger.reserve(1,1,"USD",.1,http=True)
+
+    def test_probe_requests_json_object_and_reports_invalid_json_safely(self):
+        model=load_registry(ROOT/"configs"/"models.stage_c.example.json")["models"][0]
+        limits={"max_logical_calls":4,"max_http_attempts":4,"max_input_tokens":1000,"max_output_tokens":1000,
+                "max_total_cost_by_currency":{"USD":1}}
+
+        class FakeProbe(OpenAICompatibleTransport):
+            def __init__(self, ledger, raw):
+                super().__init__(ledger); self.raw=raw; self.request=None
+            def _request(self, model, request, input_reserve=2000, output_reserve=None):
+                self.request=request
+                return {"raw_response":self.raw,"usage":{"prompt_tokens":8,"completion_tokens":4},
+                        "provider_request_id":"probe-id","returned_model_id":"probe-model","finish_reason":"stop"}
+
+        valid=FakeProbe(UsageLedger(limits),'{"ok":true}')
+        result=valid.probe(model)
+        self.assertEqual(valid.request["response_format"],{"type":"json_object"})
+        self.assertEqual(result["status"],"passed")
+
+        invalid=FakeProbe(UsageLedger(limits),"not strict json")
+        result=invalid.probe(model)
+        self.assertEqual(result["status"],"failed")
+        self.assertEqual(result["error_category"],"invalid_json")
+        self.assertNotIn("raw_response",result)
 
     def test_one_format_repair_is_budgeted_and_preserves_first_failure(self):
         class RepairingTransport:
